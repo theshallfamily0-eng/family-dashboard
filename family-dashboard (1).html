@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0d14;
+    --surface: #111520;
+    --surface2: #181d2e;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8ecf4;
+    --muted: #7a829a;
+    --accent: #4f8ef7;
+    --accent2: #7c5cfc;
+    --accent-glow: rgba(79,142,247,0.18);
+    --accent2-glow: rgba(124,92,252,0.15);
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--text); }
+  body {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "header header"
+      "calendar todo";
+    gap: 14px;
+    padding: 14px;
+    height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before { content:''; position:absolute; top:-40px; left:-40px; width:200px; height:120px; background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 70%); pointer-events:none; }
+  .header::after { content:''; position:absolute; top:-40px; right:60px; width:160px; height:100px; background:radial-gradient(ellipse,var(--accent2-glow) 0%,transparent 70%); pointer-events:none; }
+
+  .clock-block { position:relative; z-index:1; }
+  .clock-time { font-family:'DM Mono',monospace; font-size:42px; font-weight:500; letter-spacing:-1px; line-height:1; color:var(--text); }
+  .clock-date { font-size:13px; color:var(--muted); margin-top:3px; letter-spacing:0.04em; text-transform:uppercase; }
+
+  .header-title { position:relative; z-index:1; text-align:center; }
+  .header-title h1 { font-family:'Playfair Display',serif; font-size:26px; font-weight:600; background:linear-gradient(135deg,#e8ecf4 0%,#4f8ef7 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .header-title p { font-size:12px; color:var(--muted); margin-top:2px; letter-spacing:0.06em; text-transform:uppercase; }
+
+  .header-right { position:relative; z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .weather-current { display:flex; align-items:baseline; gap:6px; }
+  .hdr-temp { font-size:38px; font-weight:300; line-height:1; color:var(--text); }
+  .hdr-desc { font-size:12px; color:var(--muted); }
+  .hdr-loc { font-size:11px; color:var(--muted); opacity:0.7; }
+  .forecast-mini { display:flex; gap:10px; }
+  .fc-mini-day { text-align:center; }
+  .fc-mini-label { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
+  .fc-mini-icon { font-size:14px; line-height:1.4; }
+  .fc-mini-temp { font-size:11px; color:var(--text); font-weight:500; }
+  .fc-mini-lo { font-size:10px; color:var(--muted); }
+
+  /* PANEL SHARED */
+  .panel-header { padding:16px 20px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .panel-title { font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+  .panel-badge { font-size:11px; padding:3px 10px; border-radius:20px; background:var(--accent-glow); color:var(--accent); border:1px solid rgba(79,142,247,0.25); font-weight:500; }
+  .panel-badge.purple { background:var(--accent2-glow); color:#a98dff; border-color:rgba(124,92,252,0.25); }
+
+  /* AGENDA */
+  .calendar-panel { grid-area:calendar; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+  .agenda-list { flex:1; overflow-y:auto; padding:10px 16px 14px; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
+
+  .agenda-day-block { margin-bottom:20px; }
+  .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .agenda-day-num { font-family:'DM Mono',monospace; font-size:28px; font-weight:500; color:var(--text); line-height:1; min-width:36px; }
+  .agenda-day-num.today-num { color:var(--accent); }
+  .agenda-day-info { display:flex; flex-direction:column; }
+  .agenda-day-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; }
+  .agenda-day-name.today-label { color:var(--accent); }
+  .agenda-month { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .agenda-divider { flex:1; height:1px; background:var(--border); }
+  .agenda-today-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent-glow); color:var(--accent); border:1px solid rgba(79,142,247,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
+  .agenda-tomorrow-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent2-glow); color:#a98dff; border:1px solid rgba(124,92,252,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
+
+  .agenda-event { display:flex; align-items:stretch; gap:12px; padding:10px 14px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); margin-bottom:7px; }
+  .agenda-accent-bar { width:3px; border-radius:2px; background:var(--accent); flex-shrink:0; }
+  .agenda-accent-bar.c1 { background:var(--accent2); }
+  .agenda-accent-bar.c2 { background:var(--success); }
+  .agenda-accent-bar.c3 { background:var(--warning); }
+  .agenda-event-info { flex:1; min-width:0; }
+  .agenda-event-title { font-size:14px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .agenda-event-time { font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; }
+  .agenda-empty { padding:20px; text-align:center; color:var(--muted); font-size:13px; }
+  .cal-loading { padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
+  .cal-error { padding:20px; text-align:center; color:var(--danger); font-size:13px; line-height:1.7; }
+  .cal-setup { padding:24px 20px; text-align:center; }
+  .cal-setup p { color:var(--muted); font-size:13px; line-height:1.7; margin-bottom:12px; }
+  .cal-setup-btn { display:inline-block; padding:9px 20px; border-radius:var(--radius-sm); background:var(--accent); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
+
+  /* TO-DO */
+  .todo-panel { grid-area:todo; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
+  .todo-input-row { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; gap:8px; flex-shrink:0; }
+  .todo-input { flex:1; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 12px; outline:none; transition:border-color 0.2s; }
+  .todo-input::placeholder { color:var(--muted); }
+  .todo-input:focus { border-color:var(--accent); }
+  .todo-add-btn { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--accent); border:none; color:white; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0; }
+  .todo-add-btn:active { opacity:0.75; }
+  .todo-list { flex:1; overflow-y:auto; padding:10px 16px 14px; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
+  .todo-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); margin-bottom:7px; }
+  .todo-item.done { opacity:0.4; }
+  .todo-check { width:18px; height:18px; border-radius:50%; border:2px solid var(--border2); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
+  .todo-check.checked { background:var(--success); border-color:var(--success); }
+  .todo-check::after { content:'✓'; font-size:10px; color:white; display:none; font-weight:700; }
+  .todo-check.checked::after { display:block; }
+  .todo-text { flex:1; font-size:13px; color:var(--text); word-break:break-word; }
+  .todo-item.done .todo-text { text-decoration:line-through; color:var(--muted); }
+  .todo-delete { width:24px; height:24px; border-radius:6px; border:none; background:transparent; color:var(--muted); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; }
+  .todo-delete:hover { color:var(--danger); background:rgba(248,113,113,0.1); }
+  .todo-empty { text-align:center; color:var(--muted); font-size:13px; padding:30px 0; }
+
+  /* SETTINGS */
+  .settings-btn { position:fixed; bottom:20px; right:20px; width:36px; height:36px; border-radius:50%; background:var(--surface2); border:1px solid var(--border2); color:var(--muted); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:color 0.2s; }
+  .settings-btn:hover { color:var(--text); }
+  .settings-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; display:none; align-items:center; justify-content:center; }
+  .settings-overlay.open { display:flex; }
+  .settings-box { background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius); padding:26px 28px; width:460px; max-width:92vw; }
+  .settings-box h2 { font-size:16px; font-weight:600; margin-bottom:4px; color:var(--text); }
+  .settings-subtitle { font-size:12px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
+  .settings-field { margin-bottom:14px; }
+  .settings-label { font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); font-weight:600; margin-bottom:6px; display:block; }
+  .settings-hint { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.5; opacity:0.8; }
+  .settings-input { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px; outline:none; transition:border-color 0.2s; }
+  .settings-input:focus { border-color:var(--accent); }
+  .settings-row { display:flex; gap:10px; margin-top:20px; }
+  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
+  .settings-save { background:var(--accent); color:white; }
+  .settings-close { background:var(--surface2); color:var(--muted); border:1px solid var(--border2); }
+
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="clock-block">
+    <div class="clock-time" id="clock">--:--</div>
+    <div class="clock-date" id="date-label">Loading...</div>
+  </div>
+  <div class="header-title">
+    <h1 id="family-name">Family Dashboard</h1>
+    <p>Home Hub</p>
+  </div>
+  <div class="header-right">
+    <div class="weather-current">
+      <span class="hdr-temp" id="hdr-temp">--°</span>
+      <div>
+        <div class="hdr-desc" id="hdr-desc">Loading weather…</div>
+        <div class="hdr-loc" id="hdr-loc">Charlotte, NC</div>
+      </div>
+    </div>
+    <div class="forecast-mini" id="forecast-mini"></div>
+  </div>
+</header>
+
+<!-- AGENDA -->
+<section class="calendar-panel">
+  <div class="panel-header">
+    <span class="panel-title">Upcoming Events</span>
+    <span class="panel-badge" id="event-count-badge">Loading…</span>
+  </div>
+  <div class="agenda-list" id="agenda-list">
+    <div class="cal-loading">Fetching your calendar…</div>
+  </div>
+</section>
+
+<!-- TO-DO -->
+<section class="todo-panel">
+  <div class="panel-header">
+    <span class="panel-title">To-Do List</span>
+    <span class="panel-badge purple" id="todo-count-badge">0 left</span>
+  </div>
+  <div class="todo-input-row">
+    <input class="todo-input" id="todo-input" placeholder="Add a task…" maxlength="80">
+    <button class="todo-add-btn" id="todo-add-btn" aria-label="Add task">+</button>
+  </div>
+  <div class="todo-list" id="todo-list"></div>
+</section>
+
+<!-- SETTINGS -->
+<button class="settings-btn" id="settings-btn" aria-label="Settings">⚙</button>
+<div class="settings-overlay" id="settings-overlay">
+  <div class="settings-box">
+    <h2>⚙ Dashboard Settings</h2>
+    <p class="settings-subtitle">Changes are saved instantly and the dashboard reloads the affected panels.</p>
+    <div class="settings-field">
+      <label class="settings-label" for="s-name">Family Name</label>
+      <input class="settings-input" id="s-name" placeholder="e.g. The Smith Family">
+    </div>
+    <div class="settings-field">
+      <label class="settings-label" for="s-ical">Google Calendar iCal URL</label>
+      <input class="settings-input" id="s-ical" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics">
+      <p class="settings-hint">In Google Calendar → Settings → your calendar → "Secret address in iCal format"</p>
+    </div>
+    <div class="settings-field">
+      <label class="settings-label" for="s-city">Weather City</label>
+      <input class="settings-input" id="s-city" placeholder="Charlotte, NC">
+    </div>
+    <div class="settings-row">
+      <button class="settings-close" id="settings-close">Cancel</button>
+      <button class="settings-save" id="settings-save">Save & Apply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────
+const DEFAULT_CONFIG = {
+  familyName: "Family Dashboard",
+  icalUrl: "",
+  weatherCity: "Charlotte, NC",
+  // Charlotte, NC hardcoded coords — avoids geocoding API call entirely
+  weatherLat: 35.2271,
+  weatherLon: -80.8431
+};
+function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg3'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
+function saveConfig(c){ localStorage.setItem('dash-cfg3',JSON.stringify(c)); }
+let CONFIG = loadConfig();
+
+// ── CLOCK ───────────────────────────────────────────────────
+const DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DAYS_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function updateClock(){
+  const n=new Date();
+  document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  document.getElementById('date-label').textContent=DAYS_FULL[n.getDay()]+', '+MONTHS_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+}
+updateClock(); setInterval(updateClock,1000);
+
+// ── WEATHER (hardcoded Charlotte coords, no geocoding needed) ──
+const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'🌨',80:'🌦',81:'🌦',82:'🌦',95:'⛈',96:'⛈',99:'⛈'};
+const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+
+async function loadWeather(){
+  // Use stored coords; fall back to Charlotte defaults
+  const lat = CONFIG.weatherLat || 35.2271;
+  const lon = CONFIG.weatherLon || -80.8431;
+  const cityLabel = CONFIG.weatherCity || 'Charlotte, NC';
+  document.getElementById('hdr-loc').textContent = cityLabel;
+  try {
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    document.getElementById('hdr-temp').textContent=Math.round(d.current.temperature_2m)+'°';
+    document.getElementById('hdr-desc').textContent=WX_DESC[d.current.weathercode]||'';
+    // Mini forecast in header
+    const mini=document.getElementById('forecast-mini');
+    mini.innerHTML='';
+    for(let i=1;i<5;i++){
+      const day=new Date(); day.setDate(day.getDate()+i);
+      const el=document.createElement('div');
+      el.className='fc-mini-day';
+      el.innerHTML=`<div class="fc-mini-label">${DAYS_SHORT[day.getDay()]}</div><div class="fc-mini-icon">${WX_ICONS[d.daily.weathercode[i]]||'🌡'}</div><div class="fc-mini-temp">${Math.round(d.daily.temperature_2m_max[i])}°</div><div class="fc-mini-lo">${Math.round(d.daily.temperature_2m_min[i])}°</div>`;
+      mini.appendChild(el);
+    }
+  } catch(e){
+    document.getElementById('hdr-desc').textContent='Weather unavailable';
+    document.getElementById('hdr-temp').textContent='--°';
+  }
+}
+loadWeather(); setInterval(loadWeather,30*60*1000);
+
+// Geocode when city changes in settings
+async function geocodeCity(city){
+  try{
+    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&format=json`);
+    const j=await r.json();
+    if(j.results&&j.results.length){
+      CONFIG.weatherLat=j.results[0].latitude;
+      CONFIG.weatherLon=j.results[0].longitude;
+    }
+  }catch(e){}
+}
+
+// ── ICS PARSER ──────────────────────────────────────────────
+// Handles three datetime formats found in iCal files:
+//   1. DATE only (all-day):          DTSTART;VALUE=DATE:20250615
+//   2. UTC datetime (Z suffix):      DTSTART:20250615T140000Z  → convert to local
+//   3. Floating / TZID datetime:     DTSTART;TZID=America/New_York:20250615T100000
+//      Google Calendar uses TZID correctly, so floating = already local wall-clock time.
+function parseICS(text){
+  // Unfold iCal line continuations (CRLF + whitespace = continuation)
+  const unfolded = text.replace(/\r?\n[ \t]/g, '');
+  const events = [];
+  const blocks = unfolded.split('BEGIN:VEVENT');
+
+  for(let i = 1; i < blocks.length; i++){
+    const b = blocks[i];
+
+    // Get raw property line including parameter portion (e.g. DTSTART;TZID=...:value)
+    const getRaw = key => {
+      const m = b.match(new RegExp('^' + key + '([^:]*):([^\\r\\n]+)', 'im'));
+      return m ? { params: m[1], value: m[2].trim() } : null;
+    };
+
+    const summaryRaw = getRaw('SUMMARY');
+    const summary = (summaryRaw ? summaryRaw.value : 'Untitled')
+      .replace(/\\,/g, ',').replace(/\\n/g, ' ').replace(/\\;/g, ';').replace(/\\\\/g, '\\');
+
+    const dtStartRaw = getRaw('DTSTART');
+    if(!dtStartRaw) continue;
+    const dtEndRaw = getRaw('DTEND');
+
+    const parseDateTime = (raw) => {
+      if(!raw) return null;
+      const val = raw.value.replace(/\s/g, '');
+      const params = raw.params.toUpperCase();
+
+      // All-day date: 8 digits only, no T
+      if(/^\d{8}$/.test(val)){
+        return { date: new Date(+val.slice(0,4), +val.slice(4,6)-1, +val.slice(6,8)), allDay: true };
+      }
+
+      // Has time component
+      const yr  = +val.slice(0,4);
+      const mo  = +val.slice(4,6) - 1;
+      const dy  = +val.slice(6,8);
+      const hr  = +val.slice(9,11) || 0;
+      const min = +val.slice(11,13) || 0;
+      const sec = +val.slice(13,15) || 0;
+
+      let date;
+      if(val.endsWith('Z')){
+        // UTC — JavaScript Date constructor with ISO string handles this correctly
+        date = new Date(Date.UTC(yr, mo, dy, hr, min, sec));
+      } else if(params.includes('TZID')){
+        // TZID means the time is already in the named timezone (wall-clock).
+        // Use Intl to figure out the UTC offset for that timezone at that instant,
+        // then construct the correct UTC moment.
+        const tzMatch = raw.params.match(/TZID=([^;]+)/i);
+        const tz = tzMatch ? tzMatch[1].replace(/^"(.*)"$/, '$1') : 'America/New_York';
+        try {
+          // Build an ISO-like string and parse it via Intl offset trick
+          const isoLocal = `${yr}-${String(mo+1).padStart(2,'0')}-${String(dy).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+          // Create a Date that represents this wall-clock time in the given tz
+          const probe = new Date(`${isoLocal}Z`); // treat as UTC first
+          const formatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz, hour12: false,
+            year:'numeric', month:'2-digit', day:'2-digit',
+            hour:'2-digit', minute:'2-digit', second:'2-digit'
+          });
+          const parts = Object.fromEntries(formatter.formatToParts(probe).map(p=>[p.type,p.value]));
+          // diff between what probe gives in that tz vs what we want
+          const probeLocal = new Date(+parts.year, +parts.month-1, +parts.day, +parts.hour%24, +parts.minute, +parts.second);
+          const wantLocal  = new Date(yr, mo, dy, hr, min, sec);
+          const offsetMs   = probe - probeLocal + (wantLocal - new Date(yr, mo, dy, hr, min, sec) + (wantLocal - new Date(yr,mo,dy,hr,min,sec)));
+          // Simpler: offset = probe (UTC) - probeLocal (tz-displayed-as-Date)
+          const tzOffsetMs = probe.getTime() - probeLocal.getTime();
+          date = new Date(wantLocal.getTime() - tzOffsetMs);
+        } catch(e) {
+          // Fallback: treat as local
+          date = new Date(yr, mo, dy, hr, min, sec);
+        }
+      } else {
+        // Floating time — no timezone, treat as local device time
+        date = new Date(yr, mo, dy, hr, min, sec);
+      }
+      return { date, allDay: false };
+    };
+
+    const startParsed = parseDateTime(dtStartRaw);
+    if(!startParsed) continue;
+    const endParsed = parseDateTime(dtEndRaw);
+
+    events.push({
+      summary,
+      start:  startParsed.date,
+      end:    endParsed ? endParsed.date : null,
+      allDay: startParsed.allDay
+    });
+  }
+
+  events.sort((a, b) => a.start - b.start);
+  return events;
+}
+
+// ── AGENDA RENDER ───────────────────────────────────────────
+const BAR_COLORS=['','c1','c2','c3'];
+function fmt12(dt){ let h=dt.getHours(),m=dt.getMinutes(),ap=h>=12?'pm':'am'; h=h%12||12; return h+':'+(m?String(m).padStart(2,'0'):'00')+'\u202f'+ap; }
+
+function renderAgenda(events){
+  const list=document.getElementById('agenda-list');
+  const badge=document.getElementById('event-count-badge');
+  const today=new Date(); today.setHours(0,0,0,0);
+  const cutoff=new Date(today); cutoff.setDate(cutoff.getDate()+60);
+  const upcoming=events.filter(e=>e.start>=today&&e.start<=cutoff);
+  badge.textContent=upcoming.length+' events';
+  if(!upcoming.length){ list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>'; return; }
+
+  const groups={}, order=[];
+  upcoming.forEach((ev,idx)=>{
+    const d=ev.start;
+    const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+    if(!groups[key]){ groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]}; order.push(key); }
+    groups[key].events.push({...ev,ci:idx%4});
+  });
+
+  list.innerHTML='';
+  const todayMs=today.getTime();
+  order.forEach(key=>{
+    const {date,events:dayEvs}=groups[key];
+    const isToday=date.getTime()===todayMs;
+    const isTomorrow=date.getTime()===todayMs+86400000;
+    const block=document.createElement('div'); block.className='agenda-day-block';
+    const hdr=document.createElement('div'); hdr.className='agenda-day-header';
+    const num=document.createElement('div'); num.className='agenda-day-num'+(isToday?' today-num':''); num.textContent=date.getDate();
+    const info=document.createElement('div'); info.className='agenda-day-info';
+    const name=document.createElement('div'); name.className='agenda-day-name'+(isToday?' today-label':'');
+    name.textContent=DAYS_FULL[date.getDay()];
+    if(isToday){ const b=document.createElement('span'); b.className='agenda-today-badge'; b.textContent='Today'; name.appendChild(b); }
+    else if(isTomorrow){ const b=document.createElement('span'); b.className='agenda-tomorrow-badge'; b.textContent='Tomorrow'; name.appendChild(b); }
+    const mon=document.createElement('div'); mon.className='agenda-month'; mon.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
+    info.appendChild(name); info.appendChild(mon);
+    const div=document.createElement('div'); div.className='agenda-divider';
+    hdr.appendChild(num); hdr.appendChild(info); hdr.appendChild(div);
+    block.appendChild(hdr);
+    dayEvs.forEach(ev=>{
+      const item=document.createElement('div'); item.className='agenda-event';
+      const bar=document.createElement('div'); bar.className='agenda-accent-bar '+(BAR_COLORS[ev.ci]||'');
+      const evInfo=document.createElement('div'); evInfo.className='agenda-event-info';
+      const title=document.createElement('div'); title.className='agenda-event-title'; title.textContent=ev.summary;
+      const time=document.createElement('div'); time.className='agenda-event-time';
+      time.textContent=ev.allDay?'All day':fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):'');
+      evInfo.appendChild(title); evInfo.appendChild(time);
+      item.appendChild(bar); item.appendChild(evInfo);
+      block.appendChild(item);
+    });
+    list.appendChild(block);
+  });
+}
+
+// ── CALENDAR FETCH ──────────────────────────────────────────
+// Google Calendar public iCal URLs don't have CORS issues when fetched directly
+async function loadCalendar(){
+  const url=CONFIG.icalUrl;
+  if(!url){
+    document.getElementById('agenda-list').innerHTML=`
+      <div class="cal-setup">
+        <p>No calendar connected yet.<br>Tap <strong>⚙</strong> below and paste your Google Calendar iCal URL to get started.</p>
+        <button class="cal-setup-btn" onclick="openSettings()">Open Settings ⚙</button>
+      </div>`;
+    document.getElementById('event-count-badge').textContent='Not set';
+    return;
+  }
+  document.getElementById('agenda-list').innerHTML='<div class="cal-loading">Fetching calendar…</div>';
+  // Normalise webcal → https
+  const fetchUrl=url.replace(/^webcal:\/\//i,'https://');
+  // Try direct fetch first (works for Google Calendar public URLs),
+  // then fall back to two CORS proxies
+  const attempts=[
+    ()=>fetch(fetchUrl,{cache:'no-cache'}),
+    ()=>fetch('https://corsproxy.io/?'+encodeURIComponent(fetchUrl),{cache:'no-cache'}),
+    ()=>fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(fetchUrl),{cache:'no-cache'})
+  ];
+  let lastErr='';
+  for(const attempt of attempts){
+    try{
+      const res=await attempt();
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const text=await res.text();
+      if(!text.includes('BEGIN:VCALENDAR')) throw new Error('Not a valid iCal file');
+      renderAgenda(parseICS(text));
+      return;
+    }catch(e){ lastErr=e.message; }
+  }
+  document.getElementById('agenda-list').innerHTML=`<div class="cal-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Make sure you're using the <strong>Google Calendar iCal URL</strong> (ends in /basic.ics) and the tablet has internet.</small></div>`;
+  document.getElementById('event-count-badge').textContent='Error';
+}
+loadCalendar(); setInterval(loadCalendar,15*60*1000);
+
+// ── TO-DO ───────────────────────────────────────────────────
+let todos=[];
+try{ todos=JSON.parse(localStorage.getItem('dash-todos')||'[]'); }catch(e){}
+function saveTodos(){ localStorage.setItem('dash-todos',JSON.stringify(todos)); }
+function renderTodos(){
+  const list=document.getElementById('todo-list');
+  document.getElementById('todo-count-badge').textContent=todos.filter(t=>!t.done).length+' left';
+  if(!todos.length){ list.innerHTML='<div class="todo-empty">Nothing here yet — add a task above!</div>'; return; }
+  list.innerHTML='';
+  todos.forEach((todo,i)=>{
+    const item=document.createElement('div'); item.className='todo-item'+(todo.done?' done':'');
+    const check=document.createElement('div'); check.className='todo-check'+(todo.done?' checked':'');
+    check.onclick=()=>{ todos[i].done=!todos[i].done; saveTodos(); renderTodos(); };
+    const text=document.createElement('div'); text.className='todo-text'; text.textContent=todo.text;
+    const del=document.createElement('button'); del.className='todo-delete'; del.innerHTML='×'; del.setAttribute('aria-label','Delete');
+    del.onclick=()=>{ todos.splice(i,1); saveTodos(); renderTodos(); };
+    item.appendChild(check); item.appendChild(text); item.appendChild(del);
+    list.appendChild(item);
+  });
+}
+function addTodo(){
+  const inp=document.getElementById('todo-input'); const v=inp.value.trim(); if(!v) return;
+  todos.unshift({text:v,done:false,id:Date.now()}); saveTodos(); renderTodos(); inp.value=''; inp.focus();
+}
+document.getElementById('todo-add-btn').onclick=addTodo;
+document.getElementById('todo-input').onkeydown=e=>{ if(e.key==='Enter') addTodo(); };
+renderTodos();
+
+// ── SETTINGS ────────────────────────────────────────────────
+function openSettings(){
+  document.getElementById('s-name').value=CONFIG.familyName||'';
+  document.getElementById('s-ical').value=CONFIG.icalUrl||'';
+  document.getElementById('s-city').value=CONFIG.weatherCity||'';
+  document.getElementById('settings-overlay').classList.add('open');
+}
+function closeSettings(){ document.getElementById('settings-overlay').classList.remove('open'); }
+document.getElementById('settings-btn').onclick=openSettings;
+document.getElementById('settings-close').onclick=closeSettings;
+document.getElementById('settings-overlay').onclick=e=>{ if(e.target===e.currentTarget) closeSettings(); };
+document.getElementById('settings-save').onclick=async()=>{
+  const newCity=document.getElementById('s-city').value.trim()||'Charlotte, NC';
+  const cityChanged=newCity!==CONFIG.weatherCity;
+  CONFIG.familyName=document.getElementById('s-name').value.trim()||'Family Dashboard';
+  CONFIG.icalUrl=document.getElementById('s-ical').value.trim();
+  CONFIG.weatherCity=newCity;
+  if(cityChanged){ CONFIG.weatherLat=null; CONFIG.weatherLon=null; await geocodeCity(newCity); }
+  saveConfig(CONFIG);
+  document.getElementById('family-name').textContent=CONFIG.familyName;
+  closeSettings();
+  loadCalendar();
+  loadWeather();
+};
+
+document.getElementById('family-name').textContent=CONFIG.familyName;
+</script>
+</body>
+</html>
