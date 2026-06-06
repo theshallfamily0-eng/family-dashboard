@@ -153,17 +153,12 @@
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+ 
+</style>
 
  <link rel="manifest" href="manifest.json">
  <meta name="theme-color" content="#ffffff">
-
- <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
-}
-</script>
  
-</style>
 </head>
 <body>
 
@@ -562,5 +557,12 @@ document.getElementById('settings-save').onclick=async()=>{
 
 document.getElementById('family-name').textContent=CONFIG.familyName;
 </script>
+
+ <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js');
+}
+</script>
+ 
 </body>
 </html>
