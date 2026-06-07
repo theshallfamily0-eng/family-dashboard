@@ -83,7 +83,6 @@
   /* AGENDA */
   .calendar-panel { grid-area:calendar; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
   .agenda-list { flex:1; overflow-y:auto; padding:10px 16px 14px; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
-
   .agenda-day-block { margin-bottom:20px; }
   .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
   .agenda-day-num { font-family:'DM Mono',monospace; font-size:28px; font-weight:500; color:var(--text); line-height:1; min-width:36px; }
@@ -95,7 +94,6 @@
   .agenda-divider { flex:1; height:1px; background:var(--border); }
   .agenda-today-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent-glow); color:var(--accent); border:1px solid rgba(79,142,247,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
   .agenda-tomorrow-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent2-glow); color:#a98dff; border:1px solid rgba(124,92,252,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
-
   .agenda-event { display:flex; align-items:stretch; gap:12px; padding:10px 14px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); margin-bottom:7px; }
   .agenda-accent-bar { width:3px; border-radius:2px; background:var(--accent); flex-shrink:0; }
   .agenda-accent-bar.c1 { background:var(--accent2); }
@@ -153,12 +151,7 @@
   ::-webkit-scrollbar { width:4px; }
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
- 
 </style>
-
- <link rel="manifest" href="manifest.json">
- <meta name="theme-color" content="#ffffff">
- 
 </head>
 <body>
 
@@ -227,6 +220,10 @@
       <label class="settings-label" for="s-city">Weather City</label>
       <input class="settings-input" id="s-city" placeholder="Charlotte, NC">
     </div>
+    <div class="settings-field">
+      <label class="settings-label" for="s-refresh">Auto-Refresh Interval (minutes, 0 to disable)</label>
+      <input class="settings-input" id="s-refresh" placeholder="e.g. 30" type="number" min="0" max="1440">
+    </div>
     <div class="settings-row">
       <button class="settings-close" id="settings-close">Cancel</button>
       <button class="settings-save" id="settings-save">Save & Apply</button>
@@ -240,13 +237,31 @@ const DEFAULT_CONFIG = {
   familyName: "Shall Family Dashboard",
   icalUrl: "",
   weatherCity: "Charlotte, NC",
-  // Charlotte, NC hardcoded coords — avoids geocoding API call entirely
   weatherLat: 35.2271,
-  weatherLon: -80.8431
+  weatherLon: -80.8431,
+  refreshMins: 30
 };
 function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg3'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
 function saveConfig(c){ localStorage.setItem('dash-cfg3',JSON.stringify(c)); }
 let CONFIG = loadConfig();
+
+// ── AUTO REFRESH ─────────────────────────────────────────────
+// Defined early so it can be called anywhere below
+let refreshTimer = null, countdownTick = null, refreshCountdown = 0;
+function startRefreshTimer(){
+  if(refreshTimer) clearTimeout(refreshTimer);
+  if(countdownTick) clearInterval(countdownTick);
+  const mins = parseInt(CONFIG.refreshMins) || 0;
+  if(mins <= 0) return;
+  refreshCountdown = mins * 60;
+  refreshTimer = setTimeout(()=>{ location.reload(); }, mins * 60 * 1000);
+  const tick = () => {
+    if(refreshCountdown <= 0){ location.reload(); return; }
+    refreshCountdown--;
+  };
+  tick();
+  countdownTick = setInterval(tick, 1000);
+}
 
 // ── CLOCK ───────────────────────────────────────────────────
 const DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -261,23 +276,20 @@ function updateClock(){
 }
 updateClock(); setInterval(updateClock,1000);
 
-// ── WEATHER (hardcoded Charlotte coords, no geocoding needed) ──
+// ── WEATHER ──────────────────────────────────────────────────
 const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'🌨',80:'🌦',81:'🌦',82:'🌦',95:'⛈',96:'⛈',99:'⛈'};
 const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 
 async function loadWeather(){
-  // Use stored coords; fall back to Charlotte defaults
   const lat = CONFIG.weatherLat || 35.2271;
   const lon = CONFIG.weatherLon || -80.8431;
-  const cityLabel = CONFIG.weatherCity || 'Charlotte, NC';
-  document.getElementById('hdr-loc').textContent = cityLabel;
+  document.getElementById('hdr-loc').textContent = CONFIG.weatherCity || 'Charlotte, NC';
   try {
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const d=await r.json();
     document.getElementById('hdr-temp').textContent=Math.round(d.current.temperature_2m)+'°';
     document.getElementById('hdr-desc').textContent=WX_DESC[d.current.weathercode]||'';
-    // Mini forecast in header
     const mini=document.getElementById('forecast-mini');
     mini.innerHTML='';
     for(let i=1;i<5;i++){
@@ -294,7 +306,6 @@ async function loadWeather(){
 }
 loadWeather(); setInterval(loadWeather,30*60*1000);
 
-// Geocode when city changes in settings
 async function geocodeCity(city){
   try{
     const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&format=json`);
@@ -307,103 +318,63 @@ async function geocodeCity(city){
 }
 
 // ── ICS PARSER ──────────────────────────────────────────────
-// Handles three datetime formats found in iCal files:
-//   1. DATE only (all-day):          DTSTART;VALUE=DATE:20250615
-//   2. UTC datetime (Z suffix):      DTSTART:20250615T140000Z  → convert to local
-//   3. Floating / TZID datetime:     DTSTART;TZID=America/New_York:20250615T100000
-//      Google Calendar uses TZID correctly, so floating = already local wall-clock time.
 function parseICS(text){
-  // Unfold iCal line continuations (CRLF + whitespace = continuation)
   const unfolded = text.replace(/\r?\n[ \t]/g, '');
   const events = [];
   const blocks = unfolded.split('BEGIN:VEVENT');
-
   for(let i = 1; i < blocks.length; i++){
     const b = blocks[i];
-
-    // Get raw property line including parameter portion (e.g. DTSTART;TZID=...:value)
     const getRaw = key => {
       const m = b.match(new RegExp('^' + key + '([^:]*):([^\\r\\n]+)', 'im'));
       return m ? { params: m[1], value: m[2].trim() } : null;
     };
-
     const summaryRaw = getRaw('SUMMARY');
     const summary = (summaryRaw ? summaryRaw.value : 'Untitled')
       .replace(/\\,/g, ',').replace(/\\n/g, ' ').replace(/\\;/g, ';').replace(/\\\\/g, '\\');
-
     const dtStartRaw = getRaw('DTSTART');
     if(!dtStartRaw) continue;
     const dtEndRaw = getRaw('DTEND');
-
     const parseDateTime = (raw) => {
       if(!raw) return null;
       const val = raw.value.replace(/\s/g, '');
       const params = raw.params.toUpperCase();
-
-      // All-day date: 8 digits only, no T
       if(/^\d{8}$/.test(val)){
         return { date: new Date(+val.slice(0,4), +val.slice(4,6)-1, +val.slice(6,8)), allDay: true };
       }
-
-      // Has time component
-      const yr  = +val.slice(0,4);
-      const mo  = +val.slice(4,6) - 1;
-      const dy  = +val.slice(6,8);
-      const hr  = +val.slice(9,11) || 0;
-      const min = +val.slice(11,13) || 0;
-      const sec = +val.slice(13,15) || 0;
-
+      const yr=+val.slice(0,4), mo=+val.slice(4,6)-1, dy=+val.slice(6,8);
+      const hr=+val.slice(9,11)||0, min=+val.slice(11,13)||0, sec=+val.slice(13,15)||0;
       let date;
       if(val.endsWith('Z')){
-        // UTC — JavaScript Date constructor with ISO string handles this correctly
         date = new Date(Date.UTC(yr, mo, dy, hr, min, sec));
       } else if(params.includes('TZID')){
-        // TZID means the time is already in the named timezone (wall-clock).
-        // Use Intl to figure out the UTC offset for that timezone at that instant,
-        // then construct the correct UTC moment.
         const tzMatch = raw.params.match(/TZID=([^;]+)/i);
         const tz = tzMatch ? tzMatch[1].replace(/^"(.*)"$/, '$1') : 'America/New_York';
         try {
-          // Build an ISO-like string and parse it via Intl offset trick
           const isoLocal = `${yr}-${String(mo+1).padStart(2,'0')}-${String(dy).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-          // Create a Date that represents this wall-clock time in the given tz
-          const probe = new Date(`${isoLocal}Z`); // treat as UTC first
+          const probe = new Date(`${isoLocal}Z`);
           const formatter = new Intl.DateTimeFormat('en-US', {
             timeZone: tz, hour12: false,
             year:'numeric', month:'2-digit', day:'2-digit',
             hour:'2-digit', minute:'2-digit', second:'2-digit'
           });
           const parts = Object.fromEntries(formatter.formatToParts(probe).map(p=>[p.type,p.value]));
-          // diff between what probe gives in that tz vs what we want
           const probeLocal = new Date(+parts.year, +parts.month-1, +parts.day, +parts.hour%24, +parts.minute, +parts.second);
-          const wantLocal  = new Date(yr, mo, dy, hr, min, sec);
-          const offsetMs   = probe - probeLocal + (wantLocal - new Date(yr, mo, dy, hr, min, sec) + (wantLocal - new Date(yr,mo,dy,hr,min,sec)));
-          // Simpler: offset = probe (UTC) - probeLocal (tz-displayed-as-Date)
+          const wantLocal = new Date(yr, mo, dy, hr, min, sec);
           const tzOffsetMs = probe.getTime() - probeLocal.getTime();
           date = new Date(wantLocal.getTime() - tzOffsetMs);
         } catch(e) {
-          // Fallback: treat as local
           date = new Date(yr, mo, dy, hr, min, sec);
         }
       } else {
-        // Floating time — no timezone, treat as local device time
         date = new Date(yr, mo, dy, hr, min, sec);
       }
       return { date, allDay: false };
     };
-
     const startParsed = parseDateTime(dtStartRaw);
     if(!startParsed) continue;
     const endParsed = parseDateTime(dtEndRaw);
-
-    events.push({
-      summary,
-      start:  startParsed.date,
-      end:    endParsed ? endParsed.date : null,
-      allDay: startParsed.allDay
-    });
+    events.push({ summary, start: startParsed.date, end: endParsed ? endParsed.date : null, allDay: startParsed.allDay });
   }
-
   events.sort((a, b) => a.start - b.start);
   return events;
 }
@@ -420,7 +391,6 @@ function renderAgenda(events){
   const upcoming=events.filter(e=>e.start>=today&&e.start<=cutoff);
   badge.textContent=upcoming.length+' events';
   if(!upcoming.length){ list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>'; return; }
-
   const groups={}, order=[];
   upcoming.forEach((ev,idx)=>{
     const d=ev.start;
@@ -428,7 +398,6 @@ function renderAgenda(events){
     if(!groups[key]){ groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]}; order.push(key); }
     groups[key].events.push({...ev,ci:idx%4});
   });
-
   list.innerHTML='';
   const todayMs=today.getTime();
   order.forEach(key=>{
@@ -464,7 +433,6 @@ function renderAgenda(events){
 }
 
 // ── CALENDAR FETCH ──────────────────────────────────────────
-// Google Calendar public iCal URLs don't have CORS issues when fetched directly
 async function loadCalendar(){
   const url=CONFIG.icalUrl;
   if(!url){
@@ -477,10 +445,7 @@ async function loadCalendar(){
     return;
   }
   document.getElementById('agenda-list').innerHTML='<div class="cal-loading">Fetching calendar…</div>';
-  // Normalise webcal → https
   const fetchUrl=url.replace(/^webcal:\/\//i,'https://');
-  // Try direct fetch first (works for Google Calendar public URLs),
-  // then fall back to two CORS proxies
   const attempts=[
     ()=>fetch(fetchUrl,{cache:'no-cache'}),
     ()=>fetch('https://corsproxy.io/?'+encodeURIComponent(fetchUrl),{cache:'no-cache'}),
@@ -535,6 +500,7 @@ function openSettings(){
   document.getElementById('s-name').value=CONFIG.familyName||'';
   document.getElementById('s-ical').value=CONFIG.icalUrl||'';
   document.getElementById('s-city').value=CONFIG.weatherCity||'';
+  document.getElementById('s-refresh').value=CONFIG.refreshMins??30;
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings(){ document.getElementById('settings-overlay').classList.remove('open'); }
@@ -544,25 +510,21 @@ document.getElementById('settings-overlay').onclick=e=>{ if(e.target===e.current
 document.getElementById('settings-save').onclick=async()=>{
   const newCity=document.getElementById('s-city').value.trim()||'Charlotte, NC';
   const cityChanged=newCity!==CONFIG.weatherCity;
-  CONFIG.familyName=document.getElementById('s-name').value.trim()||'Family Dashboard';
+  CONFIG.familyName=document.getElementById('s-name').value.trim()||'Shall Family Dashboard';
   CONFIG.icalUrl=document.getElementById('s-ical').value.trim();
   CONFIG.weatherCity=newCity;
+  CONFIG.refreshMins=parseInt(document.getElementById('s-refresh').value)||30;
   if(cityChanged){ CONFIG.weatherLat=null; CONFIG.weatherLon=null; await geocodeCity(newCity); }
   saveConfig(CONFIG);
   document.getElementById('family-name').textContent=CONFIG.familyName;
   closeSettings();
   loadCalendar();
   loadWeather();
+  startRefreshTimer();
 };
 
 document.getElementById('family-name').textContent=CONFIG.familyName;
+startRefreshTimer();
 </script>
-
- <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
-}
-</script>
- 
 </body>
 </html>
