@@ -4,153 +4,357 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shall Family Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0a0d14;
-    --surface: #111520;
-    --surface2: #181d2e;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --text: #e8ecf4;
-    --muted: #7a829a;
-    --accent: #4f8ef7;
-    --accent2: #7c5cfc;
-    --accent-glow: rgba(79,142,247,0.18);
-    --accent2-glow: rgba(124,92,252,0.15);
-    --success: #34d399;
-    --warning: #fbbf24;
+    --bg: #07090f;
+    --surface: #0e1118;
+    --surface2: #141824;
+    --surface3: #1c2235;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.11);
+    --text: #dde3f0;
+    --muted: #6b748c;
+    --muted2: #4a5168;
     --danger: #f87171;
-    --radius: 16px;
-    --radius-sm: 10px;
+    --radius: 18px;
+    --radius-sm: 11px;
+    --radius-xs: 7px;
+
+    /* Day-of-week accent — overridden by JS on load */
+    --day-h: 220;          /* hue */
+    --day-s: 100%;         /* saturation */
+    --day-l: 65%;          /* lightness */
+    --accent:      hsl(var(--day-h), var(--day-s), var(--day-l));
+    --accent-soft: hsl(var(--day-h), var(--day-s), 75%);
+    --accent-glow: hsla(var(--day-h), var(--day-s), var(--day-l), 0.15);
+    --accent-glow2: hsla(var(--day-h), var(--day-s), var(--day-l), 0.08);
+    --accent-border: hsla(var(--day-h), var(--day-s), var(--day-l), 0.25);
+    /* Secondary accent stays complementary — shifted 40° */
+    --accent2:      hsl(calc(var(--day-h) + 40), 90%, 70%);
+    --accent2-glow: hsla(calc(var(--day-h) + 40), 90%, 70%, 0.12);
+    /* Success green stays fixed */
+    --accent3: #06d6a0;
+    --accent3-glow: rgba(6,214,160,0.12);
+    --amber: #f5a623;
   }
+
   html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--text); }
+
+  /* Ambient background — uses day color */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, var(--accent-glow2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, hsla(calc(var(--day-h) + 40), 90%, 70%, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 60% 20%, hsla(calc(var(--day-h) - 30), 80%, 60%, 0.03) 0%, transparent 60%);
+    pointer-events:none; z-index:0;
+    transition: background 1s ease;
+  }
+
   body {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 330px;
     grid-template-rows: auto 1fr;
     grid-template-areas:
       "header header"
       "calendar todo";
-    gap: 14px;
-    padding: 14px;
+    gap: 12px;
+    padding: 12px;
     height: 100vh;
+    position: relative;
+    z-index: 1;
   }
 
-  /* HEADER */
+  /* ── HEADER ── */
   .header {
     grid-area: header;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(14,17,24,0.95) 0%, rgba(20,24,36,0.95) 100%);
+    border: 1px solid var(--border2);
     border-radius: var(--radius);
-    padding: 14px 22px;
+    padding: 16px 24px;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(20px);
   }
-  .header::before { content:''; position:absolute; top:-40px; left:-40px; width:200px; height:120px; background:radial-gradient(ellipse,var(--accent-glow) 0%,transparent 70%); pointer-events:none; }
-  .header::after { content:''; position:absolute; top:-40px; right:60px; width:160px; height:100px; background:radial-gradient(ellipse,var(--accent2-glow) 0%,transparent 70%); pointer-events:none; }
+  /* Glowing top border line */
+  .header::before {
+    content:'';
+    position:absolute; top:0; left:10%; right:10%; height:1px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    border-radius: 1px;
+    transition: background 1s ease;
+  }
+  /* Ambient glow blobs */
+  .header::after {
+    content:'';
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 30% 80% at 0% 50%, var(--accent-glow2) 0%, transparent 70%),
+      radial-gradient(ellipse 25% 60% at 100% 50%, var(--accent2-glow) 0%, transparent 70%);
+    pointer-events:none;
+    transition: background 1s ease;
+  }
 
   .clock-block { position:relative; z-index:1; }
-  .clock-time { font-family:'DM Mono',monospace; font-size:42px; font-weight:500; letter-spacing:-1px; line-height:1; color:var(--text); }
-  .clock-date { font-size:13px; color:var(--muted); margin-top:3px; letter-spacing:0.04em; text-transform:uppercase; }
+  .clock-time {
+    font-family:'DM Mono',monospace;
+    font-size:46px; font-weight:500; letter-spacing:-2px; line-height:1;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    transition: background 1s ease;
+  }
+  .clock-date { font-size:11px; color:var(--muted); margin-top:5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; }
 
-  .header-title { position:relative; z-index:1; text-align:center; }
-  .header-title h1 { font-family:'Playfair Display',serif; font-size:26px; font-weight:600; background:linear-gradient(135deg,#e8ecf4 0%,#4f8ef7 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .header-title p { font-size:12px; color:var(--muted); margin-top:2px; letter-spacing:0.06em; text-transform:uppercase; }
+  .header-center { position:relative; z-index:1; text-align:center; }
+  .header-center h1 {
+    font-family:'Playfair Display',serif; font-size:24px; font-weight:600;
+    background: linear-gradient(135deg, #e8ecf4 20%, var(--accent) 60%, var(--accent2) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    letter-spacing: -0.3px;
+    transition: background 1s ease;
+  }
+  .header-center p { font-size:11px; color:var(--muted2); margin-top:3px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; }
 
-  .header-right { position:relative; z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-  .weather-current { display:flex; align-items:baseline; gap:6px; }
-  .hdr-temp { font-size:38px; font-weight:300; line-height:1; color:var(--text); }
-  .hdr-desc { font-size:12px; color:var(--muted); }
-  .hdr-loc { font-size:11px; color:var(--muted); opacity:0.7; }
-  .forecast-mini { display:flex; gap:10px; }
-  .fc-mini-day { text-align:center; }
-  .fc-mini-label { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; font-weight:600; }
-  .fc-mini-icon { font-size:14px; line-height:1.4; }
-  .fc-mini-temp { font-size:11px; color:var(--text); font-weight:500; }
-  .fc-mini-lo { font-size:10px; color:var(--muted); }
+  .header-right { position:relative; z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
+  .weather-now { display:flex; align-items:center; gap:10px; }
+  .weather-icon-big { font-size:28px; line-height:1; }
+  .weather-text { text-align:right; }
+  .hdr-temp {
+    font-size:36px; font-weight:300; line-height:1;
+    font-family:'DM Mono',monospace;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent-soft) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    transition: background 1s ease;
+  }
+  .hdr-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+  .hdr-loc { font-size:10px; color:var(--muted2); margin-top:1px; letter-spacing:0.04em; }
+  .forecast-mini { display:flex; gap:8px; }
+  .fc-mini-day { text-align:center; background:var(--surface3); border:1px solid var(--border); border-radius:var(--radius-xs); padding:5px 7px; min-width:38px; }
+  .fc-mini-label { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; }
+  .fc-mini-icon { font-size:13px; line-height:1.5; }
+  .fc-mini-temp { font-size:11px; color:var(--text); font-weight:600; }
+  .fc-mini-lo { font-size:9px; color:var(--muted2); margin-top:1px; }
 
-  /* PANEL SHARED */
-  .panel-header { padding:16px 20px 12px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
-  .panel-title { font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
-  .panel-badge { font-size:11px; padding:3px 10px; border-radius:20px; background:var(--accent-glow); color:var(--accent); border:1px solid rgba(79,142,247,0.25); font-weight:500; }
-  .panel-badge.purple { background:var(--accent2-glow); color:#a98dff; border-color:rgba(124,92,252,0.25); }
+  /* ── PANELS ── */
+  .panel-header {
+    padding:14px 18px 11px;
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    flex-shrink:0;
+  }
+  .panel-title-row { display:flex; align-items:center; gap:8px; }
+  .panel-icon { font-size:14px; opacity:0.7; }
+  .panel-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+  .panel-badge {
+    font-size:10px; padding:3px 9px; border-radius:20px;
+    background:var(--accent-glow); color:var(--accent-soft);
+    border:1px solid var(--accent-border); font-weight:600;
+    transition: background 1s, color 1s, border-color 1s;
+  }
+  .panel-badge.green {
+    background:rgba(6,214,160,0.1); color:#06d6a0;
+    border-color:rgba(6,214,160,0.2);
+  }
 
-  /* AGENDA */
-  .calendar-panel { grid-area:calendar; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
-  .agenda-list { flex:1; overflow-y:auto; padding:10px 16px 14px; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
-  .agenda-day-block { margin-bottom:20px; }
-  .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-  .agenda-day-num { font-family:'DM Mono',monospace; font-size:28px; font-weight:500; color:var(--text); line-height:1; min-width:36px; }
-  .agenda-day-num.today-num { color:var(--accent); }
-  .agenda-day-info { display:flex; flex-direction:column; }
-  .agenda-day-name { font-size:13px; font-weight:600; color:var(--text); line-height:1.2; }
-  .agenda-day-name.today-label { color:var(--accent); }
-  .agenda-month { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
-  .agenda-divider { flex:1; height:1px; background:var(--border); }
-  .agenda-today-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent-glow); color:var(--accent); border:1px solid rgba(79,142,247,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
-  .agenda-tomorrow-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:20px; background:var(--accent2-glow); color:#a98dff; border:1px solid rgba(124,92,252,0.25); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-left:6px; vertical-align:middle; }
-  .agenda-event { display:flex; align-items:stretch; gap:12px; padding:10px 14px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); margin-bottom:7px; }
-  .agenda-accent-bar { width:3px; border-radius:2px; background:var(--accent); flex-shrink:0; }
+  /* ── CALENDAR ── */
+  .calendar-panel {
+    grid-area:calendar;
+    background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
+    border:1px solid var(--border2);
+    border-radius:var(--radius);
+    display:flex; flex-direction:column;
+    overflow:hidden; min-height:0;
+    position:relative;
+  }
+  .calendar-panel::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--accent), transparent);
+    transition: background 1s ease;
+  }
+
+  .agenda-list {
+    flex:1; overflow-y:auto; padding:10px 14px 14px;
+    scrollbar-width:thin; scrollbar-color:var(--surface3) transparent;
+  }
+  .agenda-day-block { margin-bottom:18px; }
+  .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; padding:0 2px; }
+
+  .agenda-day-pill {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    width:44px; height:50px; border-radius:12px;
+    background:var(--surface2); border:1px solid var(--border2);
+    flex-shrink:0;
+  }
+  .agenda-day-pill.today-pill {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    border-color:transparent;
+    box-shadow: 0 0 16px var(--accent-glow);
+    transition: background 1s, box-shadow 1s;
+  }
+  .agenda-pill-num { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; line-height:1; color:var(--text); }
+  .agenda-pill-day { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-top:1px; }
+  .today-pill .agenda-pill-num,
+  .today-pill .agenda-pill-day { color:white; }
+
+  .agenda-day-meta { flex:1; min-width:0; }
+  .agenda-day-name { font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
+  .agenda-month-label { font-size:11px; color:var(--muted); margin-top:2px; }
+  .tag {
+    display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px;
+    font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .tag-today { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); transition: background 1s, color 1s, border-color 1s; }
+  .tag-tomorrow { background:var(--accent2-glow); color:var(--accent2); border:1px solid hsla(calc(var(--day-h)+40),90%,70%,0.25); transition: background 1s, color 1s, border-color 1s; }
+  .agenda-divider { flex:1; height:1px; background:linear-gradient(90deg, var(--border2), transparent); margin-left:4px; }
+
+  .agenda-event {
+    display:flex; align-items:stretch; gap:0;
+    border-radius:var(--radius-sm);
+    background:var(--surface2);
+    border:1px solid var(--border);
+    margin-bottom:6px;
+    overflow:hidden;
+    transition:border-color 0.2s, background 0.2s;
+    position:relative;
+  }
+  .agenda-event::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .agenda-accent-bar { width:3px; flex-shrink:0; background:var(--accent); }
   .agenda-accent-bar.c1 { background:var(--accent2); }
-  .agenda-accent-bar.c2 { background:var(--success); }
-  .agenda-accent-bar.c3 { background:var(--warning); }
-  .agenda-event-info { flex:1; min-width:0; }
-  .agenda-event-title { font-size:14px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .agenda-event-time { font-size:11px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; }
-  .agenda-empty { padding:20px; text-align:center; color:var(--muted); font-size:13px; }
-  .cal-loading { padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
-  .cal-error { padding:20px; text-align:center; color:var(--danger); font-size:13px; line-height:1.7; }
-  .cal-setup { padding:24px 20px; text-align:center; }
-  .cal-setup p { color:var(--muted); font-size:13px; line-height:1.7; margin-bottom:12px; }
-  .cal-setup-btn { display:inline-block; padding:9px 20px; border-radius:var(--radius-sm); background:var(--accent); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
+  .agenda-accent-bar.c2 { background:var(--accent3); }
+  .agenda-accent-bar.c3 { background:var(--amber); }
+  .agenda-event-inner { flex:1; padding:9px 12px; min-width:0; }
+  .agenda-event-title { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .agenda-event-time { font-size:10px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; display:flex; align-items:center; gap:5px; }
+  .event-time-dot { width:4px; height:4px; border-radius:50%; background:var(--accent); display:inline-block; flex-shrink:0; }
+  .event-time-dot.c1 { background:var(--accent2); }
+  .event-time-dot.c2 { background:var(--accent3); }
+  .event-time-dot.c3 { background:var(--amber); }
+  .recurring-badge { font-size:9px; color:var(--muted2); margin-left:4px; opacity:0.8; }
 
-  /* TO-DO */
-  .todo-panel { grid-area:todo; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; min-height:0; }
-  .todo-input-row { padding:12px 16px; border-bottom:1px solid var(--border); display:flex; gap:8px; flex-shrink:0; }
-  .todo-input { flex:1; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 12px; outline:none; transition:border-color 0.2s; }
-  .todo-input::placeholder { color:var(--muted); }
-  .todo-input:focus { border-color:var(--accent); }
-  .todo-add-btn { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--accent); border:none; color:white; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; flex-shrink:0; }
+  .agenda-empty, .cal-loading { padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
+  .cal-error { padding:20px; text-align:center; color:var(--danger); font-size:13px; line-height:1.7; }
+  .cal-setup { padding:28px 20px; text-align:center; }
+  .cal-setup p { color:var(--muted); font-size:13px; line-height:1.8; margin-bottom:14px; }
+  .cal-setup-btn { padding:10px 22px; border-radius:var(--radius-sm); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; box-shadow:0 4px 16px rgba(61,127,255,0.3); }
+
+  /* ── TO-DO ── */
+  .todo-panel {
+    grid-area:todo;
+    background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
+    border:1px solid var(--border2);
+    border-radius:var(--radius);
+    display:flex; flex-direction:column;
+    overflow:hidden; min-height:0;
+    position:relative;
+  }
+  .todo-panel::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--accent2), transparent);
+    transition: background 1s ease;
+  }
+
+  .todo-input-row { padding:11px 14px; border-bottom:1px solid var(--border); display:flex; gap:8px; flex-shrink:0; }
+  .todo-input {
+    flex:1; background:var(--surface3); border:1px solid var(--border2);
+    border-radius:var(--radius-sm); color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 12px;
+    outline:none; transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .todo-input::placeholder { color:var(--muted2); }
+  .todo-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); transition: border-color 1s, box-shadow 1s; }
+  .todo-add-btn {
+    width:34px; height:34px; border-radius:var(--radius-sm);
+    background:linear-gradient(135deg, var(--accent), var(--accent2));
+    border:none; color:white; font-size:20px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity 0.2s, box-shadow 0.2s, background 1s; flex-shrink:0;
+    box-shadow:0 2px 10px var(--accent-glow);
+  }
   .todo-add-btn:active { opacity:0.75; }
-  .todo-list { flex:1; overflow-y:auto; padding:10px 16px 14px; scrollbar-width:thin; scrollbar-color:var(--border2) transparent; }
-  .todo-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); margin-bottom:7px; }
-  .todo-item.done { opacity:0.4; }
-  .todo-check { width:18px; height:18px; border-radius:50%; border:2px solid var(--border2); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
-  .todo-check.checked { background:var(--success); border-color:var(--success); }
+
+  .todo-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
+  .todo-item {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-radius:var(--radius-sm);
+    background:var(--surface2); border:1px solid var(--border);
+    margin-bottom:6px; transition:opacity 0.2s, border-color 0.2s;
+    position:relative; overflow:hidden;
+  }
+  .todo-item::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,0.015) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .todo-item.done { opacity:0.35; }
+  .todo-check {
+    width:18px; height:18px; border-radius:50%;
+    border:1.5px solid var(--border2); background:transparent;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s; flex-shrink:0;
+  }
+  .todo-check.checked { background:var(--accent3); border-color:var(--accent3); box-shadow:0 0 8px rgba(6,214,160,0.4); }
   .todo-check::after { content:'✓'; font-size:10px; color:white; display:none; font-weight:700; }
   .todo-check.checked::after { display:block; }
   .todo-text { flex:1; font-size:13px; color:var(--text); word-break:break-word; }
-  .todo-item.done .todo-text { text-decoration:line-through; color:var(--muted); }
-  .todo-delete { width:24px; height:24px; border-radius:6px; border:none; background:transparent; color:var(--muted); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; }
+  .todo-item.done .todo-text { text-decoration:line-through; color:var(--muted2); }
+  .todo-delete { width:22px; height:22px; border-radius:6px; border:none; background:transparent; color:var(--muted2); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; }
   .todo-delete:hover { color:var(--danger); background:rgba(248,113,113,0.1); }
-  .todo-empty { text-align:center; color:var(--muted); font-size:13px; padding:30px 0; }
+  .todo-empty { text-align:center; color:var(--muted2); font-size:13px; padding:30px 0; }
 
-  /* SETTINGS */
-  .settings-btn { position:fixed; bottom:20px; right:20px; width:36px; height:36px; border-radius:50%; background:var(--surface2); border:1px solid var(--border2); color:var(--muted); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:color 0.2s; }
-  .settings-btn:hover { color:var(--text); }
-  .settings-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:200; display:none; align-items:center; justify-content:center; }
+  /* ── SETTINGS ── */
+  .settings-btn {
+    position:fixed; bottom:18px; right:18px; width:38px; height:38px;
+    border-radius:50%; background:var(--surface2); border:1px solid var(--border2);
+    color:var(--muted); font-size:17px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    z-index:100; transition:color 0.2s, box-shadow 0.2s;
+    box-shadow:0 4px 16px rgba(0,0,0,0.4);
+  }
+  .settings-btn:hover { color:var(--text); box-shadow:0 4px 20px rgba(61,127,255,0.2); }
+  .settings-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:200; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
   .settings-overlay.open { display:flex; }
-  .settings-box { background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius); padding:26px 28px; width:460px; max-width:92vw; }
-  .settings-box h2 { font-size:16px; font-weight:600; margin-bottom:4px; color:var(--text); }
+  .settings-box {
+    background: linear-gradient(160deg, #0e1118 0%, #0b0d16 100%);
+    border:1px solid var(--border2); border-radius:var(--radius);
+    padding:26px 28px; width:460px; max-width:92vw;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    position:relative; overflow:hidden;
+  }
+  .settings-box::before {
+    content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
+    background:linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+    transition: background 1s ease;
+  }
+  .settings-box h2 { font-size:15px; font-weight:700; margin-bottom:4px; color:var(--text); }
   .settings-subtitle { font-size:12px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
-  .settings-field { margin-bottom:14px; }
-  .settings-label { font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); font-weight:600; margin-bottom:6px; display:block; }
-  .settings-hint { font-size:11px; color:var(--muted); margin-top:4px; line-height:1.5; opacity:0.8; }
-  .settings-input { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px; outline:none; transition:border-color 0.2s; }
-  .settings-input:focus { border-color:var(--accent); }
+  .settings-field { margin-bottom:13px; }
+  .settings-label { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; margin-bottom:6px; display:block; }
+  .settings-hint { font-size:11px; color:var(--muted2); margin-top:4px; line-height:1.5; }
+  .settings-input {
+    width:100%; background:var(--surface3); border:1px solid var(--border2);
+    border-radius:var(--radius-sm); color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px;
+    outline:none; transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .settings-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
   .settings-row { display:flex; gap:10px; margin-top:20px; }
-  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
-  .settings-save { background:var(--accent); color:white; }
-  .settings-close { background:var(--surface2); color:var(--muted); border:1px solid var(--border2); }
+  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:opacity 0.2s; }
+  .settings-save { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; box-shadow:0 4px 14px var(--accent-glow); transition: background 1s, box-shadow 1s; }
+  .settings-close { background:var(--surface3); color:var(--muted); border:1px solid var(--border2); }
 
-  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar { width:3px; }
   ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+  ::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:2px; }
 </style>
 </head>
 <body>
@@ -161,15 +365,16 @@
     <div class="clock-time" id="clock">--:--</div>
     <div class="clock-date" id="date-label">Loading...</div>
   </div>
-  <div class="header-title">
+  <div class="header-center">
     <h1 id="family-name">Shall Family Dashboard</h1>
     <p>Home Hub for the Fam</p>
   </div>
   <div class="header-right">
-    <div class="weather-current">
-      <span class="hdr-temp" id="hdr-temp">--°</span>
-      <div>
-        <div class="hdr-desc" id="hdr-desc">Loading weather…</div>
+    <div class="weather-now">
+      <div class="weather-icon-big" id="hdr-icon">⏳</div>
+      <div class="weather-text">
+        <div class="hdr-temp" id="hdr-temp">--°</div>
+        <div class="hdr-desc" id="hdr-desc">Loading…</div>
         <div class="hdr-loc" id="hdr-loc">Charlotte, NC</div>
       </div>
     </div>
@@ -180,7 +385,10 @@
 <!-- AGENDA -->
 <section class="calendar-panel">
   <div class="panel-header">
-    <span class="panel-title">Upcoming Events</span>
+    <div class="panel-title-row">
+      <span class="panel-icon">📅</span>
+      <span class="panel-title">Upcoming Events</span>
+    </div>
     <span class="panel-badge" id="event-count-badge">Loading…</span>
   </div>
   <div class="agenda-list" id="agenda-list">
@@ -191,8 +399,11 @@
 <!-- TO-DO -->
 <section class="todo-panel">
   <div class="panel-header">
-    <span class="panel-title">To-Do List</span>
-    <span class="panel-badge purple" id="todo-count-badge">0 left</span>
+    <div class="panel-title-row">
+      <span class="panel-icon">✅</span>
+      <span class="panel-title">To-Do List</span>
+    </div>
+    <span class="panel-badge green" id="todo-count-badge">0 left</span>
   </div>
   <div class="todo-input-row">
     <input class="todo-input" id="todo-input" placeholder="Add a task…" maxlength="80">
@@ -206,7 +417,7 @@
 <div class="settings-overlay" id="settings-overlay">
   <div class="settings-box">
     <h2>⚙ Dashboard Settings</h2>
-    <p class="settings-subtitle">Changes are saved instantly and the dashboard reloads the affected panels.</p>
+    <p class="settings-subtitle">Changes are saved and applied immediately.</p>
     <div class="settings-field">
       <label class="settings-label" for="s-name">Family Name</label>
       <input class="settings-input" id="s-name" placeholder="e.g. The Smith Family">
@@ -214,14 +425,14 @@
     <div class="settings-field">
       <label class="settings-label" for="s-ical">Google Calendar iCal URL</label>
       <input class="settings-input" id="s-ical" placeholder="https://calendar.google.com/calendar/ical/…/basic.ics">
-      <p class="settings-hint">In Google Calendar → Settings → your calendar → "Secret address in iCal format"</p>
+      <p class="settings-hint">Google Calendar → Settings → your calendar → "Secret address in iCal format"</p>
     </div>
     <div class="settings-field">
       <label class="settings-label" for="s-city">Weather City</label>
       <input class="settings-input" id="s-city" placeholder="Charlotte, NC">
     </div>
     <div class="settings-field">
-      <label class="settings-label" for="s-refresh">Auto-Refresh Interval (minutes, 0 to disable)</label>
+      <label class="settings-label" for="s-refresh">Auto-Refresh Interval (minutes, 0 = off)</label>
       <input class="settings-input" id="s-refresh" placeholder="e.g. 30" type="number" min="0" max="1440">
     </div>
     <div class="settings-row">
@@ -232,6 +443,25 @@
 </div>
 
 <script>
+// ── DAY-OF-WEEK COLOR THEME ──────────────────────────────────
+// Sun=red, Mon=orange, Tue=yellow, Wed=green, Thu=cyan, Fri=blue, Sat=violet
+const DAY_THEMES = [
+  { h:   0, s:'90%', l:'62%', name:'red'    }, // Sunday
+  { h:  25, s:'95%', l:'58%', name:'orange' }, // Monday
+  { h:  48, s:'95%', l:'55%', name:'yellow' }, // Tuesday
+  { h: 145, s:'70%', l:'52%', name:'green'  }, // Wednesday
+  { h: 185, s:'80%', l:'52%', name:'cyan'   }, // Thursday
+  { h: 220, s:'95%', l:'62%', name:'blue'   }, // Friday
+  { h: 270, s:'80%', l:'65%', name:'violet' }, // Saturday
+];
+(function applyDayTheme(){
+  const theme = DAY_THEMES[new Date().getDay()];
+  const r = document.documentElement.style;
+  r.setProperty('--day-h', theme.h);
+  r.setProperty('--day-s', theme.s);
+  r.setProperty('--day-l', theme.l);
+})();
+
 // ── CONFIG ──────────────────────────────────────────────────
 const DEFAULT_CONFIG = {
   familyName: "Shall Family Dashboard",
@@ -241,26 +471,18 @@ const DEFAULT_CONFIG = {
   weatherLon: -80.8431,
   refreshMins: 30
 };
-function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg3'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
-function saveConfig(c){ localStorage.setItem('dash-cfg3',JSON.stringify(c)); }
+function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg4'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
+function saveConfig(c){ localStorage.setItem('dash-cfg4',JSON.stringify(c)); }
 let CONFIG = loadConfig();
 
 // ── AUTO REFRESH ─────────────────────────────────────────────
-// Defined early so it can be called anywhere below
-let refreshTimer = null, countdownTick = null, refreshCountdown = 0;
+let refreshTimer=null, countdownTick=null;
 function startRefreshTimer(){
   if(refreshTimer) clearTimeout(refreshTimer);
   if(countdownTick) clearInterval(countdownTick);
-  const mins = parseInt(CONFIG.refreshMins) || 0;
-  if(mins <= 0) return;
-  refreshCountdown = mins * 60;
-  refreshTimer = setTimeout(()=>{ location.reload(); }, mins * 60 * 1000);
-  const tick = () => {
-    if(refreshCountdown <= 0){ location.reload(); return; }
-    refreshCountdown--;
-  };
-  tick();
-  countdownTick = setInterval(tick, 1000);
+  const mins=parseInt(CONFIG.refreshMins)||0;
+  if(mins<=0) return;
+  refreshTimer=setTimeout(()=>location.reload(), mins*60*1000);
 }
 
 // ── CLOCK ───────────────────────────────────────────────────
@@ -271,8 +493,10 @@ const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct',
 
 function updateClock(){
   const n=new Date();
-  document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-  document.getElementById('date-label').textContent=DAYS_FULL[n.getDay()]+', '+MONTHS_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+  let h=n.getHours(), m=String(n.getMinutes()).padStart(2,'0');
+  const ampm=h>=12?'PM':'AM'; h=h%12||12;
+  document.getElementById('clock').textContent=h+':'+m+' '+ampm;
+  document.getElementById('date-label').textContent=DAYS_FULL[n.getDay()]+' · '+MONTHS_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
 }
 updateClock(); setInterval(updateClock,1000);
 
@@ -281,26 +505,24 @@ const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'�
 const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 
 async function loadWeather(){
-  const lat = CONFIG.weatherLat || 35.2271;
-  const lon = CONFIG.weatherLon || -80.8431;
-  document.getElementById('hdr-loc').textContent = CONFIG.weatherCity || 'Charlotte, NC';
-  try {
+  const lat=CONFIG.weatherLat||35.2271, lon=CONFIG.weatherLon||-80.8431;
+  document.getElementById('hdr-loc').textContent=CONFIG.weatherCity||'Charlotte, NC';
+  try{
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const d=await r.json();
     document.getElementById('hdr-temp').textContent=Math.round(d.current.temperature_2m)+'°';
     document.getElementById('hdr-desc').textContent=WX_DESC[d.current.weathercode]||'';
-    const mini=document.getElementById('forecast-mini');
-    mini.innerHTML='';
+    document.getElementById('hdr-icon').textContent=WX_ICONS[d.current.weathercode]||'🌡';
+    const mini=document.getElementById('forecast-mini'); mini.innerHTML='';
     for(let i=1;i<5;i++){
       const day=new Date(); day.setDate(day.getDate()+i);
-      const el=document.createElement('div');
-      el.className='fc-mini-day';
+      const el=document.createElement('div'); el.className='fc-mini-day';
       el.innerHTML=`<div class="fc-mini-label">${DAYS_SHORT[day.getDay()]}</div><div class="fc-mini-icon">${WX_ICONS[d.daily.weathercode[i]]||'🌡'}</div><div class="fc-mini-temp">${Math.round(d.daily.temperature_2m_max[i])}°</div><div class="fc-mini-lo">${Math.round(d.daily.temperature_2m_min[i])}°</div>`;
       mini.appendChild(el);
     }
-  } catch(e){
-    document.getElementById('hdr-desc').textContent='Weather unavailable';
+  }catch(e){
+    document.getElementById('hdr-desc').textContent='Unavailable';
     document.getElementById('hdr-temp').textContent='--°';
   }
 }
@@ -310,73 +532,226 @@ async function geocodeCity(city){
   try{
     const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&format=json`);
     const j=await r.json();
-    if(j.results&&j.results.length){
-      CONFIG.weatherLat=j.results[0].latitude;
-      CONFIG.weatherLon=j.results[0].longitude;
-    }
+    if(j.results&&j.results.length){ CONFIG.weatherLat=j.results[0].latitude; CONFIG.weatherLon=j.results[0].longitude; }
   }catch(e){}
 }
 
-// ── ICS PARSER ──────────────────────────────────────────────
-function parseICS(text){
-  const unfolded = text.replace(/\r?\n[ \t]/g, '');
-  const events = [];
-  const blocks = unfolded.split('BEGIN:VEVENT');
-  for(let i = 1; i < blocks.length; i++){
-    const b = blocks[i];
-    const getRaw = key => {
-      const m = b.match(new RegExp('^' + key + '([^:]*):([^\\r\\n]+)', 'im'));
-      return m ? { params: m[1], value: m[2].trim() } : null;
-    };
-    const summaryRaw = getRaw('SUMMARY');
-    const summary = (summaryRaw ? summaryRaw.value : 'Untitled')
-      .replace(/\\,/g, ',').replace(/\\n/g, ' ').replace(/\\;/g, ';').replace(/\\\\/g, '\\');
-    const dtStartRaw = getRaw('DTSTART');
-    if(!dtStartRaw) continue;
-    const dtEndRaw = getRaw('DTEND');
-    const parseDateTime = (raw) => {
-      if(!raw) return null;
-      const val = raw.value.replace(/\s/g, '');
-      const params = raw.params.toUpperCase();
-      if(/^\d{8}$/.test(val)){
-        return { date: new Date(+val.slice(0,4), +val.slice(4,6)-1, +val.slice(6,8)), allDay: true };
-      }
-      const yr=+val.slice(0,4), mo=+val.slice(4,6)-1, dy=+val.slice(6,8);
-      const hr=+val.slice(9,11)||0, min=+val.slice(11,13)||0, sec=+val.slice(13,15)||0;
-      let date;
-      if(val.endsWith('Z')){
-        date = new Date(Date.UTC(yr, mo, dy, hr, min, sec));
-      } else if(params.includes('TZID')){
-        const tzMatch = raw.params.match(/TZID=([^;]+)/i);
-        const tz = tzMatch ? tzMatch[1].replace(/^"(.*)"$/, '$1') : 'America/New_York';
-        try {
-          const isoLocal = `${yr}-${String(mo+1).padStart(2,'0')}-${String(dy).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-          const probe = new Date(`${isoLocal}Z`);
-          const formatter = new Intl.DateTimeFormat('en-US', {
-            timeZone: tz, hour12: false,
-            year:'numeric', month:'2-digit', day:'2-digit',
-            hour:'2-digit', minute:'2-digit', second:'2-digit'
-          });
-          const parts = Object.fromEntries(formatter.formatToParts(probe).map(p=>[p.type,p.value]));
-          const probeLocal = new Date(+parts.year, +parts.month-1, +parts.day, +parts.hour%24, +parts.minute, +parts.second);
-          const wantLocal = new Date(yr, mo, dy, hr, min, sec);
-          const tzOffsetMs = probe.getTime() - probeLocal.getTime();
-          date = new Date(wantLocal.getTime() - tzOffsetMs);
-        } catch(e) {
-          date = new Date(yr, mo, dy, hr, min, sec);
-        }
-      } else {
-        date = new Date(yr, mo, dy, hr, min, sec);
-      }
-      return { date, allDay: false };
-    };
-    const startParsed = parseDateTime(dtStartRaw);
-    if(!startParsed) continue;
-    const endParsed = parseDateTime(dtEndRaw);
-    events.push({ summary, start: startParsed.date, end: endParsed ? endParsed.date : null, allDay: startParsed.allDay });
+// ── ICS PARSER + RRULE EXPANDER ─────────────────────────────
+// Parses iCal text and expands recurring events (RRULE) within a date window.
+// Handles: FREQ=DAILY/WEEKLY/MONTHLY/YEARLY, INTERVAL, BYDAY, BYMONTHDAY,
+//          COUNT, UNTIL, and EXDATE (cancelled occurrences).
+
+const DAY_MAP={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
+
+function parseDateTime(val, params){
+  if(!val) return null;
+  val=val.replace(/\s/g,'');
+  params=(params||'').toUpperCase();
+
+  // All-day
+  if(/^\d{8}$/.test(val)){
+    return { date:new Date(+val.slice(0,4),+val.slice(4,6)-1,+val.slice(6,8)), allDay:true };
   }
-  events.sort((a, b) => a.start - b.start);
-  return events;
+  const yr=+val.slice(0,4), mo=+val.slice(4,6)-1, dy=+val.slice(6,8);
+  const hr=+val.slice(9,11)||0, mn=+val.slice(11,13)||0, sc=+val.slice(13,15)||0;
+  let date;
+  if(val.endsWith('Z')){
+    date=new Date(Date.UTC(yr,mo,dy,hr,mn,sc));
+  } else if(params.includes('TZID')){
+    const tzM=params.match(/TZID=([^;:\s]+)/);
+    const tz=tzM?tzM[1].replace(/^"|"$/g,''):'America/New_York';
+    try{
+      const iso=`${yr}-${String(mo+1).padStart(2,'0')}-${String(dy).padStart(2,'0')}T${String(hr).padStart(2,'0')}:${String(mn).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
+      const probe=new Date(iso+'Z');
+      const fmt=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      const p=Object.fromEntries(fmt.formatToParts(probe).map(x=>[x.type,x.value]));
+      const probeLocal=new Date(+p.year,+p.month-1,+p.day,+p.hour%24,+p.minute,+p.second);
+      const wantLocal=new Date(yr,mo,dy,hr,mn,sc);
+      date=new Date(wantLocal.getTime()-(probe.getTime()-probeLocal.getTime()));
+    }catch(e){ date=new Date(yr,mo,dy,hr,mn,sc); }
+  } else {
+    date=new Date(yr,mo,dy,hr,mn,sc);
+  }
+  return { date, allDay:false };
+}
+
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function addMonths(d,n){ const r=new Date(d); r.setMonth(r.getMonth()+n); return r; }
+function addYears(d,n){ const r=new Date(d); r.setFullYear(r.getFullYear()+n); return r; }
+function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+function dateKey(d){ return d.getFullYear()*10000+d.getMonth()*100+d.getDate(); }
+
+function expandRRule(dtstart, dtend, rruleStr, exdates, windowStart, windowEnd, allDay){
+  const rule={};
+  rruleStr.split(';').forEach(part=>{
+    const [k,v]=part.split('=');
+    rule[k.trim().toUpperCase()]=v?v.trim():'';
+  });
+
+  const freq=rule.FREQ||'';
+  const interval=parseInt(rule.INTERVAL)||1;
+  const count=rule.COUNT?parseInt(rule.COUNT):null;
+  const until=rule.UNTIL?parseDateTime(rule.UNTIL,null):null;
+  const untilDate=until?until.date:null;
+
+  // BYDAY parsing e.g. MO,WE,FR or 1MO,-1FR
+  const byDay=rule.BYDAY?rule.BYDAY.split(',').map(s=>s.trim()):null;
+  const byMonthDay=rule.BYMONTHDAY?rule.BYMONTHDAY.split(',').map(Number):null;
+
+  const exSet=new Set(exdates.map(d=>dateKey(d)));
+  const duration=dtend?(dtend-dtstart):0;
+  const occurrences=[];
+  let cur=new Date(dtstart);
+  let n=0;
+  const MAX=500; // safety cap
+
+  while(n<MAX){
+    // Check termination
+    if(count!==null&&n>=count) break;
+    if(untilDate&&cur>untilDate) break;
+    if(cur>windowEnd) break;
+
+    // Collect candidates for this iteration
+    let candidates=[];
+
+    if(freq==='DAILY'){
+      candidates=[new Date(cur)];
+    } else if(freq==='WEEKLY'){
+      if(byDay){
+        // Find all matching days in this week (week of cur)
+        const weekStart=new Date(cur);
+        // Go to Sunday of cur's week
+        weekStart.setDate(weekStart.getDate()-weekStart.getDay());
+        byDay.forEach(d=>{
+          const dayNum=DAY_MAP[d.replace(/^[+-]?\d*/,'').toUpperCase()];
+          if(dayNum===undefined) return;
+          const cand=new Date(weekStart);
+          cand.setDate(weekStart.getDate()+dayNum);
+          cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
+          // Only include if at or after dtstart
+          if(cand>=dtstart) candidates.push(cand);
+        });
+        candidates.sort((a,b)=>a-b);
+      } else {
+        candidates=[new Date(cur)];
+      }
+    } else if(freq==='MONTHLY'){
+      if(byDay){
+        // e.g. 1MO = first Monday of month, -1FR = last Friday
+        const year=cur.getFullYear(), month=cur.getMonth();
+        byDay.forEach(d=>{
+          const m=d.match(/^([+-]?\d*)([A-Z]{2})$/i);
+          if(!m) return;
+          const nth=m[1]?parseInt(m[1]):1;
+          const dayNum=DAY_MAP[m[2].toUpperCase()];
+          if(dayNum===undefined) return;
+          let cand;
+          if(nth>0){
+            // nth occurrence: find first occurrence of dayNum in month, then add weeks
+            const first=new Date(year,month,1);
+            const diff=(dayNum-first.getDay()+7)%7;
+            cand=new Date(year,month,1+diff+(nth-1)*7);
+          } else {
+            // negative: count from end of month
+            const last=new Date(year,month+1,0);
+            const diff=(last.getDay()-dayNum+7)%7;
+            cand=new Date(year,month+1,0-diff+(nth+1)*7);
+          }
+          cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
+          if(cand.getMonth()===month&&cand>=dtstart) candidates.push(cand);
+        });
+      } else if(byMonthDay){
+        byMonthDay.forEach(dom=>{
+          const cand=new Date(cur.getFullYear(),cur.getMonth(),dom,dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds());
+          if(cand>=dtstart) candidates.push(cand);
+        });
+      } else {
+        candidates=[new Date(cur)];
+      }
+    } else if(freq==='YEARLY'){
+      candidates=[new Date(cur)];
+    } else {
+      break;
+    }
+
+    // Emit candidates that fall within window and aren't excluded
+    candidates.forEach(cand=>{
+      if(exSet.has(dateKey(cand))) return;
+      if(cand>=windowStart&&cand<=windowEnd){
+        const end=duration?new Date(cand.getTime()+duration):null;
+        occurrences.push({ date:cand, end, allDay });
+      }
+    });
+
+    n++;
+    // Advance cur by interval
+    if(freq==='DAILY')      cur=addDays(cur,interval);
+    else if(freq==='WEEKLY') cur=addDays(cur,interval*7);
+    else if(freq==='MONTHLY') cur=addMonths(cur,interval);
+    else if(freq==='YEARLY') cur=addYears(cur,interval);
+    else break;
+  }
+  return occurrences;
+}
+
+function parseICS(text, windowStart, windowEnd){
+  const unfolded=text.replace(/\r?\n[ \t]/g,'');
+  const results=[];
+  const blocks=unfolded.split('BEGIN:VEVENT');
+
+  for(let i=1;i<blocks.length;i++){
+    const b=blocks[i];
+    const getRaw=key=>{
+      const m=b.match(new RegExp('^'+key+'([^:]*):([^\\r\\n]+)','im'));
+      return m?{params:m[1],value:m[2].trim()}:null;
+    };
+    const getVal=key=>{ const r=getRaw(key); return r?r.value:null; };
+
+    const summaryRaw=getRaw('SUMMARY');
+    const summary=(summaryRaw?summaryRaw.value:'Untitled').replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').replace(/\\\\/g,'\\');
+
+    const dtStartRaw=getRaw('DTSTART');
+    if(!dtStartRaw) continue;
+    const dtEndRaw=getRaw('DTEND');
+    const rruleVal=getVal('RRULE');
+
+    const startParsed=parseDateTime(dtStartRaw.value, dtStartRaw.params);
+    if(!startParsed) continue;
+    const endParsed=dtEndRaw?parseDateTime(dtEndRaw.value,dtEndRaw.params):null;
+
+    // Parse EXDATEs (cancelled occurrences)
+    const exdates=[];
+    const exdateRe=/^EXDATE([^:]*):([^\r\n]+)/gim;
+    let exm;
+    while((exm=exdateRe.exec(b))!==null){
+      exm[2].split(',').forEach(v=>{
+        const p=parseDateTime(v.trim(),exm[1]);
+        if(p) exdates.push(p.date);
+      });
+    }
+
+    if(rruleVal){
+      // Recurring event — expand occurrences
+      const occurrences=expandRRule(
+        startParsed.date,
+        endParsed?endParsed.date:null,
+        rruleVal, exdates,
+        windowStart, windowEnd,
+        startParsed.allDay
+      );
+      occurrences.forEach(occ=>{
+        results.push({ summary, start:occ.date, end:occ.end, allDay:occ.allDay, recurring:true });
+      });
+    } else {
+      // One-time event
+      if(startParsed.date<=windowEnd && (endParsed?endParsed.date:startParsed.date)>=windowStart){
+        results.push({ summary, start:startParsed.date, end:endParsed?endParsed.date:null, allDay:startParsed.allDay, recurring:false });
+      }
+    }
+  }
+
+  results.sort((a,b)=>a.start-b.start);
+  return results;
 }
 
 // ── AGENDA RENDER ───────────────────────────────────────────
@@ -387,45 +762,58 @@ function renderAgenda(events){
   const list=document.getElementById('agenda-list');
   const badge=document.getElementById('event-count-badge');
   const today=new Date(); today.setHours(0,0,0,0);
-  const cutoff=new Date(today); cutoff.setDate(cutoff.getDate()+60);
-  const upcoming=events.filter(e=>e.start>=today&&e.start<=cutoff);
-  badge.textContent=upcoming.length+' events';
-  if(!upcoming.length){ list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>'; return; }
+  badge.textContent=events.length+' events';
+  if(!events.length){ list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>'; return; }
+
   const groups={}, order=[];
-  upcoming.forEach((ev,idx)=>{
+  events.forEach((ev,idx)=>{
     const d=ev.start;
     const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
     if(!groups[key]){ groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]}; order.push(key); }
     groups[key].events.push({...ev,ci:idx%4});
   });
+
   list.innerHTML='';
   const todayMs=today.getTime();
   order.forEach(key=>{
     const {date,events:dayEvs}=groups[key];
     const isToday=date.getTime()===todayMs;
     const isTomorrow=date.getTime()===todayMs+86400000;
+
     const block=document.createElement('div'); block.className='agenda-day-block';
+
+    // Day header with pill
     const hdr=document.createElement('div'); hdr.className='agenda-day-header';
-    const num=document.createElement('div'); num.className='agenda-day-num'+(isToday?' today-num':''); num.textContent=date.getDate();
-    const info=document.createElement('div'); info.className='agenda-day-info';
-    const name=document.createElement('div'); name.className='agenda-day-name'+(isToday?' today-label':'');
-    name.textContent=DAYS_FULL[date.getDay()];
-    if(isToday){ const b=document.createElement('span'); b.className='agenda-today-badge'; b.textContent='Today'; name.appendChild(b); }
-    else if(isTomorrow){ const b=document.createElement('span'); b.className='agenda-tomorrow-badge'; b.textContent='Tomorrow'; name.appendChild(b); }
-    const mon=document.createElement('div'); mon.className='agenda-month'; mon.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
-    info.appendChild(name); info.appendChild(mon);
-    const div=document.createElement('div'); div.className='agenda-divider';
-    hdr.appendChild(num); hdr.appendChild(info); hdr.appendChild(div);
+    const pill=document.createElement('div'); pill.className='agenda-day-pill'+(isToday?' today-pill':'');
+    const pillNum=document.createElement('div'); pillNum.className='agenda-pill-num'; pillNum.textContent=date.getDate();
+    const pillDay=document.createElement('div'); pillDay.className='agenda-pill-day'; pillDay.textContent=DAYS_SHORT[date.getDay()];
+    pill.appendChild(pillNum); pill.appendChild(pillDay);
+
+    const meta=document.createElement('div'); meta.className='agenda-day-meta';
+    const nameLine=document.createElement('div'); nameLine.className='agenda-day-name';
+    nameLine.textContent=DAYS_FULL[date.getDay()];
+    if(isToday){ const t=document.createElement('span'); t.className='tag tag-today'; t.textContent='Today'; nameLine.appendChild(t); }
+    else if(isTomorrow){ const t=document.createElement('span'); t.className='tag tag-tomorrow'; t.textContent='Tomorrow'; nameLine.appendChild(t); }
+    const monLine=document.createElement('div'); monLine.className='agenda-month-label';
+    monLine.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
+    meta.appendChild(nameLine); meta.appendChild(monLine);
+
+    const divider=document.createElement('div'); divider.className='agenda-divider';
+    hdr.appendChild(pill); hdr.appendChild(meta); hdr.appendChild(divider);
     block.appendChild(hdr);
+
     dayEvs.forEach(ev=>{
       const item=document.createElement('div'); item.className='agenda-event';
       const bar=document.createElement('div'); bar.className='agenda-accent-bar '+(BAR_COLORS[ev.ci]||'');
-      const evInfo=document.createElement('div'); evInfo.className='agenda-event-info';
+      const inner=document.createElement('div'); inner.className='agenda-event-inner';
       const title=document.createElement('div'); title.className='agenda-event-title'; title.textContent=ev.summary;
-      const time=document.createElement('div'); time.className='agenda-event-time';
-      time.textContent=ev.allDay?'All day':fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):'');
-      evInfo.appendChild(title); evInfo.appendChild(time);
-      item.appendChild(bar); item.appendChild(evInfo);
+      const timeRow=document.createElement('div'); timeRow.className='agenda-event-time';
+      const dot=document.createElement('span'); dot.className='event-time-dot '+(BAR_COLORS[ev.ci]||'');
+      const timeText=document.createTextNode(ev.allDay?'All day':fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):''));
+      timeRow.appendChild(dot); timeRow.appendChild(timeText);
+      if(ev.recurring){ const rb=document.createElement('span'); rb.className='recurring-badge'; rb.textContent='↻ repeating'; timeRow.appendChild(rb); }
+      inner.appendChild(title); inner.appendChild(timeRow);
+      item.appendChild(bar); item.appendChild(inner);
       block.appendChild(item);
     });
     list.appendChild(block);
@@ -436,11 +824,7 @@ function renderAgenda(events){
 async function loadCalendar(){
   const url=CONFIG.icalUrl;
   if(!url){
-    document.getElementById('agenda-list').innerHTML=`
-      <div class="cal-setup">
-        <p>No calendar connected yet.<br>Tap <strong>⚙</strong> below and paste your Google Calendar iCal URL to get started.</p>
-        <button class="cal-setup-btn" onclick="openSettings()">Open Settings ⚙</button>
-      </div>`;
+    document.getElementById('agenda-list').innerHTML=`<div class="cal-setup"><p>No calendar connected yet.<br>Tap <strong>⚙</strong> and paste your Google Calendar iCal URL.</p><button class="cal-setup-btn" onclick="openSettings()">Open Settings ⚙</button></div>`;
     document.getElementById('event-count-badge').textContent='Not set';
     return;
   }
@@ -458,11 +842,13 @@ async function loadCalendar(){
       if(!res.ok) throw new Error('HTTP '+res.status);
       const text=await res.text();
       if(!text.includes('BEGIN:VCALENDAR')) throw new Error('Not a valid iCal file');
-      renderAgenda(parseICS(text));
+      const today=new Date(); today.setHours(0,0,0,0);
+      const cutoff=new Date(today); cutoff.setDate(cutoff.getDate()+60);
+      renderAgenda(parseICS(text, today, cutoff));
       return;
     }catch(e){ lastErr=e.message; }
   }
-  document.getElementById('agenda-list').innerHTML=`<div class="cal-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Make sure you're using the <strong>Google Calendar iCal URL</strong> (ends in /basic.ics) and the tablet has internet.</small></div>`;
+  document.getElementById('agenda-list').innerHTML=`<div class="cal-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Make sure you're using the Google Calendar iCal URL (ends in /basic.ics).</small></div>`;
   document.getElementById('event-count-badge').textContent='Error';
 }
 loadCalendar(); setInterval(loadCalendar,15*60*1000);
