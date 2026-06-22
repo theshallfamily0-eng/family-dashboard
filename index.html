@@ -6,9 +6,11 @@
 <title>Shall Family Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 <style>
+ 
  /* Link: theshallfamily0-eng.github.io/family-dashboard
-  * script.google.com/macros/s/AKfycbwKQDTiSgGrJKIbNt6pKVEW27B1iraPe6IXUuUxc-SKenOGIkkhVmaFddKFJbSVMTuR/exec
- */
+* script.google.com/macros/s/AKfycbwKQDTiSgGrJKIbNt6pKVEW27B1iraPe6IXUuUxc-SKenOGIkkhVmaFddKFJbSVMTuR/exec 
+* */
+ 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #07090f;
@@ -24,93 +26,65 @@
     --radius: 18px;
     --radius-sm: 11px;
     --radius-xs: 7px;
-
-    /* Day-of-week accent — overridden by JS on load */
-    --day-h: 220;          /* hue */
-    --day-s: 100%;         /* saturation */
-    --day-l: 65%;          /* lightness */
-    --accent:      hsl(var(--day-h), var(--day-s), var(--day-l));
-    --accent-soft: hsl(var(--day-h), var(--day-s), 75%);
-    --accent-glow: hsla(var(--day-h), var(--day-s), var(--day-l), 0.15);
+    --day-h: 220;
+    --day-s: 100%;
+    --day-l: 65%;
+    --accent:       hsl(var(--day-h), var(--day-s), var(--day-l));
+    --accent-soft:  hsl(var(--day-h), var(--day-s), 75%);
+    --accent-glow:  hsla(var(--day-h), var(--day-s), var(--day-l), 0.15);
     --accent-glow2: hsla(var(--day-h), var(--day-s), var(--day-l), 0.08);
-    --accent-border: hsla(var(--day-h), var(--day-s), var(--day-l), 0.25);
-    /* Secondary accent stays complementary — shifted 40° */
+    --accent-border:hsla(var(--day-h), var(--day-s), var(--day-l), 0.25);
     --accent2:      hsl(calc(var(--day-h) + 40), 90%, 70%);
     --accent2-glow: hsla(calc(var(--day-h) + 40), 90%, 70%, 0.12);
-    /* Success green stays fixed */
     --accent3: #06d6a0;
-    --accent3-glow: rgba(6,214,160,0.12);
     --amber: #f5a623;
   }
 
   html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--text); }
 
-  /* Ambient background — uses day color */
   body::before {
-    content:'';
-    position:fixed; inset:0;
+    content:''; position:fixed; inset:0;
     background:
       radial-gradient(ellipse 80% 50% at 20% 10%, var(--accent-glow2) 0%, transparent 60%),
       radial-gradient(ellipse 60% 40% at 80% 80%, hsla(calc(var(--day-h) + 40), 90%, 70%, 0.05) 0%, transparent 60%),
       radial-gradient(ellipse 40% 30% at 60% 20%, hsla(calc(var(--day-h) - 30), 80%, 60%, 0.03) 0%, transparent 60%);
     pointer-events:none; z-index:0;
-    transition: background 1s ease;
   }
 
   body {
     display: grid;
     grid-template-columns: 1fr 330px;
     grid-template-rows: auto 1fr;
-    grid-template-areas:
-      "header header"
-      "calendar todo";
-    gap: 12px;
-    padding: 12px;
-    height: 100vh;
-    position: relative;
-    z-index: 1;
+    grid-template-areas: "header header" "calendar countdown";
+    gap: 12px; padding: 12px; height: 100vh;
+    position: relative; z-index: 1;
   }
 
   /* ── HEADER ── */
   .header {
     grid-area: header;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(135deg, rgba(14,17,24,0.95) 0%, rgba(20,24,36,0.95) 100%);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 16px 24px;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(20px);
+    border: 1px solid var(--border2); border-radius: var(--radius);
+    padding: 16px 24px; position: relative; overflow: hidden;
   }
-  /* Glowing top border line */
   .header::before {
-    content:'';
-    position:absolute; top:0; left:10%; right:10%; height:1px;
+    content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
     background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-    border-radius: 1px;
-    transition: background 1s ease;
   }
-  /* Ambient glow blobs */
   .header::after {
-    content:'';
-    position:absolute; inset:0;
+    content:''; position:absolute; inset:0;
     background:
       radial-gradient(ellipse 30% 80% at 0% 50%, var(--accent-glow2) 0%, transparent 70%),
       radial-gradient(ellipse 25% 60% at 100% 50%, var(--accent2-glow) 0%, transparent 70%);
     pointer-events:none;
-    transition: background 1s ease;
   }
 
   .clock-block { position:relative; z-index:1; }
   .clock-time {
-    font-family:'DM Mono',monospace;
-    font-size:46px; font-weight:500; letter-spacing:-2px; line-height:1;
+    font-family:'DM Mono',monospace; font-size:46px; font-weight:500; letter-spacing:-2px; line-height:1;
     background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    transition: background 1s ease;
   }
   .clock-date { font-size:11px; color:var(--muted); margin-top:5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; }
 
@@ -120,7 +94,6 @@
     background: linear-gradient(135deg, #e8ecf4 20%, var(--accent) 60%, var(--accent2) 100%);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
     letter-spacing: -0.3px;
-    transition: background 1s ease;
   }
   .header-center p { font-size:11px; color:var(--muted2); margin-top:3px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; }
 
@@ -129,11 +102,9 @@
   .weather-icon-big { font-size:28px; line-height:1; }
   .weather-text { text-align:right; }
   .hdr-temp {
-    font-size:36px; font-weight:300; line-height:1;
-    font-family:'DM Mono',monospace;
+    font-size:36px; font-weight:300; line-height:1; font-family:'DM Mono',monospace;
     background: linear-gradient(135deg, #ffffff 0%, var(--accent-soft) 100%);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    transition: background 1s ease;
   }
   .hdr-desc { font-size:11px; color:var(--muted); margin-top:2px; }
   .hdr-loc { font-size:10px; color:var(--muted2); margin-top:1px; letter-spacing:0.04em; }
@@ -144,93 +115,51 @@
   .fc-mini-temp { font-size:11px; color:var(--text); font-weight:600; }
   .fc-mini-lo { font-size:9px; color:var(--muted2); margin-top:1px; }
 
-  /* ── PANELS ── */
-  .panel-header {
-    padding:14px 18px 11px;
-    border-bottom:1px solid var(--border);
-    display:flex; align-items:center; justify-content:space-between;
-    flex-shrink:0;
-  }
+  /* ── PANEL SHARED ── */
+  .panel-header { padding:14px 18px 11px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
   .panel-title-row { display:flex; align-items:center; gap:8px; }
   .panel-icon { font-size:14px; opacity:0.7; }
   .panel-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
-  .panel-badge {
-    font-size:10px; padding:3px 9px; border-radius:20px;
-    background:var(--accent-glow); color:var(--accent-soft);
-    border:1px solid var(--accent-border); font-weight:600;
-    transition: background 1s, color 1s, border-color 1s;
-  }
-  .panel-badge.green {
-    background:rgba(6,214,160,0.1); color:#06d6a0;
-    border-color:rgba(6,214,160,0.2);
-  }
+  .panel-badge { font-size:10px; padding:3px 9px; border-radius:20px; background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); font-weight:600; }
 
   /* ── CALENDAR ── */
   .calendar-panel {
     grid-area:calendar;
     background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
-    border:1px solid var(--border2);
-    border-radius:var(--radius);
-    display:flex; flex-direction:column;
-    overflow:hidden; min-height:0;
-    position:relative;
+    border:1px solid var(--border2); border-radius:var(--radius);
+    display:flex; flex-direction:column; overflow:hidden; min-height:0; position:relative;
   }
   .calendar-panel::before {
     content:''; position:absolute; top:0; left:0; right:0; height:1px;
     background:linear-gradient(90deg, transparent, var(--accent), transparent);
-    transition: background 1s ease;
   }
-
-  .agenda-list {
-    flex:1; overflow-y:auto; padding:10px 14px 14px;
-    scrollbar-width:thin; scrollbar-color:var(--surface3) transparent;
-  }
+  .agenda-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
   .agenda-day-block { margin-bottom:18px; }
   .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; padding:0 2px; }
-
   .agenda-day-pill {
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     width:44px; height:50px; border-radius:12px;
-    background:var(--surface2); border:1px solid var(--border2);
-    flex-shrink:0;
+    background:var(--surface2); border:1px solid var(--border2); flex-shrink:0;
   }
   .agenda-day-pill.today-pill {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    border-color:transparent;
-    box-shadow: 0 0 16px var(--accent-glow);
-    transition: background 1s, box-shadow 1s;
+    border-color:transparent; box-shadow: 0 0 16px var(--accent-glow);
   }
   .agenda-pill-num { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; line-height:1; color:var(--text); }
   .agenda-pill-day { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-top:1px; }
-  .today-pill .agenda-pill-num,
-  .today-pill .agenda-pill-day { color:white; }
-
+  .today-pill .agenda-pill-num, .today-pill .agenda-pill-day { color:white; }
   .agenda-day-meta { flex:1; min-width:0; }
   .agenda-day-name { font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
   .agenda-month-label { font-size:11px; color:var(--muted); margin-top:2px; }
-  .tag {
-    display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px;
-    font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
-  }
-  .tag-today { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); transition: background 1s, color 1s, border-color 1s; }
-  .tag-tomorrow { background:var(--accent2-glow); color:var(--accent2); border:1px solid hsla(calc(var(--day-h)+40),90%,70%,0.25); transition: background 1s, color 1s, border-color 1s; }
+  .tag { display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
+  .tag-today { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); }
+  .tag-tomorrow { background:var(--accent2-glow); color:var(--accent2); border:1px solid hsla(calc(var(--day-h)+40),90%,70%,0.25); }
   .agenda-divider { flex:1; height:1px; background:linear-gradient(90deg, var(--border2), transparent); margin-left:4px; }
-
   .agenda-event {
-    display:flex; align-items:stretch; gap:0;
-    border-radius:var(--radius-sm);
-    background:var(--surface2);
-    border:1px solid var(--border);
-    margin-bottom:6px;
-    overflow:hidden;
-    transition:border-color 0.2s, background 0.2s;
-    position:relative;
+    display:flex; align-items:stretch; border-radius:var(--radius-sm);
+    background:var(--surface2); border:1px solid var(--border); margin-bottom:6px; overflow:hidden; position:relative;
   }
-  .agenda-event::before {
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%);
-    pointer-events:none;
-  }
+  .agenda-event::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%); pointer-events:none; }
   .agenda-accent-bar { width:3px; flex-shrink:0; background:var(--accent); }
   .agenda-accent-bar.c1 { background:var(--accent2); }
   .agenda-accent-bar.c2 { background:var(--accent3); }
@@ -243,116 +172,104 @@
   .event-time-dot.c2 { background:var(--accent3); }
   .event-time-dot.c3 { background:var(--amber); }
   .recurring-badge { font-size:9px; color:var(--muted2); margin-left:4px; opacity:0.8; }
-
   .agenda-empty, .cal-loading { padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
   .cal-error { padding:20px; text-align:center; color:var(--danger); font-size:13px; line-height:1.7; }
   .cal-setup { padding:28px 20px; text-align:center; }
   .cal-setup p { color:var(--muted); font-size:13px; line-height:1.8; margin-bottom:14px; }
-  .cal-setup-btn { padding:10px 22px; border-radius:var(--radius-sm); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; box-shadow:0 4px 16px rgba(61,127,255,0.3); }
+  .cal-setup-btn { padding:10px 22px; border-radius:var(--radius-sm); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
 
-  /* ── TO-DO ── */
-  .todo-panel {
-    grid-area:todo;
+  /* ── COUNTDOWN PANEL ── */
+  .countdown-panel {
+    grid-area:countdown;
     background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
-    border:1px solid var(--border2);
-    border-radius:var(--radius);
-    display:flex; flex-direction:column;
-    overflow:hidden; min-height:0;
-    position:relative;
+    border:1px solid var(--border2); border-radius:var(--radius);
+    display:flex; flex-direction:column; overflow:hidden; min-height:0; position:relative;
   }
-  .todo-panel::before {
+  .countdown-panel::before {
     content:''; position:absolute; top:0; left:0; right:0; height:1px;
     background:linear-gradient(90deg, transparent, var(--accent2), transparent);
-    transition: background 1s ease;
   }
 
-  .todo-input-row { padding:11px 14px; border-bottom:1px solid var(--border); display:flex; gap:8px; flex-shrink:0; }
-  .todo-input {
+  /* Add form */
+  .cd-input-area { padding:12px 14px; border-bottom:1px solid var(--border); flex-shrink:0; display:flex; flex-direction:column; gap:7px; }
+  .cd-input-row { display:flex; gap:7px; }
+  .cd-input {
     flex:1; background:var(--surface3); border:1px solid var(--border2);
     border-radius:var(--radius-sm); color:var(--text);
-    font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 12px;
+    font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 11px;
     outline:none; transition:border-color 0.2s, box-shadow 0.2s;
   }
-  .todo-input::placeholder { color:var(--muted2); }
-  .todo-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); transition: border-color 1s, box-shadow 1s; }
-  .todo-add-btn {
+  .cd-input::placeholder { color:var(--muted2); }
+  .cd-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+  .cd-input.date-input { flex:0 0 140px; font-family:'DM Mono',monospace; font-size:12px; color-scheme:dark; }
+  .cd-add-btn {
     width:34px; height:34px; border-radius:var(--radius-sm);
     background:linear-gradient(135deg, var(--accent), var(--accent2));
     border:none; color:white; font-size:20px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    transition:opacity 0.2s, box-shadow 0.2s, background 1s; flex-shrink:0;
-    box-shadow:0 2px 10px var(--accent-glow);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    box-shadow:0 2px 10px var(--accent-glow); transition:opacity 0.2s;
   }
-  .todo-add-btn:active { opacity:0.75; }
+  .cd-add-btn:active { opacity:0.75; }
 
-  .todo-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
-  .todo-item {
-    display:flex; align-items:center; gap:10px;
-    padding:10px 12px; border-radius:var(--radius-sm);
-    background:var(--surface2); border:1px solid var(--border);
-    margin-bottom:6px; transition:opacity 0.2s, border-color 0.2s;
-    position:relative; overflow:hidden;
+  /* Countdown list */
+  .cd-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
+  .cd-empty { text-align:center; color:var(--muted2); font-size:13px; padding:30px 0; line-height:1.7; }
+
+  .cd-item {
+    display:flex; align-items:center; gap:0;
+    border-radius:var(--radius-sm); background:var(--surface2);
+    border:1px solid var(--border); margin-bottom:8px; overflow:hidden;
+    position:relative; transition:border-color 0.2s;
   }
-  .todo-item::before {
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(135deg, rgba(255,255,255,0.015) 0%, transparent 60%);
-    pointer-events:none;
+  .cd-item::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%); pointer-events:none; }
+
+  /* Big day number block on the left */
+  .cd-days-block {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:12px 14px; min-width:72px; flex-shrink:0;
+    background: linear-gradient(160deg, var(--accent-glow2) 0%, transparent 100%);
+    border-right:1px solid var(--border);
   }
-  .todo-item.done { opacity:0.35; }
-  .todo-check {
-    width:18px; height:18px; border-radius:50%;
-    border:1.5px solid var(--border2); background:transparent;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    transition:all 0.2s; flex-shrink:0;
+  .cd-days-num {
+    font-family:'DM Mono',monospace; font-size:28px; font-weight:500; line-height:1;
+    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
-  .todo-check.checked { background:var(--accent3); border-color:var(--accent3); box-shadow:0 0 8px rgba(6,214,160,0.4); }
-  .todo-check::after { content:'✓'; font-size:10px; color:white; display:none; font-weight:700; }
-  .todo-check.checked::after { display:block; }
-  .todo-text { flex:1; font-size:13px; color:var(--text); word-break:break-word; }
-  .todo-item.done .todo-text { text-decoration:line-through; color:var(--muted2); }
-  .todo-delete { width:22px; height:22px; border-radius:6px; border:none; background:transparent; color:var(--muted2); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; }
-  .todo-delete:hover { color:var(--danger); background:rgba(248,113,113,0.1); }
-  .todo-empty { text-align:center; color:var(--muted2); font-size:13px; padding:30px 0; }
+  .cd-days-num.today-num { background:linear-gradient(135deg,#06d6a0,#06d6a0); -webkit-background-clip:text; background-clip:text; }
+  .cd-days-num.past-num { background:linear-gradient(135deg, var(--muted2),var(--muted2)); -webkit-background-clip:text; background-clip:text; }
+  .cd-days-label { font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+
+  .cd-info { flex:1; padding:10px 12px; min-width:0; }
+  .cd-title { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cd-date-label { font-size:10px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; }
+  .cd-status {
+    display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px;
+    font-weight:700; letter-spacing:0.05em; text-transform:uppercase; margin-top:5px;
+  }
+  .cd-status.upcoming { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); }
+  .cd-status.today { background:rgba(6,214,160,0.15); color:#06d6a0; border:1px solid rgba(6,214,160,0.3); }
+  .cd-status.past { background:rgba(255,255,255,0.05); color:var(--muted2); border:1px solid var(--border2); }
+
+  .cd-delete { width:28px; height:28px; border-radius:var(--radius-xs); border:none; background:transparent; color:var(--muted2); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; margin-right:8px; }
+  .cd-delete:hover { color:var(--danger); background:rgba(248,113,113,0.1); }
 
   /* ── SETTINGS ── */
-  .settings-btn {
-    position:fixed; bottom:18px; right:18px; width:38px; height:38px;
-    border-radius:50%; background:var(--surface2); border:1px solid var(--border2);
-    color:var(--muted); font-size:17px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    z-index:100; transition:color 0.2s, box-shadow 0.2s;
-    box-shadow:0 4px 16px rgba(0,0,0,0.4);
-  }
-  .settings-btn:hover { color:var(--text); box-shadow:0 4px 20px rgba(61,127,255,0.2); }
+  .settings-btn { position:fixed; bottom:18px; right:18px; width:38px; height:38px; border-radius:50%; background:var(--surface2); border:1px solid var(--border2); color:var(--muted); font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:color 0.2s; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
+  .settings-btn:hover { color:var(--text); }
   .settings-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:200; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
   .settings-overlay.open { display:flex; }
-  .settings-box {
-    background: linear-gradient(160deg, #0e1118 0%, #0b0d16 100%);
-    border:1px solid var(--border2); border-radius:var(--radius);
-    padding:26px 28px; width:460px; max-width:92vw;
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-    position:relative; overflow:hidden;
-  }
-  .settings-box::before {
-    content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
-    background:linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-    transition: background 1s ease;
-  }
+  .settings-box { background:linear-gradient(160deg,#0e1118 0%,#0b0d16 100%); border:1px solid var(--border2); border-radius:var(--radius); padding:26px 28px; width:460px; max-width:92vw; box-shadow:0 20px 60px rgba(0,0,0,0.6); position:relative; overflow:hidden; }
+  .settings-box::before { content:''; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent); }
   .settings-box h2 { font-size:15px; font-weight:700; margin-bottom:4px; color:var(--text); }
   .settings-subtitle { font-size:12px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
   .settings-field { margin-bottom:13px; }
   .settings-label { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; margin-bottom:6px; display:block; }
   .settings-hint { font-size:11px; color:var(--muted2); margin-top:4px; line-height:1.5; }
-  .settings-input {
-    width:100%; background:var(--surface3); border:1px solid var(--border2);
-    border-radius:var(--radius-sm); color:var(--text);
-    font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px;
-    outline:none; transition:border-color 0.2s, box-shadow 0.2s;
-  }
+  .settings-input { width:100%; background:var(--surface3); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px; outline:none; transition:border-color 0.2s; }
   .settings-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
   .settings-row { display:flex; gap:10px; margin-top:20px; }
-  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:opacity 0.2s; }
-  .settings-save { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; box-shadow:0 4px 14px var(--accent-glow); transition: background 1s, box-shadow 1s; }
+  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
+  .settings-save { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; box-shadow:0 4px 14px var(--accent-glow); }
   .settings-close { background:var(--surface3); color:var(--muted); border:1px solid var(--border2); }
 
   ::-webkit-scrollbar { width:3px; }
@@ -399,20 +316,25 @@
   </div>
 </section>
 
-<!-- TO-DO -->
-<section class="todo-panel">
+<!-- COUNTDOWN -->
+<section class="countdown-panel">
   <div class="panel-header">
     <div class="panel-title-row">
-      <span class="panel-icon">✅</span>
-      <span class="panel-title">To-Do List</span>
+      <span class="panel-icon">⏳</span>
+      <span class="panel-title">Countdowns</span>
     </div>
-    <span class="panel-badge green" id="todo-count-badge">0 left</span>
+    <span class="panel-badge" id="cd-count-badge">0 events</span>
   </div>
-  <div class="todo-input-row">
-    <input class="todo-input" id="todo-input" placeholder="Add a task…" maxlength="80">
-    <button class="todo-add-btn" id="todo-add-btn" aria-label="Add task">+</button>
+  <div class="cd-input-area">
+    <div class="cd-input-row">
+      <input class="cd-input" id="cd-title-input" placeholder="Event name…" maxlength="40">
+    </div>
+    <div class="cd-input-row">
+      <input class="cd-input date-input" id="cd-date-input" type="date">
+      <button class="cd-add-btn" id="cd-add-btn" aria-label="Add countdown">+</button>
+    </div>
   </div>
-  <div class="todo-list" id="todo-list"></div>
+  <div class="cd-list" id="cd-list"></div>
 </section>
 
 <!-- SETTINGS -->
@@ -446,49 +368,46 @@
 </div>
 
 <script>
-// ── DAY-OF-WEEK COLOR THEME ──────────────────────────────────
-// Sun=red, Mon=orange, Tue=yellow, Wed=green, Thu=cyan, Fri=blue, Sat=violet
-const DAY_THEMES = [
-  { h:   0, s:'90%', l:'62%', name:'red'    }, // Sunday
-  { h:  25, s:'95%', l:'58%', name:'orange' }, // Monday
-  { h:  48, s:'95%', l:'55%', name:'yellow' }, // Tuesday
-  { h: 145, s:'70%', l:'52%', name:'green'  }, // Wednesday
-  { h: 185, s:'80%', l:'52%', name:'cyan'   }, // Thursday
-  { h: 220, s:'95%', l:'62%', name:'blue'   }, // Friday
-  { h: 270, s:'80%', l:'65%', name:'violet' }, // Saturday
+// ── DAY THEME ────────────────────────────────────────────────
+const DAY_THEMES=[
+  {h:0,  s:'90%',l:'62%'}, // Sun - red
+  {h:25, s:'95%',l:'58%'}, // Mon - orange
+  {h:48, s:'95%',l:'55%'}, // Tue - yellow
+  {h:145,s:'70%',l:'52%'}, // Wed - green
+  {h:185,s:'80%',l:'52%'}, // Thu - cyan
+  {h:220,s:'95%',l:'62%'}, // Fri - blue
+  {h:270,s:'80%',l:'65%'}, // Sat - violet
 ];
-(function applyDayTheme(){
-  const theme = DAY_THEMES[new Date().getDay()];
-  const r = document.documentElement.style;
-  r.setProperty('--day-h', theme.h);
-  r.setProperty('--day-s', theme.s);
-  r.setProperty('--day-l', theme.l);
+(function(){
+  const t=DAY_THEMES[new Date().getDay()];
+  const r=document.documentElement.style;
+  r.setProperty('--day-h',t.h);
+  r.setProperty('--day-s',t.s);
+  r.setProperty('--day-l',t.l);
 })();
 
-// ── CONFIG ──────────────────────────────────────────────────
-const DEFAULT_CONFIG = {
-  familyName: "Shall Family Dashboard",
-  icalUrl: "",
-  weatherCity: "Charlotte, NC",
-  weatherLat: 35.2271,
-  weatherLon: -80.8431,
-  refreshMins: 30
+// ── CONFIG ───────────────────────────────────────────────────
+const DEFAULT_CONFIG={
+  familyName:'Shall Family Dashboard',
+  icalUrl:'',
+  weatherCity:'Charlotte, NC',
+  weatherLat:35.2271,
+  weatherLon:-80.8431,
+  refreshMins:30
 };
 function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg4'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
 function saveConfig(c){ localStorage.setItem('dash-cfg4',JSON.stringify(c)); }
-let CONFIG = loadConfig();
+let CONFIG=loadConfig();
 
 // ── AUTO REFRESH ─────────────────────────────────────────────
-let refreshTimer=null, countdownTick=null;
+let refreshTimer=null;
 function startRefreshTimer(){
   if(refreshTimer) clearTimeout(refreshTimer);
-  if(countdownTick) clearInterval(countdownTick);
   const mins=parseInt(CONFIG.refreshMins)||0;
-  if(mins<=0) return;
-  refreshTimer=setTimeout(()=>location.reload(), mins*60*1000);
+  if(mins>0) refreshTimer=setTimeout(()=>location.reload(),mins*60*1000);
 }
 
-// ── CLOCK ───────────────────────────────────────────────────
+// ── CLOCK ────────────────────────────────────────────────────
 const DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const DAYS_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -496,9 +415,9 @@ const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct',
 
 function updateClock(){
   const n=new Date();
-  let h=n.getHours(), m=String(n.getMinutes()).padStart(2,'0');
-  const ampm=h>=12?'PM':'AM'; h=h%12||12;
-  document.getElementById('clock').textContent=h+':'+m+' '+ampm;
+  let h=n.getHours(),m=String(n.getMinutes()).padStart(2,'0'),ap=h>=12?'PM':'AM';
+  h=h%12||12;
+  document.getElementById('clock').textContent=h+':'+m+' '+ap;
   document.getElementById('date-label').textContent=DAYS_FULL[n.getDay()]+' · '+MONTHS_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
 }
 updateClock(); setInterval(updateClock,1000);
@@ -508,7 +427,7 @@ const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'�
 const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 
 async function loadWeather(){
-  const lat=CONFIG.weatherLat||35.2271, lon=CONFIG.weatherLon||-80.8431;
+  const lat=CONFIG.weatherLat||35.2271,lon=CONFIG.weatherLon||-80.8431;
   document.getElementById('hdr-loc').textContent=CONFIG.weatherCity||'Charlotte, NC';
   try{
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
@@ -535,28 +454,19 @@ async function geocodeCity(city){
   try{
     const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&format=json`);
     const j=await r.json();
-    if(j.results&&j.results.length){ CONFIG.weatherLat=j.results[0].latitude; CONFIG.weatherLon=j.results[0].longitude; }
+    if(j.results&&j.results.length){CONFIG.weatherLat=j.results[0].latitude;CONFIG.weatherLon=j.results[0].longitude;}
   }catch(e){}
 }
 
-// ── ICS PARSER + RRULE EXPANDER ─────────────────────────────
-// Parses iCal text and expands recurring events (RRULE) within a date window.
-// Handles: FREQ=DAILY/WEEKLY/MONTHLY/YEARLY, INTERVAL, BYDAY, BYMONTHDAY,
-//          COUNT, UNTIL, and EXDATE (cancelled occurrences).
-
+// ── ICS PARSER + RRULE ───────────────────────────────────────
 const DAY_MAP={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
 
-function parseDateTime(val, params){
+function parseDateTime(val,params){
   if(!val) return null;
-  val=val.replace(/\s/g,'');
-  params=(params||'').toUpperCase();
-
-  // All-day
-  if(/^\d{8}$/.test(val)){
-    return { date:new Date(+val.slice(0,4),+val.slice(4,6)-1,+val.slice(6,8)), allDay:true };
-  }
-  const yr=+val.slice(0,4), mo=+val.slice(4,6)-1, dy=+val.slice(6,8);
-  const hr=+val.slice(9,11)||0, mn=+val.slice(11,13)||0, sc=+val.slice(13,15)||0;
+  val=val.replace(/\s/g,''); params=(params||'').toUpperCase();
+  if(/^\d{8}$/.test(val)) return{date:new Date(+val.slice(0,4),+val.slice(4,6)-1,+val.slice(6,8)),allDay:true};
+  const yr=+val.slice(0,4),mo=+val.slice(4,6)-1,dy=+val.slice(6,8);
+  const hr=+val.slice(9,11)||0,mn=+val.slice(11,13)||0,sc=+val.slice(13,15)||0;
   let date;
   if(val.endsWith('Z')){
     date=new Date(Date.UTC(yr,mo,dy,hr,mn,sc));
@@ -569,61 +479,43 @@ function parseDateTime(val, params){
       const fmt=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
       const p=Object.fromEntries(fmt.formatToParts(probe).map(x=>[x.type,x.value]));
       const probeLocal=new Date(+p.year,+p.month-1,+p.day,+p.hour%24,+p.minute,+p.second);
-      const wantLocal=new Date(yr,mo,dy,hr,mn,sc);
-      date=new Date(wantLocal.getTime()-(probe.getTime()-probeLocal.getTime()));
-    }catch(e){ date=new Date(yr,mo,dy,hr,mn,sc); }
+      date=new Date(new Date(yr,mo,dy,hr,mn,sc).getTime()-(probe.getTime()-probeLocal.getTime()));
+    }catch(e){date=new Date(yr,mo,dy,hr,mn,sc);}
   } else {
     date=new Date(yr,mo,dy,hr,mn,sc);
   }
-  return { date, allDay:false };
+  return{date,allDay:false};
 }
 
-function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
-function addMonths(d,n){ const r=new Date(d); r.setMonth(r.getMonth()+n); return r; }
-function addYears(d,n){ const r=new Date(d); r.setFullYear(r.getFullYear()+n); return r; }
-function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
-function dateKey(d){ return d.getFullYear()*10000+d.getMonth()*100+d.getDate(); }
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function addMonths(d,n){const r=new Date(d);r.setMonth(r.getMonth()+n);return r;}
+function addYears(d,n){const r=new Date(d);r.setFullYear(r.getFullYear()+n);return r;}
+function dateKey(d){return d.getFullYear()*10000+d.getMonth()*100+d.getDate();}
 
-function expandRRule(dtstart, dtend, rruleStr, exdates, windowStart, windowEnd, allDay){
+function expandRRule(dtstart,dtend,rruleStr,exdates,windowStart,windowEnd,allDay){
   const rule={};
-  rruleStr.split(';').forEach(part=>{
-    const [k,v]=part.split('=');
-    rule[k.trim().toUpperCase()]=v?v.trim():'';
-  });
-
-  const freq=rule.FREQ||'';
-  const interval=parseInt(rule.INTERVAL)||1;
+  rruleStr.split(';').forEach(p=>{const[k,v]=p.split('=');rule[k.trim().toUpperCase()]=v?v.trim():'';});
+  const freq=rule.FREQ||'',interval=parseInt(rule.INTERVAL)||1;
   const count=rule.COUNT?parseInt(rule.COUNT):null;
   const until=rule.UNTIL?parseDateTime(rule.UNTIL,null):null;
   const untilDate=until?until.date:null;
-
-  // BYDAY parsing e.g. MO,WE,FR or 1MO,-1FR
   const byDay=rule.BYDAY?rule.BYDAY.split(',').map(s=>s.trim()):null;
   const byMonthDay=rule.BYMONTHDAY?rule.BYMONTHDAY.split(',').map(Number):null;
-
   const exSet=new Set(exdates.map(d=>dateKey(d)));
   const duration=dtend?(dtend-dtstart):0;
   const occurrences=[];
-  let cur=new Date(dtstart);
-  let n=0;
-  const MAX=500; // safety cap
-
+  let cur=new Date(dtstart),n=0;
+  const MAX=500;
   while(n<MAX){
-    // Check termination
     if(count!==null&&n>=count) break;
     if(untilDate&&cur>untilDate) break;
     if(cur>windowEnd) break;
-
-    // Collect candidates for this iteration
     let candidates=[];
-
     if(freq==='DAILY'){
       candidates=[new Date(cur)];
     } else if(freq==='WEEKLY'){
       if(byDay){
-        // Find all matching days in this week (week of cur)
         const weekStart=new Date(cur);
-        // Go to Sunday of cur's week
         weekStart.setDate(weekStart.getDate()-weekStart.getDay());
         byDay.forEach(d=>{
           const dayNum=DAY_MAP[d.replace(/^[+-]?\d*/,'').toUpperCase()];
@@ -631,35 +523,21 @@ function expandRRule(dtstart, dtend, rruleStr, exdates, windowStart, windowEnd, 
           const cand=new Date(weekStart);
           cand.setDate(weekStart.getDate()+dayNum);
           cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
-          // Only include if at or after dtstart
           if(cand>=dtstart) candidates.push(cand);
         });
         candidates.sort((a,b)=>a-b);
-      } else {
-        candidates=[new Date(cur)];
-      }
+      } else { candidates=[new Date(cur)]; }
     } else if(freq==='MONTHLY'){
       if(byDay){
-        // e.g. 1MO = first Monday of month, -1FR = last Friday
-        const year=cur.getFullYear(), month=cur.getMonth();
+        const year=cur.getFullYear(),month=cur.getMonth();
         byDay.forEach(d=>{
           const m=d.match(/^([+-]?\d*)([A-Z]{2})$/i);
           if(!m) return;
-          const nth=m[1]?parseInt(m[1]):1;
-          const dayNum=DAY_MAP[m[2].toUpperCase()];
+          const nth=m[1]?parseInt(m[1]):1,dayNum=DAY_MAP[m[2].toUpperCase()];
           if(dayNum===undefined) return;
           let cand;
-          if(nth>0){
-            // nth occurrence: find first occurrence of dayNum in month, then add weeks
-            const first=new Date(year,month,1);
-            const diff=(dayNum-first.getDay()+7)%7;
-            cand=new Date(year,month,1+diff+(nth-1)*7);
-          } else {
-            // negative: count from end of month
-            const last=new Date(year,month+1,0);
-            const diff=(last.getDay()-dayNum+7)%7;
-            cand=new Date(year,month+1,0-diff+(nth+1)*7);
-          }
+          if(nth>0){const first=new Date(year,month,1),diff=(dayNum-first.getDay()+7)%7;cand=new Date(year,month,1+diff+(nth-1)*7);}
+          else{const last=new Date(year,month+1,0),diff=(last.getDay()-dayNum+7)%7;cand=new Date(year,month+1,0-diff+(nth+1)*7);}
           cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
           if(cand.getMonth()===month&&cand>=dtstart) candidates.push(cand);
         });
@@ -668,27 +546,20 @@ function expandRRule(dtstart, dtend, rruleStr, exdates, windowStart, windowEnd, 
           const cand=new Date(cur.getFullYear(),cur.getMonth(),dom,dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds());
           if(cand>=dtstart) candidates.push(cand);
         });
-      } else {
-        candidates=[new Date(cur)];
-      }
+      } else { candidates=[new Date(cur)]; }
     } else if(freq==='YEARLY'){
       candidates=[new Date(cur)];
-    } else {
-      break;
-    }
+    } else break;
 
-    // Emit candidates that fall within window and aren't excluded
     candidates.forEach(cand=>{
       if(exSet.has(dateKey(cand))) return;
       if(cand>=windowStart&&cand<=windowEnd){
         const end=duration?new Date(cand.getTime()+duration):null;
-        occurrences.push({ date:cand, end, allDay });
+        occurrences.push({date:cand,end,allDay});
       }
     });
-
     n++;
-    // Advance cur by interval
-    if(freq==='DAILY')      cur=addDays(cur,interval);
+    if(freq==='DAILY') cur=addDays(cur,interval);
     else if(freq==='WEEKLY') cur=addDays(cur,interval*7);
     else if(freq==='MONTHLY') cur=addMonths(cur,interval);
     else if(freq==='YEARLY') cur=addYears(cur,interval);
@@ -697,133 +568,98 @@ function expandRRule(dtstart, dtend, rruleStr, exdates, windowStart, windowEnd, 
   return occurrences;
 }
 
-function parseICS(text, windowStart, windowEnd){
+function parseICS(text,windowStart,windowEnd){
   const unfolded=text.replace(/\r?\n[ \t]/g,'');
   const results=[];
   const blocks=unfolded.split('BEGIN:VEVENT');
-
   for(let i=1;i<blocks.length;i++){
     const b=blocks[i];
-    const getRaw=key=>{
-      const m=b.match(new RegExp('^'+key+'([^:]*):([^\\r\\n]+)','im'));
-      return m?{params:m[1],value:m[2].trim()}:null;
-    };
-    const getVal=key=>{ const r=getRaw(key); return r?r.value:null; };
-
+    const getRaw=key=>{const m=b.match(new RegExp('^'+key+'([^:]*):([^\\r\\n]+)','im'));return m?{params:m[1],value:m[2].trim()}:null;};
+    const getVal=key=>{const r=getRaw(key);return r?r.value:null;};
     const summaryRaw=getRaw('SUMMARY');
     const summary=(summaryRaw?summaryRaw.value:'Untitled').replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').replace(/\\\\/g,'\\');
-
     const dtStartRaw=getRaw('DTSTART');
     if(!dtStartRaw) continue;
     const dtEndRaw=getRaw('DTEND');
     const rruleVal=getVal('RRULE');
-
-    const startParsed=parseDateTime(dtStartRaw.value, dtStartRaw.params);
+    const startParsed=parseDateTime(dtStartRaw.value,dtStartRaw.params);
     if(!startParsed) continue;
     const endParsed=dtEndRaw?parseDateTime(dtEndRaw.value,dtEndRaw.params):null;
-
-    // Parse EXDATEs (cancelled occurrences)
     const exdates=[];
-    const exdateRe=/^EXDATE([^:]*):([^\r\n]+)/gim;
+    const exRe=/^EXDATE([^:]*):([^\r\n]+)/gim;
     let exm;
-    while((exm=exdateRe.exec(b))!==null){
-      exm[2].split(',').forEach(v=>{
-        const p=parseDateTime(v.trim(),exm[1]);
-        if(p) exdates.push(p.date);
-      });
+    while((exm=exRe.exec(b))!==null){
+      exm[2].split(',').forEach(v=>{const p=parseDateTime(v.trim(),exm[1]);if(p)exdates.push(p.date);});
     }
-
     if(rruleVal){
-      // Recurring event — expand occurrences
-      const occurrences=expandRRule(
-        startParsed.date,
-        endParsed?endParsed.date:null,
-        rruleVal, exdates,
-        windowStart, windowEnd,
-        startParsed.allDay
-      );
-      occurrences.forEach(occ=>{
-        results.push({ summary, start:occ.date, end:occ.end, allDay:occ.allDay, recurring:true });
-      });
+      expandRRule(startParsed.date,endParsed?endParsed.date:null,rruleVal,exdates,windowStart,windowEnd,startParsed.allDay)
+        .forEach(occ=>results.push({summary,start:occ.date,end:occ.end,allDay:occ.allDay,recurring:true}));
     } else {
-      // One-time event
-      if(startParsed.date<=windowEnd && (endParsed?endParsed.date:startParsed.date)>=windowStart){
-        results.push({ summary, start:startParsed.date, end:endParsed?endParsed.date:null, allDay:startParsed.allDay, recurring:false });
+      // ── FIX: only include if start is within window (no past events) ──
+      if(startParsed.date>=windowStart&&startParsed.date<=windowEnd){
+        results.push({summary,start:startParsed.date,end:endParsed?endParsed.date:null,allDay:startParsed.allDay,recurring:false});
       }
     }
   }
-
   results.sort((a,b)=>a.start-b.start);
   return results;
 }
 
-// ── AGENDA RENDER ───────────────────────────────────────────
+// ── AGENDA RENDER ────────────────────────────────────────────
 const BAR_COLORS=['','c1','c2','c3'];
-function fmt12(dt){ let h=dt.getHours(),m=dt.getMinutes(),ap=h>=12?'pm':'am'; h=h%12||12; return h+':'+(m?String(m).padStart(2,'0'):'00')+'\u202f'+ap; }
+function fmt12(dt){let h=dt.getHours(),m=dt.getMinutes(),ap=h>=12?'pm':'am';h=h%12||12;return h+':'+(m?String(m).padStart(2,'0'):'00')+'\u202f'+ap;}
 
 function renderAgenda(events){
   const list=document.getElementById('agenda-list');
   const badge=document.getElementById('event-count-badge');
-  const today=new Date(); today.setHours(0,0,0,0);
   badge.textContent=events.length+' events';
-  if(!events.length){ list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>'; return; }
-
-  const groups={}, order=[];
+  if(!events.length){list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>';return;}
+  const groups={},order=[];
   events.forEach((ev,idx)=>{
     const d=ev.start;
     const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
-    if(!groups[key]){ groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]}; order.push(key); }
+    if(!groups[key]){groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]};order.push(key);}
     groups[key].events.push({...ev,ci:idx%4});
   });
-
   list.innerHTML='';
-  const todayMs=today.getTime();
+  const todayMs=(()=>{const t=new Date();t.setHours(0,0,0,0);return t.getTime();})();
   order.forEach(key=>{
-    const {date,events:dayEvs}=groups[key];
-    const isToday=date.getTime()===todayMs;
-    const isTomorrow=date.getTime()===todayMs+86400000;
-
-    const block=document.createElement('div'); block.className='agenda-day-block';
-
-    // Day header with pill
-    const hdr=document.createElement('div'); hdr.className='agenda-day-header';
-    const pill=document.createElement('div'); pill.className='agenda-day-pill'+(isToday?' today-pill':'');
-    const pillNum=document.createElement('div'); pillNum.className='agenda-pill-num'; pillNum.textContent=date.getDate();
-    const pillDay=document.createElement('div'); pillDay.className='agenda-pill-day'; pillDay.textContent=DAYS_SHORT[date.getDay()];
-    pill.appendChild(pillNum); pill.appendChild(pillDay);
-
-    const meta=document.createElement('div'); meta.className='agenda-day-meta';
-    const nameLine=document.createElement('div'); nameLine.className='agenda-day-name';
-    nameLine.textContent=DAYS_FULL[date.getDay()];
-    if(isToday){ const t=document.createElement('span'); t.className='tag tag-today'; t.textContent='Today'; nameLine.appendChild(t); }
-    else if(isTomorrow){ const t=document.createElement('span'); t.className='tag tag-tomorrow'; t.textContent='Tomorrow'; nameLine.appendChild(t); }
-    const monLine=document.createElement('div'); monLine.className='agenda-month-label';
-    monLine.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
-    meta.appendChild(nameLine); meta.appendChild(monLine);
-
-    const divider=document.createElement('div'); divider.className='agenda-divider';
-    hdr.appendChild(pill); hdr.appendChild(meta); hdr.appendChild(divider);
+    const{date,events:dayEvs}=groups[key];
+    const isToday=date.getTime()===todayMs,isTomorrow=date.getTime()===todayMs+86400000;
+    const block=document.createElement('div');block.className='agenda-day-block';
+    const hdr=document.createElement('div');hdr.className='agenda-day-header';
+    const pill=document.createElement('div');pill.className='agenda-day-pill'+(isToday?' today-pill':'');
+    const pillNum=document.createElement('div');pillNum.className='agenda-pill-num';pillNum.textContent=date.getDate();
+    const pillDay=document.createElement('div');pillDay.className='agenda-pill-day';pillDay.textContent=DAYS_SHORT[date.getDay()];
+    pill.appendChild(pillNum);pill.appendChild(pillDay);
+    const meta=document.createElement('div');meta.className='agenda-day-meta';
+    const nameLine=document.createElement('div');nameLine.className='agenda-day-name';nameLine.textContent=DAYS_FULL[date.getDay()];
+    if(isToday){const t=document.createElement('span');t.className='tag tag-today';t.textContent='Today';nameLine.appendChild(t);}
+    else if(isTomorrow){const t=document.createElement('span');t.className='tag tag-tomorrow';t.textContent='Tomorrow';nameLine.appendChild(t);}
+    const monLine=document.createElement('div');monLine.className='agenda-month-label';monLine.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
+    meta.appendChild(nameLine);meta.appendChild(monLine);
+    const divider=document.createElement('div');divider.className='agenda-divider';
+    hdr.appendChild(pill);hdr.appendChild(meta);hdr.appendChild(divider);
     block.appendChild(hdr);
-
     dayEvs.forEach(ev=>{
-      const item=document.createElement('div'); item.className='agenda-event';
-      const bar=document.createElement('div'); bar.className='agenda-accent-bar '+(BAR_COLORS[ev.ci]||'');
-      const inner=document.createElement('div'); inner.className='agenda-event-inner';
-      const title=document.createElement('div'); title.className='agenda-event-title'; title.textContent=ev.summary;
-      const timeRow=document.createElement('div'); timeRow.className='agenda-event-time';
-      const dot=document.createElement('span'); dot.className='event-time-dot '+(BAR_COLORS[ev.ci]||'');
+      const item=document.createElement('div');item.className='agenda-event';
+      const bar=document.createElement('div');bar.className='agenda-accent-bar '+(BAR_COLORS[ev.ci]||'');
+      const inner=document.createElement('div');inner.className='agenda-event-inner';
+      const title=document.createElement('div');title.className='agenda-event-title';title.textContent=ev.summary;
+      const timeRow=document.createElement('div');timeRow.className='agenda-event-time';
+      const dot=document.createElement('span');dot.className='event-time-dot '+(BAR_COLORS[ev.ci]||'');
       const timeText=document.createTextNode(ev.allDay?'All day':fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):''));
-      timeRow.appendChild(dot); timeRow.appendChild(timeText);
-      if(ev.recurring){ const rb=document.createElement('span'); rb.className='recurring-badge'; rb.textContent='↻ repeating'; timeRow.appendChild(rb); }
-      inner.appendChild(title); inner.appendChild(timeRow);
-      item.appendChild(bar); item.appendChild(inner);
+      timeRow.appendChild(dot);timeRow.appendChild(timeText);
+      if(ev.recurring){const rb=document.createElement('span');rb.className='recurring-badge';rb.textContent='↻ repeating';timeRow.appendChild(rb);}
+      inner.appendChild(title);inner.appendChild(timeRow);
+      item.appendChild(bar);item.appendChild(inner);
       block.appendChild(item);
     });
     list.appendChild(block);
   });
 }
 
-// ── CALENDAR FETCH ──────────────────────────────────────────
+// ── CALENDAR FETCH ───────────────────────────────────────────
 async function loadCalendar(){
   const url=CONFIG.icalUrl;
   if(!url){
@@ -845,46 +681,104 @@ async function loadCalendar(){
       if(!res.ok) throw new Error('HTTP '+res.status);
       const text=await res.text();
       if(!text.includes('BEGIN:VCALENDAR')) throw new Error('Not a valid iCal file');
-      const today=new Date(); today.setHours(0,0,0,0);
-      const cutoff=new Date(today); cutoff.setDate(cutoff.getDate()+60);
-      renderAgenda(parseICS(text, today, cutoff));
+      const today=new Date();today.setHours(0,0,0,0);
+      const cutoff=new Date(today);cutoff.setDate(cutoff.getDate()+60);
+      renderAgenda(parseICS(text,today,cutoff));
       return;
-    }catch(e){ lastErr=e.message; }
+    }catch(e){lastErr=e.message;}
   }
   document.getElementById('agenda-list').innerHTML=`<div class="cal-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Make sure you're using the Google Calendar iCal URL (ends in /basic.ics).</small></div>`;
   document.getElementById('event-count-badge').textContent='Error';
 }
 loadCalendar(); setInterval(loadCalendar,15*60*1000);
 
-// ── TO-DO ───────────────────────────────────────────────────
-let todos=[];
-try{ todos=JSON.parse(localStorage.getItem('dash-todos')||'[]'); }catch(e){}
-function saveTodos(){ localStorage.setItem('dash-todos',JSON.stringify(todos)); }
-function renderTodos(){
-  const list=document.getElementById('todo-list');
-  document.getElementById('todo-count-badge').textContent=todos.filter(t=>!t.done).length+' left';
-  if(!todos.length){ list.innerHTML='<div class="todo-empty">Nothing here yet — add a task above!</div>'; return; }
+// ── COUNTDOWN ────────────────────────────────────────────────
+let countdowns=[];
+try{countdowns=JSON.parse(localStorage.getItem('dash-countdowns')||'[]');}catch(e){}
+function saveCountdowns(){localStorage.setItem('dash-countdowns',JSON.stringify(countdowns));}
+
+function daysUntil(dateStr){
+  // Compare date-only, no time component
+  const today=new Date(); today.setHours(0,0,0,0);
+  const target=new Date(dateStr+'T00:00:00');
+  return Math.round((target-today)/(1000*60*60*24));
+}
+
+function renderCountdowns(){
+  const list=document.getElementById('cd-list');
+  const badge=document.getElementById('cd-count-badge');
+  // Sort: today first, then upcoming by days, then past most-recent first
+  const sorted=[...countdowns].sort((a,b)=>{
+    const da=daysUntil(a.date),db=daysUntil(b.date);
+    if(da>=0&&db>=0) return da-db;   // both upcoming: soonest first
+    if(da<0&&db<0) return db-da;     // both past: most recent first
+    return da<0?1:-1;                // upcoming before past
+  });
+  badge.textContent=countdowns.length+(countdowns.length===1?' event':' events');
+  if(!sorted.length){
+    list.innerHTML='<div class="cd-empty">No countdowns yet.<br>Add an event title and date above!</div>';
+    return;
+  }
   list.innerHTML='';
-  todos.forEach((todo,i)=>{
-    const item=document.createElement('div'); item.className='todo-item'+(todo.done?' done':'');
-    const check=document.createElement('div'); check.className='todo-check'+(todo.done?' checked':'');
-    check.onclick=()=>{ todos[i].done=!todos[i].done; saveTodos(); renderTodos(); };
-    const text=document.createElement('div'); text.className='todo-text'; text.textContent=todo.text;
-    const del=document.createElement('button'); del.className='todo-delete'; del.innerHTML='×'; del.setAttribute('aria-label','Delete');
-    del.onclick=()=>{ todos.splice(i,1); saveTodos(); renderTodos(); };
-    item.appendChild(check); item.appendChild(text); item.appendChild(del);
+  sorted.forEach((cd,si)=>{
+    const days=daysUntil(cd.date);
+    const isPast=days<0, isToday=days===0;
+    const item=document.createElement('div');item.className='cd-item';
+
+    // Left block — big day number
+    const dBlock=document.createElement('div');dBlock.className='cd-days-block';
+    const dNum=document.createElement('div');
+    dNum.className='cd-days-num'+(isToday?' today-num':isPast?' past-num':'');
+    dNum.textContent=Math.abs(days);
+    const dLabel=document.createElement('div');dLabel.className='cd-days-label';
+    dLabel.textContent=isToday?'today':Math.abs(days)===1?'day':'days';
+    dBlock.appendChild(dNum);dBlock.appendChild(dLabel);
+
+    // Right info
+    const info=document.createElement('div');info.className='cd-info';
+    const title=document.createElement('div');title.className='cd-title';title.textContent=cd.title;
+    const dateLabel=document.createElement('div');dateLabel.className='cd-date-label';
+    // Format the date nicely
+    const tgt=new Date(cd.date+'T00:00:00');
+    dateLabel.textContent=DAYS_SHORT[tgt.getDay()]+', '+MONTHS_SHORT[tgt.getMonth()]+' '+tgt.getDate()+', '+tgt.getFullYear();
+    const status=document.createElement('div');
+    if(isToday){status.className='cd-status today';status.textContent='🎉 Today!';}
+    else if(isPast){status.className='cd-status past';status.textContent=Math.abs(days)+' days ago';}
+    else{status.className='cd-status upcoming';status.textContent='upcoming';}
+    info.appendChild(title);info.appendChild(dateLabel);info.appendChild(status);
+
+    // Delete button — find original index
+    const origIdx=countdowns.findIndex(c=>c.id===cd.id);
+    const del=document.createElement('button');del.className='cd-delete';del.innerHTML='×';del.setAttribute('aria-label','Delete');
+    del.onclick=()=>{countdowns.splice(origIdx,1);saveCountdowns();renderCountdowns();};
+
+    item.appendChild(dBlock);item.appendChild(info);item.appendChild(del);
     list.appendChild(item);
   });
 }
-function addTodo(){
-  const inp=document.getElementById('todo-input'); const v=inp.value.trim(); if(!v) return;
-  todos.unshift({text:v,done:false,id:Date.now()}); saveTodos(); renderTodos(); inp.value=''; inp.focus();
-}
-document.getElementById('todo-add-btn').onclick=addTodo;
-document.getElementById('todo-input').onkeydown=e=>{ if(e.key==='Enter') addTodo(); };
-renderTodos();
 
-// ── SETTINGS ────────────────────────────────────────────────
+function addCountdown(){
+  const titleEl=document.getElementById('cd-title-input');
+  const dateEl=document.getElementById('cd-date-input');
+  const title=titleEl.value.trim();
+  const date=dateEl.value;
+  if(!title||!date) return;
+  countdowns.push({title,date,id:Date.now()});
+  saveCountdowns();renderCountdowns();
+  titleEl.value='';dateEl.value='';titleEl.focus();
+}
+document.getElementById('cd-add-btn').onclick=addCountdown;
+document.getElementById('cd-title-input').onkeydown=e=>{if(e.key==='Enter') document.getElementById('cd-date-input').focus();};
+document.getElementById('cd-date-input').onkeydown=e=>{if(e.key==='Enter') addCountdown();};
+
+// Set date input default to today
+document.getElementById('cd-date-input').valueAsDate=new Date();
+renderCountdowns();
+
+// Refresh countdowns daily (so day counts stay accurate)
+setInterval(renderCountdowns, 60*60*1000);
+
+// ── SETTINGS ─────────────────────────────────────────────────
 function openSettings(){
   document.getElementById('s-name').value=CONFIG.familyName||'';
   document.getElementById('s-ical').value=CONFIG.icalUrl||'';
@@ -892,10 +786,10 @@ function openSettings(){
   document.getElementById('s-refresh').value=CONFIG.refreshMins??30;
   document.getElementById('settings-overlay').classList.add('open');
 }
-function closeSettings(){ document.getElementById('settings-overlay').classList.remove('open'); }
+function closeSettings(){document.getElementById('settings-overlay').classList.remove('open');}
 document.getElementById('settings-btn').onclick=openSettings;
 document.getElementById('settings-close').onclick=closeSettings;
-document.getElementById('settings-overlay').onclick=e=>{ if(e.target===e.currentTarget) closeSettings(); };
+document.getElementById('settings-overlay').onclick=e=>{if(e.target===e.currentTarget)closeSettings();};
 document.getElementById('settings-save').onclick=async()=>{
   const newCity=document.getElementById('s-city').value.trim()||'Charlotte, NC';
   const cityChanged=newCity!==CONFIG.weatherCity;
@@ -903,13 +797,10 @@ document.getElementById('settings-save').onclick=async()=>{
   CONFIG.icalUrl=document.getElementById('s-ical').value.trim();
   CONFIG.weatherCity=newCity;
   CONFIG.refreshMins=parseInt(document.getElementById('s-refresh').value)||30;
-  if(cityChanged){ CONFIG.weatherLat=null; CONFIG.weatherLon=null; await geocodeCity(newCity); }
+  if(cityChanged){CONFIG.weatherLat=null;CONFIG.weatherLon=null;await geocodeCity(newCity);}
   saveConfig(CONFIG);
   document.getElementById('family-name').textContent=CONFIG.familyName;
-  closeSettings();
-  loadCalendar();
-  loadWeather();
-  startRefreshTimer();
+  closeSettings();loadCalendar();loadWeather();startRefreshTimer();
 };
 
 document.getElementById('family-name').textContent=CONFIG.familyName;
