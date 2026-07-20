@@ -4,277 +4,423 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shall Family Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<!--
+  /* Link: theshallfamily0-eng.github.io/family-dashboard
+   * script.google.com/macros/s/AKfycbwKQDTiSgGrJKIbNt6pKVEW27B1iraPe6IXUuUxc-SKenOGIkkhVmaFddKFJbSVMTuR/exec
+   * */
+-->
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
- 
- /* Link: theshallfamily0-eng.github.io/family-dashboard
-* script.google.com/macros/s/AKfycbwKQDTiSgGrJKIbNt6pKVEW27B1iraPe6IXUuUxc-SKenOGIkkhVmaFddKFJbSVMTuR/exec 
-* */
- 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #07090f;
-    --surface: #0e1118;
-    --surface2: #141824;
-    --surface3: #1c2235;
-    --border: rgba(255,255,255,0.06);
-    --border2: rgba(255,255,255,0.11);
-    --text: #dde3f0;
-    --muted: #6b748c;
-    --muted2: #4a5168;
-    --danger: #f87171;
-    --radius: 18px;
-    --radius-sm: 11px;
-    --radius-xs: 7px;
-    --day-h: 220;
-    --day-s: 100%;
-    --day-l: 65%;
-    --accent:       hsl(var(--day-h), var(--day-s), var(--day-l));
-    --accent-soft:  hsl(var(--day-h), var(--day-s), 75%);
-    --accent-glow:  hsla(var(--day-h), var(--day-s), var(--day-l), 0.15);
-    --accent-glow2: hsla(var(--day-h), var(--day-s), var(--day-l), 0.08);
-    --accent-border:hsla(var(--day-h), var(--day-s), var(--day-l), 0.25);
-    --accent2:      hsl(calc(var(--day-h) + 40), 90%, 70%);
-    --accent2-glow: hsla(calc(var(--day-h) + 40), 90%, 70%, 0.12);
-    --accent3: #06d6a0;
-    --amber: #f5a623;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--text); }
+:root {
+  --bg: #060b18;
+  --navy-1: #080e1f;
+  --navy-2: #0c1428;
+  --navy-3: #101a32;
+  --navy-4: #16213e;
+  --glass: rgba(16, 26, 50, 0.7);
+  --glass2: rgba(22, 33, 62, 0.5);
+  --border: rgba(99, 179, 237, 0.08);
+  --border2: rgba(99, 179, 237, 0.15);
+  --border3: rgba(99, 179, 237, 0.25);
+  --text: #e8f0fe;
+  --text2: #a0b4d0;
+  --text3: #5a7a9a;
+  --blue: #3b82f6;
+  --blue-bright: #60a5fa;
+  --cyan: #06b6d4;
+  --cyan-bright: #22d3ee;
+  --electric: #00d4ff;
+  --electric-glow: rgba(0, 212, 255, 0.2);
+  --electric-glow2: rgba(0, 212, 255, 0.08);
+  --morning: #f59e0b;
+  --morning-glow: rgba(245, 158, 11, 0.15);
+  --afternoon: #3b82f6;
+  --afternoon-glow: rgba(59, 130, 246, 0.15);
+  --evening: #8b5cf6;
+  --evening-glow: rgba(139, 92, 246, 0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --day-h: 220; --day-s: 95%; --day-l: 62%;
+  --accent: hsl(var(--day-h), var(--day-s), var(--day-l));
+  --accent-soft: hsl(var(--day-h), var(--day-s), 75%);
+  --accent-glow: hsla(var(--day-h), var(--day-s), var(--day-l), 0.18);
+  --accent-glow2: hsla(var(--day-h), var(--day-s), var(--day-l), 0.07);
+  --accent2: hsl(calc(var(--day-h) + 40), 85%, 68%);
+  --accent2-glow: hsla(calc(var(--day-h) + 40), 85%, 68%, 0.12);
+}
 
-  body::before {
-    content:''; position:fixed; inset:0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 10%, var(--accent-glow2) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, hsla(calc(var(--day-h) + 40), 90%, 70%, 0.05) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 30% at 60% 20%, hsla(calc(var(--day-h) - 30), 80%, 60%, 0.03) 0%, transparent 60%);
-    pointer-events:none; z-index:0;
-  }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: var(--bg);
+  font-family: 'Exo 2', sans-serif;
+  color: var(--text);
+}
 
-  body {
-    display: grid;
-    grid-template-columns: 1fr 330px;
-    grid-template-rows: auto 1fr;
-    grid-template-areas: "header header" "calendar countdown";
-    gap: 12px; padding: 12px; height: 100vh;
-    position: relative; z-index: 1;
-  }
+/* Abstract gradient background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 5%, rgba(0,80,160,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(0,180,220,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 35% at 70% 15%, rgba(59,130,246,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 30% 25% at 30% 80%, rgba(139,92,246,0.06) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
 
-  /* ── HEADER ── */
-  .header {
-    grid-area: header;
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(135deg, rgba(14,17,24,0.95) 0%, rgba(20,24,36,0.95) 100%);
-    border: 1px solid var(--border2); border-radius: var(--radius);
-    padding: 16px 24px; position: relative; overflow: hidden;
-  }
-  .header::before {
-    content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-  }
-  .header::after {
-    content:''; position:absolute; inset:0;
-    background:
-      radial-gradient(ellipse 30% 80% at 0% 50%, var(--accent-glow2) 0%, transparent 70%),
-      radial-gradient(ellipse 25% 60% at 100% 50%, var(--accent2-glow) 0%, transparent 70%);
-    pointer-events:none;
-  }
+body {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "header" "main" "footer";
+  gap: 0;
+  padding: 14px 14px 0 14px;
+  height: 100vh;
+  position: relative; z-index: 1;
+}
 
-  .clock-block { position:relative; z-index:1; }
-  .clock-time {
-    font-family:'DM Mono',monospace; font-size:46px; font-weight:500; letter-spacing:-2px; line-height:1;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  }
-  .clock-date { font-size:11px; color:var(--muted); margin-top:5px; letter-spacing:0.08em; text-transform:uppercase; font-weight:500; }
+/* ── HEADER ── */
+.header {
+  grid-area: header;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 12px 22px;
+  margin-bottom: 12px;
+  position: relative; overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--electric), var(--cyan-bright), transparent);
+  opacity: 0.7;
+}
+.header::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 40% 100% at 0% 50%, var(--electric-glow2) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 100% at 100% 50%, rgba(139,92,246,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
 
-  .header-center { position:relative; z-index:1; text-align:center; }
-  .header-center h1 {
-    font-family:'Playfair Display',serif; font-size:24px; font-weight:600;
-    background: linear-gradient(135deg, #e8ecf4 20%, var(--accent) 60%, var(--accent2) 100%);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    letter-spacing: -0.3px;
-  }
-  .header-center p { font-size:11px; color:var(--muted2); margin-top:3px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; }
+.clock-block { position: relative; z-index: 1; }
+.clock-time {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 34px; font-weight: 600; letter-spacing: 2px; line-height: 1;
+  background: linear-gradient(135deg, #ffffff 0%, var(--electric) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.clock-date {
+  font-size: 10px; color: var(--text3); margin-top: 4px;
+  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+}
 
-  .header-right { position:relative; z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:8px; }
-  .weather-now { display:flex; align-items:center; gap:10px; }
-  .weather-icon-big { font-size:28px; line-height:1; }
-  .weather-text { text-align:right; }
-  .hdr-temp {
-    font-size:36px; font-weight:300; line-height:1; font-family:'DM Mono',monospace;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent-soft) 100%);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  }
-  .hdr-desc { font-size:11px; color:var(--muted); margin-top:2px; }
-  .hdr-loc { font-size:10px; color:var(--muted2); margin-top:1px; letter-spacing:0.04em; }
-  .forecast-mini { display:flex; gap:8px; }
-  .fc-mini-day { text-align:center; background:var(--surface3); border:1px solid var(--border); border-radius:var(--radius-xs); padding:5px 7px; min-width:38px; }
-  .fc-mini-label { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; }
-  .fc-mini-icon { font-size:13px; line-height:1.5; }
-  .fc-mini-temp { font-size:11px; color:var(--text); font-weight:600; }
-  .fc-mini-lo { font-size:9px; color:var(--muted2); margin-top:1px; }
+.header-center { position: relative; z-index: 1; text-align: center; }
+.header-center h1 {
+  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: linear-gradient(135deg, #e8f0fe 20%, var(--electric) 60%, var(--cyan-bright) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.header-center p { font-size: 10px; color: var(--text3); margin-top: 2px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
 
-  /* ── PANEL SHARED ── */
-  .panel-header { padding:14px 18px 11px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
-  .panel-title-row { display:flex; align-items:center; gap:8px; }
-  .panel-icon { font-size:14px; opacity:0.7; }
-  .panel-title { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
-  .panel-badge { font-size:10px; padding:3px 9px; border-radius:20px; background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); font-weight:600; }
+.header-right {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; gap: 16px;
+}
+.weather-block { text-align: right; }
+.weather-now-row { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.weather-big-icon { font-size: 26px; line-height: 1; }
+.hdr-temp {
+  font-size: 28px; font-weight: 500; line-height: 1; font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan-bright) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hdr-desc { font-size: 10px; color: var(--text2); margin-top: 2px; }
+.hdr-loc { font-size: 9px; color: var(--text3); margin-top: 1px; letter-spacing: 0.04em; }
+.forecast-strip { display: flex; gap: 6px; }
+.fc-card {
+  text-align: center; background: rgba(0,212,255,0.04);
+  border: 1px solid var(--border); border-radius: var(--radius-xs);
+  padding: 5px 7px; min-width: 36px;
+}
+.fc-lbl { font-size: 8px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+.fc-ico { font-size: 12px; line-height: 1.6; }
+.fc-hi { font-size: 11px; color: var(--text); font-weight: 600; }
+.fc-lo { font-size: 9px; color: var(--text3); margin-top: 1px; }
 
-  /* ── CALENDAR ── */
-  .calendar-panel {
-    grid-area:calendar;
-    background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
-    border:1px solid var(--border2); border-radius:var(--radius);
-    display:flex; flex-direction:column; overflow:hidden; min-height:0; position:relative;
-  }
-  .calendar-panel::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:1px;
-    background:linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .agenda-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
-  .agenda-day-block { margin-bottom:18px; }
-  .agenda-day-header { display:flex; align-items:center; gap:10px; margin-bottom:8px; padding:0 2px; }
-  .agenda-day-pill {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    width:44px; height:50px; border-radius:12px;
-    background:var(--surface2); border:1px solid var(--border2); flex-shrink:0;
-  }
-  .agenda-day-pill.today-pill {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-    border-color:transparent; box-shadow: 0 0 16px var(--accent-glow);
-  }
-  .agenda-pill-num { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; line-height:1; color:var(--text); }
-  .agenda-pill-day { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-top:1px; }
-  .today-pill .agenda-pill-num, .today-pill .agenda-pill-day { color:white; }
-  .agenda-day-meta { flex:1; min-width:0; }
-  .agenda-day-name { font-size:13px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:6px; }
-  .agenda-month-label { font-size:11px; color:var(--muted); margin-top:2px; }
-  .tag { display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; }
-  .tag-today { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); }
-  .tag-tomorrow { background:var(--accent2-glow); color:var(--accent2); border:1px solid hsla(calc(var(--day-h)+40),90%,70%,0.25); }
-  .agenda-divider { flex:1; height:1px; background:linear-gradient(90deg, var(--border2), transparent); margin-left:4px; }
-  .agenda-event {
-    display:flex; align-items:stretch; border-radius:var(--radius-sm);
-    background:var(--surface2); border:1px solid var(--border); margin-bottom:6px; overflow:hidden; position:relative;
-  }
-  .agenda-event::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%); pointer-events:none; }
-  .agenda-accent-bar { width:3px; flex-shrink:0; background:var(--accent); }
-  .agenda-accent-bar.c1 { background:var(--accent2); }
-  .agenda-accent-bar.c2 { background:var(--accent3); }
-  .agenda-accent-bar.c3 { background:var(--amber); }
-  .agenda-event-inner { flex:1; padding:9px 12px; min-width:0; }
-  .agenda-event-title { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .agenda-event-time { font-size:10px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; display:flex; align-items:center; gap:5px; }
-  .event-time-dot { width:4px; height:4px; border-radius:50%; background:var(--accent); display:inline-block; flex-shrink:0; }
-  .event-time-dot.c1 { background:var(--accent2); }
-  .event-time-dot.c2 { background:var(--accent3); }
-  .event-time-dot.c3 { background:var(--amber); }
-  .recurring-badge { font-size:9px; color:var(--muted2); margin-left:4px; opacity:0.8; }
-  .agenda-empty, .cal-loading { padding:30px 20px; text-align:center; color:var(--muted); font-size:13px; }
-  .cal-error { padding:20px; text-align:center; color:var(--danger); font-size:13px; line-height:1.7; }
-  .cal-setup { padding:28px 20px; text-align:center; }
-  .cal-setup p { color:var(--muted); font-size:13px; line-height:1.8; margin-bottom:14px; }
-  .cal-setup-btn { padding:10px 22px; border-radius:var(--radius-sm); background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; }
+/* ── MAIN AREA ── */
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "week-strip" "events";
+  gap: 0;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+.main::before {
+  content: '';
+  position: absolute; top: 0; left: 5%; right: 5%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--electric), var(--accent2), transparent);
+  opacity: 0.5;
+}
 
-  /* ── COUNTDOWN PANEL ── */
-  .countdown-panel {
-    grid-area:countdown;
-    background: linear-gradient(160deg, rgba(14,17,24,0.98) 0%, rgba(12,15,22,0.98) 100%);
-    border:1px solid var(--border2); border-radius:var(--radius);
-    display:flex; flex-direction:column; overflow:hidden; min-height:0; position:relative;
-  }
-  .countdown-panel::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:1px;
-    background:linear-gradient(90deg, transparent, var(--accent2), transparent);
-  }
+/* ── WEEK STRIP (~10% of calendar widget) ── */
+.week-strip {
+  grid-area: week-strip;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 22px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: relative;
+}
+.week-strip-left { display: flex; align-items: center; gap: 10px; }
+.week-strip-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
+.today-events-badge {
+  font-size: 10px; padding: 3px 10px; border-radius: 20px;
+  background: var(--electric-glow); color: var(--electric);
+  border: 1px solid rgba(0,212,255,0.25); font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.week-days { display: flex; gap: 6px; align-items: center; }
+.week-day {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; cursor: default;
+}
+.wd-label { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); }
+.wd-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; color: var(--text3);
+  position: relative;
+}
+.wd-num.is-today {
+  color: white; font-weight: 700;
+  background: radial-gradient(circle, var(--electric) 0%, var(--blue) 100%);
+  box-shadow: 0 0 14px var(--electric-glow), 0 0 28px rgba(0,212,255,0.12);
+}
+.wd-num.has-event::after {
+  content: '';
+  position: absolute; bottom: 1px;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--electric); opacity: 0.7;
+}
+.wd-num.is-today.has-event::after { background: white; }
 
-  /* Add form */
-  .cd-input-area { padding:12px 14px; border-bottom:1px solid var(--border); flex-shrink:0; display:flex; flex-direction:column; gap:7px; }
-  .cd-input-row { display:flex; gap:7px; }
-  .cd-input {
-    flex:1; background:var(--surface3); border:1px solid var(--border2);
-    border-radius:var(--radius-sm); color:var(--text);
-    font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 11px;
-    outline:none; transition:border-color 0.2s, box-shadow 0.2s;
-  }
-  .cd-input::placeholder { color:var(--muted2); }
-  .cd-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
-  .cd-input.date-input { flex:0 0 140px; font-family:'DM Mono',monospace; font-size:12px; color-scheme:dark; }
-  .cd-add-btn {
-    width:34px; height:34px; border-radius:var(--radius-sm);
-    background:linear-gradient(135deg, var(--accent), var(--accent2));
-    border:none; color:white; font-size:20px; cursor:pointer;
-    display:flex; align-items:center; justify-content:center; flex-shrink:0;
-    box-shadow:0 2px 10px var(--accent-glow); transition:opacity 0.2s;
-  }
-  .cd-add-btn:active { opacity:0.75; }
+/* ── EVENT LIST ── */
+.events-area {
+  grid-area: events;
+  overflow-y: auto; overflow-x: hidden;
+  padding: 0 16px 16px;
+  scrollbar-width: thin; scrollbar-color: var(--navy-4) transparent;
+  min-height: 0;
+}
 
-  /* Countdown list */
-  .cd-list { flex:1; overflow-y:auto; padding:10px 14px 14px; scrollbar-width:thin; scrollbar-color:var(--surface3) transparent; }
-  .cd-empty { text-align:center; color:var(--muted2); font-size:13px; padding:30px 0; line-height:1.7; }
+/* Time-of-day section headers */
+.tod-section { margin-top: 16px; margin-bottom: 8px; }
+.tod-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.tod-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.tod-line { flex: 1; height: 1px; }
+.tod-morning .tod-dot { background: var(--morning); box-shadow: 0 0 6px var(--morning); }
+.tod-morning .tod-label { color: var(--morning); }
+.tod-morning .tod-line { background: linear-gradient(90deg, rgba(245,158,11,0.3), transparent); }
+.tod-afternoon .tod-dot { background: var(--afternoon); box-shadow: 0 0 6px var(--afternoon); }
+.tod-afternoon .tod-label { color: var(--blue-bright); }
+.tod-afternoon .tod-line { background: linear-gradient(90deg, rgba(59,130,246,0.3), transparent); }
+.tod-evening .tod-dot { background: var(--evening); box-shadow: 0 0 6px var(--evening); }
+.tod-evening .tod-label { color: #a78bfa; }
+.tod-evening .tod-line { background: linear-gradient(90deg, rgba(139,92,246,0.3), transparent); }
+.tod-allday .tod-dot { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.tod-allday .tod-label { color: var(--cyan-bright); }
+.tod-allday .tod-line { background: linear-gradient(90deg, rgba(6,182,212,0.3), transparent); }
 
-  .cd-item {
-    display:flex; align-items:center; gap:0;
-    border-radius:var(--radius-sm); background:var(--surface2);
-    border:1px solid var(--border); margin-bottom:8px; overflow:hidden;
-    position:relative; transition:border-color 0.2s;
-  }
-  .cd-item::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%); pointer-events:none; }
+/* Event cards — larger, spacious */
+.event-card {
+  display: flex; align-items: stretch; gap: 0;
+  border-radius: var(--radius-sm); overflow: hidden;
+  background: var(--glass2);
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  min-height: 64px;
+}
+.event-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.015) 0%, transparent 60%);
+  pointer-events: none;
+}
+.event-card:hover { border-color: var(--border3); }
 
-  /* Big day number block on the left */
-  .cd-days-block {
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:12px 14px; min-width:72px; flex-shrink:0;
-    background: linear-gradient(160deg, var(--accent-glow2) 0%, transparent 100%);
-    border-right:1px solid var(--border);
-  }
-  .cd-days-num {
-    font-family:'DM Mono',monospace; font-size:28px; font-weight:500; line-height:1;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  }
-  .cd-days-num.today-num { background:linear-gradient(135deg,#06d6a0,#06d6a0); -webkit-background-clip:text; background-clip:text; }
-  .cd-days-num.past-num { background:linear-gradient(135deg, var(--muted2),var(--muted2)); -webkit-background-clip:text; background-clip:text; }
-  .cd-days-label { font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:2px; }
+/* Left colored stripe */
+.ev-stripe { width: 4px; flex-shrink: 0; }
+.ev-stripe.morning { background: linear-gradient(180deg, var(--morning), rgba(245,158,11,0.4)); }
+.ev-stripe.afternoon { background: linear-gradient(180deg, var(--afternoon), rgba(59,130,246,0.4)); }
+.ev-stripe.evening { background: linear-gradient(180deg, var(--evening), rgba(139,92,246,0.4)); }
+.ev-stripe.allday { background: linear-gradient(180deg, var(--cyan), rgba(6,182,212,0.4)); }
 
-  .cd-info { flex:1; padding:10px 12px; min-width:0; }
-  .cd-title { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .cd-date-label { font-size:10px; color:var(--muted); margin-top:3px; font-family:'DM Mono',monospace; }
-  .cd-status {
-    display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px;
-    font-weight:700; letter-spacing:0.05em; text-transform:uppercase; margin-top:5px;
-  }
-  .cd-status.upcoming { background:var(--accent-glow); color:var(--accent-soft); border:1px solid var(--accent-border); }
-  .cd-status.today { background:rgba(6,214,160,0.15); color:#06d6a0; border:1px solid rgba(6,214,160,0.3); }
-  .cd-status.past { background:rgba(255,255,255,0.05); color:var(--muted2); border:1px solid var(--border2); }
+/* Time column */
+.ev-time-col {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 12px 14px; min-width: 66px; flex-shrink: 0;
+  border-right: 1px solid var(--border);
+}
+.ev-time-start { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.03em; }
+.ev-time-end { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 2px; }
+.ev-time-allday { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); }
 
-  .cd-delete { width:28px; height:28px; border-radius:var(--radius-xs); border:none; background:transparent; color:var(--muted2); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:color 0.2s,background 0.2s; flex-shrink:0; margin-right:8px; }
-  .cd-delete:hover { color:var(--danger); background:rgba(248,113,113,0.1); }
+/* Event body */
+.ev-body { flex: 1; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.ev-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev-meta { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+.ev-cat-pill {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 20px;
+}
+.ev-cat-pill.morning { background: var(--morning-glow); color: var(--morning); border: 1px solid rgba(245,158,11,0.25); }
+.ev-cat-pill.afternoon { background: var(--afternoon-glow); color: var(--blue-bright); border: 1px solid rgba(59,130,246,0.25); }
+.ev-cat-pill.evening { background: var(--evening-glow); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+.ev-cat-pill.allday { background: rgba(6,182,212,0.1); color: var(--cyan-bright); border: 1px solid rgba(6,182,212,0.25); }
+.ev-recurring { font-size: 9px; color: var(--text3); letter-spacing: 0.04em; }
 
-  /* ── SETTINGS ── */
-  .settings-btn { position:fixed; bottom:18px; right:18px; width:38px; height:38px; border-radius:50%; background:var(--surface2); border:1px solid var(--border2); color:var(--muted); font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:100; transition:color 0.2s; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
-  .settings-btn:hover { color:var(--text); }
-  .settings-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:200; display:none; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
-  .settings-overlay.open { display:flex; }
-  .settings-box { background:linear-gradient(160deg,#0e1118 0%,#0b0d16 100%); border:1px solid var(--border2); border-radius:var(--radius); padding:26px 28px; width:460px; max-width:92vw; box-shadow:0 20px 60px rgba(0,0,0,0.6); position:relative; overflow:hidden; }
-  .settings-box::before { content:''; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent); }
-  .settings-box h2 { font-size:15px; font-weight:700; margin-bottom:4px; color:var(--text); }
-  .settings-subtitle { font-size:12px; color:var(--muted); margin-bottom:20px; line-height:1.5; }
-  .settings-field { margin-bottom:13px; }
-  .settings-label { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:700; margin-bottom:6px; display:block; }
-  .settings-hint { font-size:11px; color:var(--muted2); margin-top:4px; line-height:1.5; }
-  .settings-input { width:100%; background:var(--surface3); border:1px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:9px 12px; outline:none; transition:border-color 0.2s; }
-  .settings-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
-  .settings-row { display:flex; gap:10px; margin-top:20px; }
-  .settings-save,.settings-close { flex:1; padding:10px; border-radius:var(--radius-sm); border:none; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; }
-  .settings-save { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:white; box-shadow:0 4px 14px var(--accent-glow); }
-  .settings-close { background:var(--surface3); color:var(--muted); border:1px solid var(--border2); }
+/* Date group header (for multi-day view) */
+.date-group-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 20px; margin-bottom: 10px; padding: 0 2px;
+}
+.dgh-pill {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 42px; height: 46px; border-radius: 10px;
+  background: var(--navy-3); border: 1px solid var(--border2); flex-shrink: 0;
+}
+.dgh-pill.today {
+  background: radial-gradient(135deg, rgba(0,212,255,0.25) 0%, rgba(59,130,246,0.15) 100%);
+  border-color: rgba(0,212,255,0.35);
+  box-shadow: 0 0 16px rgba(0,212,255,0.15);
+}
+.dgh-num { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 600; line-height: 1; color: var(--text2); letter-spacing: 1px; }
+.dgh-day { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-top: 1px; }
+.dgh-pill.today .dgh-num { color: var(--electric); }
+.dgh-pill.today .dgh-day { color: var(--cyan-bright); }
+.dgh-meta { flex: 1; }
+.dgh-name { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.dgh-month { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.dgh-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+.tag-today { display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 20px; background: var(--electric-glow); color: var(--electric); border: 1px solid rgba(0,212,255,0.3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.tag-tomorrow { display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 20px; background: var(--accent2-glow); color: var(--accent2); border: 1px solid rgba(139,92,246,0.25); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 
-  ::-webkit-scrollbar { width:3px; }
-  ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:2px; }
+/* Empty / loading / error */
+.ev-empty, .ev-loading { padding: 40px 20px; text-align: center; color: var(--text3); font-size: 13px; line-height: 1.7; }
+.ev-error { padding: 20px; text-align: center; color: #f87171; font-size: 12px; line-height: 1.7; }
+.ev-setup { padding: 30px 20px; text-align: center; }
+.ev-setup p { color: var(--text3); font-size: 13px; line-height: 1.8; margin-bottom: 14px; }
+.ev-setup-btn {
+  padding: 10px 22px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--electric), var(--blue));
+  color: white; font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.25);
+}
+
+/* ── FOOTER / QUOTE BAR ── */
+.footer {
+  grid-area: footer;
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 22px;
+  margin-top: 10px;
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius) var(--radius) 0 0;
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.footer::before {
+  content: '';
+  position: absolute; top: 0; left: 6%; right: 6%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.35), transparent);
+}
+.quote-icon { font-size: 22px; opacity: 0.5; flex-shrink: 0; color: var(--electric); }
+.quote-body { flex: 1; min-width: 0; }
+.quote-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; font-weight: 400; color: var(--text2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-style: italic; line-height: 1.4; letter-spacing: 0.02em;
+}
+.quote-author { font-size: 10px; color: var(--text3); margin-top: 2px; font-weight: 600; letter-spacing: 0.04em; }
+.quote-divider { width: 1px; height: 30px; background: var(--border2); flex-shrink: 0; }
+
+/* ── SETTINGS BUTTON ── */
+.settings-btn {
+  position: fixed; bottom: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--glass); border: 1px solid var(--border2);
+  color: var(--text3); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: color 0.2s, border-color 0.2s;
+}
+.settings-btn:hover { color: var(--electric); border-color: var(--border3); }
+
+/* ── SETTINGS OVERLAY ── */
+.settings-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8); z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.settings-overlay.open { display: flex; }
+.settings-box {
+  background: linear-gradient(160deg, #0c1428 0%, #080e1f 100%);
+  border: 1px solid var(--border2); border-radius: var(--radius);
+  padding: 26px 28px; width: 460px; max-width: 92vw;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  position: relative; overflow: hidden;
+}
+.settings-box::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--electric), var(--cyan-bright), transparent);
+  opacity: 0.6;
+}
+.settings-box h2 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.settings-sub { font-size: 11px; color: var(--text3); margin-bottom: 20px; line-height: 1.5; }
+.settings-field { margin-bottom: 13px; }
+.settings-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text3); font-weight: 700; margin-bottom: 6px; display: block; }
+.settings-hint { font-size: 10px; color: var(--text3); opacity: 0.7; margin-top: 4px; line-height: 1.5; }
+.settings-input {
+  width: 100%; background: var(--navy-3); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: 'Exo 2', sans-serif; font-size: 13px; padding: 9px 12px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.settings-input:focus { border-color: var(--electric); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
+.settings-row { display: flex; gap: 10px; margin-top: 20px; }
+.s-save, .s-close { flex: 1; padding: 10px; border-radius: var(--radius-sm); border: none; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; }
+.s-save { background: linear-gradient(135deg, var(--electric), var(--blue)); color: white; box-shadow: 0 4px 16px rgba(0,212,255,0.25); }
+.s-close { background: var(--navy-3); color: var(--text3); border: 1px solid var(--border2); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--navy-4); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -282,67 +428,58 @@
 <!-- HEADER -->
 <header class="header">
   <div class="clock-block">
-    <div class="clock-time" id="clock">--:--</div>
-    <div class="clock-date" id="date-label">Loading...</div>
+    <div class="clock-time" id="clock">--:-- --</div>
+    <div class="clock-date" id="date-label">Loading…</div>
   </div>
   <div class="header-center">
     <h1 id="family-name">Shall Family Dashboard</h1>
     <p>Home Hub for the Fam</p>
   </div>
   <div class="header-right">
-    <div class="weather-now">
-      <div class="weather-icon-big" id="hdr-icon">⏳</div>
-      <div class="weather-text">
+    <div class="forecast-strip" id="forecast-strip"></div>
+    <div class="quote-divider"></div>
+    <div class="weather-block">
+      <div class="weather-now-row">
+        <div class="weather-big-icon" id="hdr-icon">⏳</div>
         <div class="hdr-temp" id="hdr-temp">--°</div>
-        <div class="hdr-desc" id="hdr-desc">Loading…</div>
-        <div class="hdr-loc" id="hdr-loc">Charlotte, NC</div>
       </div>
+      <div class="hdr-desc" id="hdr-desc">Loading…</div>
+      <div class="hdr-loc" id="hdr-loc">Charlotte, NC</div>
     </div>
-    <div class="forecast-mini" id="forecast-mini"></div>
   </div>
 </header>
 
-<!-- AGENDA -->
-<section class="calendar-panel">
-  <div class="panel-header">
-    <div class="panel-title-row">
-      <span class="panel-icon">📅</span>
-      <span class="panel-title">Upcoming Events</span>
+<!-- MAIN CALENDAR PANEL -->
+<main class="main">
+  <!-- Week strip -->
+  <div class="week-strip">
+    <div class="week-strip-left">
+      <span class="week-strip-title">📅 Upcoming</span>
+      <span class="today-events-badge" id="today-badge">Today: 0 events</span>
     </div>
-    <span class="panel-badge" id="event-count-badge">Loading…</span>
+    <div class="week-days" id="week-days"></div>
   </div>
-  <div class="agenda-list" id="agenda-list">
-    <div class="cal-loading">Fetching your calendar…</div>
+  <!-- Event list -->
+  <div class="events-area" id="events-area">
+    <div class="ev-loading">Fetching your calendar…</div>
   </div>
-</section>
+</main>
 
-<!-- COUNTDOWN -->
-<section class="countdown-panel">
-  <div class="panel-header">
-    <div class="panel-title-row">
-      <span class="panel-icon">⏳</span>
-      <span class="panel-title">Countdowns</span>
-    </div>
-    <span class="panel-badge" id="cd-count-badge">0 events</span>
+<!-- FOOTER QUOTE BAR -->
+<footer class="footer">
+  <div class="quote-icon">❝</div>
+  <div class="quote-body">
+    <div class="quote-text" id="quote-text">Loading today's quote…</div>
+    <div class="quote-author" id="quote-author"></div>
   </div>
-  <div class="cd-input-area">
-    <div class="cd-input-row">
-      <input class="cd-input" id="cd-title-input" placeholder="Event name…" maxlength="40">
-    </div>
-    <div class="cd-input-row">
-      <input class="cd-input date-input" id="cd-date-input" type="date">
-      <button class="cd-add-btn" id="cd-add-btn" aria-label="Add countdown">+</button>
-    </div>
-  </div>
-  <div class="cd-list" id="cd-list"></div>
-</section>
+</footer>
 
 <!-- SETTINGS -->
 <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙</button>
 <div class="settings-overlay" id="settings-overlay">
   <div class="settings-box">
     <h2>⚙ Dashboard Settings</h2>
-    <p class="settings-subtitle">Changes are saved and applied immediately.</p>
+    <p class="settings-sub">Changes are saved and applied immediately.</p>
     <div class="settings-field">
       <label class="settings-label" for="s-name">Family Name</label>
       <input class="settings-input" id="s-name" placeholder="e.g. The Smith Family">
@@ -357,12 +494,12 @@
       <input class="settings-input" id="s-city" placeholder="Charlotte, NC">
     </div>
     <div class="settings-field">
-      <label class="settings-label" for="s-refresh">Auto-Refresh Interval (minutes, 0 = off)</label>
-      <input class="settings-input" id="s-refresh" placeholder="e.g. 30" type="number" min="0" max="1440">
+      <label class="settings-label" for="s-refresh">Auto-Refresh (minutes, 0 = off)</label>
+      <input class="settings-input" id="s-refresh" type="number" min="0" max="1440" placeholder="30">
     </div>
     <div class="settings-row">
-      <button class="settings-close" id="settings-close">Cancel</button>
-      <button class="settings-save" id="settings-save">Save & Apply</button>
+      <button class="s-close" id="settings-close">Cancel</button>
+      <button class="s-save" id="settings-save">Save & Apply</button>
     </div>
   </div>
 </div>
@@ -370,65 +507,75 @@
 <script>
 // ── DAY THEME ────────────────────────────────────────────────
 const DAY_THEMES=[
-  {h:0,  s:'90%',l:'62%'}, // Sun - red
-  {h:25, s:'95%',l:'58%'}, // Mon - orange
-  {h:48, s:'95%',l:'55%'}, // Tue - yellow
-  {h:145,s:'70%',l:'52%'}, // Wed - green
-  {h:185,s:'80%',l:'52%'}, // Thu - cyan
-  {h:220,s:'95%',l:'62%'}, // Fri - blue
-  {h:270,s:'80%',l:'65%'}, // Sat - violet
+  {h:0,  s:'90%',l:'62%'}, // Sun
+  {h:25, s:'95%',l:'58%'}, // Mon
+  {h:48, s:'95%',l:'55%'}, // Tue
+  {h:145,s:'70%',l:'52%'}, // Wed
+  {h:185,s:'80%',l:'52%'}, // Thu
+  {h:220,s:'95%',l:'62%'}, // Fri
+  {h:270,s:'80%',l:'65%'}, // Sat
 ];
 (function(){
   const t=DAY_THEMES[new Date().getDay()];
   const r=document.documentElement.style;
-  r.setProperty('--day-h',t.h);
-  r.setProperty('--day-s',t.s);
-  r.setProperty('--day-l',t.l);
+  r.setProperty('--day-h',t.h); r.setProperty('--day-s',t.s); r.setProperty('--day-l',t.l);
 })();
 
 // ── CONFIG ───────────────────────────────────────────────────
-const DEFAULT_CONFIG={
-  familyName:'Shall Family Dashboard',
-  icalUrl:'',
-  weatherCity:'Charlotte, NC',
-  weatherLat:35.2271,
-  weatherLon:-80.8431,
-  refreshMins:30
-};
-function loadConfig(){ try{ const s=localStorage.getItem('dash-cfg4'); return s?Object.assign({},DEFAULT_CONFIG,JSON.parse(s)):DEFAULT_CONFIG; }catch(e){ return DEFAULT_CONFIG; } }
-function saveConfig(c){ localStorage.setItem('dash-cfg4',JSON.stringify(c)); }
-let CONFIG=loadConfig();
+const DEF={familyName:'Shall Family Dashboard',icalUrl:'',weatherCity:'Charlotte, NC',weatherLat:35.2271,weatherLon:-80.8431,refreshMins:30};
+function loadCfg(){try{const s=localStorage.getItem('dash-cfg5');return s?Object.assign({},DEF,JSON.parse(s)):DEF;}catch(e){return DEF;}}
+function saveCfg(c){localStorage.setItem('dash-cfg5',JSON.stringify(c));}
+let CFG=loadCfg();
 
 // ── AUTO REFRESH ─────────────────────────────────────────────
-let refreshTimer=null;
-function startRefreshTimer(){
-  if(refreshTimer) clearTimeout(refreshTimer);
-  const mins=parseInt(CONFIG.refreshMins)||0;
-  if(mins>0) refreshTimer=setTimeout(()=>location.reload(),mins*60*1000);
-}
+let rTimer=null;
+function startRefresh(){if(rTimer)clearTimeout(rTimer);const m=parseInt(CFG.refreshMins)||0;if(m>0)rTimer=setTimeout(()=>location.reload(),m*60*1000);}
 
 // ── CLOCK ────────────────────────────────────────────────────
-const DAYS_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const DAYS_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const MONTHS_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MONTHS_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const D_FULL=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const D_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const M_FULL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const M_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function updateClock(){
   const n=new Date();
   let h=n.getHours(),m=String(n.getMinutes()).padStart(2,'0'),ap=h>=12?'PM':'AM';
   h=h%12||12;
   document.getElementById('clock').textContent=h+':'+m+' '+ap;
-  document.getElementById('date-label').textContent=DAYS_FULL[n.getDay()]+' · '+MONTHS_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+  document.getElementById('date-label').textContent=D_FULL[n.getDay()]+' · '+M_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
 }
 updateClock(); setInterval(updateClock,1000);
+
+// ── WEEK STRIP ───────────────────────────────────────────────
+function buildWeekStrip(eventDates){
+  // eventDates: Set of "YYYY-M-D" strings
+  const strip=document.getElementById('week-days');
+  strip.innerHTML='';
+  const today=new Date(); today.setHours(0,0,0,0);
+  // Show Sun–Sat of current week
+  const sunday=new Date(today); sunday.setDate(today.getDate()-today.getDay());
+  for(let i=0;i<7;i++){
+    const d=new Date(sunday); d.setDate(sunday.getDate()+i);
+    const isToday=d.getTime()===today.getTime();
+    const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+    const hasEv=eventDates&&eventDates.has(key);
+    const wd=document.createElement('div'); wd.className='week-day';
+    const lbl=document.createElement('div'); lbl.className='wd-label'; lbl.textContent=D_SHORT[d.getDay()];
+    const num=document.createElement('div');
+    num.className='wd-num'+(isToday?' is-today':'')+(hasEv?' has-event':'');
+    num.textContent=d.getDate();
+    wd.appendChild(lbl); wd.appendChild(num);
+    strip.appendChild(wd);
+  }
+}
+buildWeekStrip(null);
 
 // ── WEATHER ──────────────────────────────────────────────────
 const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'🌨',80:'🌦',81:'🌦',82:'🌦',95:'⛈',96:'⛈',99:'⛈'};
 const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
-
 async function loadWeather(){
-  const lat=CONFIG.weatherLat||35.2271,lon=CONFIG.weatherLon||-80.8431;
-  document.getElementById('hdr-loc').textContent=CONFIG.weatherCity||'Charlotte, NC';
+  const lat=CFG.weatherLat||35.2271,lon=CFG.weatherLon||-80.8431;
+  document.getElementById('hdr-loc').textContent=CFG.weatherCity||'Charlotte, NC';
   try{
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
     if(!r.ok) throw new Error('HTTP '+r.status);
@@ -436,12 +583,12 @@ async function loadWeather(){
     document.getElementById('hdr-temp').textContent=Math.round(d.current.temperature_2m)+'°';
     document.getElementById('hdr-desc').textContent=WX_DESC[d.current.weathercode]||'';
     document.getElementById('hdr-icon').textContent=WX_ICONS[d.current.weathercode]||'🌡';
-    const mini=document.getElementById('forecast-mini'); mini.innerHTML='';
+    const strip=document.getElementById('forecast-strip'); strip.innerHTML='';
     for(let i=1;i<5;i++){
       const day=new Date(); day.setDate(day.getDate()+i);
-      const el=document.createElement('div'); el.className='fc-mini-day';
-      el.innerHTML=`<div class="fc-mini-label">${DAYS_SHORT[day.getDay()]}</div><div class="fc-mini-icon">${WX_ICONS[d.daily.weathercode[i]]||'🌡'}</div><div class="fc-mini-temp">${Math.round(d.daily.temperature_2m_max[i])}°</div><div class="fc-mini-lo">${Math.round(d.daily.temperature_2m_min[i])}°</div>`;
-      mini.appendChild(el);
+      const c=document.createElement('div'); c.className='fc-card';
+      c.innerHTML=`<div class="fc-lbl">${D_SHORT[day.getDay()]}</div><div class="fc-ico">${WX_ICONS[d.daily.weathercode[i]]||'🌡'}</div><div class="fc-hi">${Math.round(d.daily.temperature_2m_max[i])}°</div><div class="fc-lo">${Math.round(d.daily.temperature_2m_min[i])}°</div>`;
+      strip.appendChild(c);
     }
   }catch(e){
     document.getElementById('hdr-desc').textContent='Unavailable';
@@ -454,23 +601,60 @@ async function geocodeCity(city){
   try{
     const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&format=json`);
     const j=await r.json();
-    if(j.results&&j.results.length){CONFIG.weatherLat=j.results[0].latitude;CONFIG.weatherLon=j.results[0].longitude;}
+    if(j.results&&j.results.length){CFG.weatherLat=j.results[0].latitude;CFG.weatherLon=j.results[0].longitude;}
   }catch(e){}
 }
 
+// ── QUOTE ────────────────────────────────────────────────────
+async function loadQuote(){
+  // Use today's date as a seed to pick a consistent daily quote
+  const today=new Date();
+  const seed=today.getFullYear()*10000+today.getMonth()*100+today.getDate();
+  const cached=localStorage.getItem('dash-quote-'+seed);
+  if(cached){
+    try{const q=JSON.parse(cached);setQuote(q.text,q.author);return;}catch(e){}
+  }
+  try{
+    const r=await fetch('https://zenquotes.io/api/today');
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    if(data&&data[0]){
+      const q={text:data[0].q,author:data[0].a};
+      localStorage.setItem('dash-quote-'+seed,JSON.stringify(q));
+      setQuote(q.text,q.author);
+      return;
+    }
+  }catch(e){}
+  // Fallback curated quotes
+  const fallbacks=[
+    {text:"The best way to predict the future is to create it.",author:"Abraham Lincoln"},
+    {text:"In the middle of every difficulty lies opportunity.",author:"Albert Einstein"},
+    {text:"It does not matter how slowly you go as long as you do not stop.",author:"Confucius"},
+    {text:"Life is what happens when you're busy making other plans.",author:"John Lennon"},
+    {text:"Happiness is not something ready made. It comes from your own actions.",author:"Dalai Lama"},
+    {text:"The only way to do great work is to love what you do.",author:"Steve Jobs"},
+    {text:"Strive not to be a success, but rather to be of value.",author:"Albert Einstein"},
+  ];
+  const q=fallbacks[seed%fallbacks.length];
+  setQuote(q.text,q.author);
+}
+function setQuote(text,author){
+  document.getElementById('quote-text').textContent='"'+text+'"';
+  document.getElementById('quote-author').textContent='— '+author;
+}
+loadQuote();
+
 // ── ICS PARSER + RRULE ───────────────────────────────────────
 const DAY_MAP={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
-
-function parseDateTime(val,params){
-  if(!val) return null;
-  val=val.replace(/\s/g,''); params=(params||'').toUpperCase();
-  if(/^\d{8}$/.test(val)) return{date:new Date(+val.slice(0,4),+val.slice(4,6)-1,+val.slice(6,8)),allDay:true};
-  const yr=+val.slice(0,4),mo=+val.slice(4,6)-1,dy=+val.slice(6,8);
-  const hr=+val.slice(9,11)||0,mn=+val.slice(11,13)||0,sc=+val.slice(13,15)||0;
+function parseDT(val,params){
+  if(!val)return null;
+  val=val.replace(/\s/g,'');params=(params||'').toUpperCase();
+  if(/^\d{8}$/.test(val))return{date:new Date(+val.slice(0,4),+val.slice(4,6)-1,+val.slice(6,8)),allDay:true};
+  const yr=+val.slice(0,4),mo=+val.slice(4,6)-1,dy=+val.slice(6,8),hr=+val.slice(9,11)||0,mn=+val.slice(11,13)||0,sc=+val.slice(13,15)||0;
   let date;
   if(val.endsWith('Z')){
     date=new Date(Date.UTC(yr,mo,dy,hr,mn,sc));
-  } else if(params.includes('TZID')){
+  }else if(params.includes('TZID')){
     const tzM=params.match(/TZID=([^;:\s]+)/);
     const tz=tzM?tzM[1].replace(/^"|"$/g,''):'America/New_York';
     try{
@@ -481,94 +665,71 @@ function parseDateTime(val,params){
       const probeLocal=new Date(+p.year,+p.month-1,+p.day,+p.hour%24,+p.minute,+p.second);
       date=new Date(new Date(yr,mo,dy,hr,mn,sc).getTime()-(probe.getTime()-probeLocal.getTime()));
     }catch(e){date=new Date(yr,mo,dy,hr,mn,sc);}
-  } else {
-    date=new Date(yr,mo,dy,hr,mn,sc);
-  }
+  }else{date=new Date(yr,mo,dy,hr,mn,sc);}
   return{date,allDay:false};
 }
-
 function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
 function addMonths(d,n){const r=new Date(d);r.setMonth(r.getMonth()+n);return r;}
 function addYears(d,n){const r=new Date(d);r.setFullYear(r.getFullYear()+n);return r;}
 function dateKey(d){return d.getFullYear()*10000+d.getMonth()*100+d.getDate();}
 
-function expandRRule(dtstart,dtend,rruleStr,exdates,windowStart,windowEnd,allDay){
+function expandRRule(dtstart,dtend,rruleStr,exdates,winStart,winEnd,allDay){
   const rule={};
   rruleStr.split(';').forEach(p=>{const[k,v]=p.split('=');rule[k.trim().toUpperCase()]=v?v.trim():'';});
   const freq=rule.FREQ||'',interval=parseInt(rule.INTERVAL)||1;
   const count=rule.COUNT?parseInt(rule.COUNT):null;
-  const until=rule.UNTIL?parseDateTime(rule.UNTIL,null):null;
-  const untilDate=until?until.date:null;
+  const until=rule.UNTIL?parseDT(rule.UNTIL,null):null,untilDate=until?until.date:null;
   const byDay=rule.BYDAY?rule.BYDAY.split(',').map(s=>s.trim()):null;
   const byMonthDay=rule.BYMONTHDAY?rule.BYMONTHDAY.split(',').map(Number):null;
   const exSet=new Set(exdates.map(d=>dateKey(d)));
-  const duration=dtend?(dtend-dtstart):0;
-  const occurrences=[];
-  let cur=new Date(dtstart),n=0;
-  const MAX=500;
-  while(n<MAX){
-    if(count!==null&&n>=count) break;
-    if(untilDate&&cur>untilDate) break;
-    if(cur>windowEnd) break;
-    let candidates=[];
-    if(freq==='DAILY'){
-      candidates=[new Date(cur)];
-    } else if(freq==='WEEKLY'){
+  const dur=dtend?(dtend-dtstart):0;
+  const occs=[];let cur=new Date(dtstart),n=0;
+  while(n<500){
+    if(count!==null&&n>=count)break;
+    if(untilDate&&cur>untilDate)break;
+    if(cur>winEnd)break;
+    let cands=[];
+    if(freq==='DAILY'){cands=[new Date(cur)];}
+    else if(freq==='WEEKLY'){
       if(byDay){
-        const weekStart=new Date(cur);
-        weekStart.setDate(weekStart.getDate()-weekStart.getDay());
+        const ws=new Date(cur);ws.setDate(ws.getDate()-ws.getDay());
         byDay.forEach(d=>{
-          const dayNum=DAY_MAP[d.replace(/^[+-]?\d*/,'').toUpperCase()];
-          if(dayNum===undefined) return;
-          const cand=new Date(weekStart);
-          cand.setDate(weekStart.getDate()+dayNum);
-          cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
-          if(cand>=dtstart) candidates.push(cand);
-        });
-        candidates.sort((a,b)=>a-b);
-      } else { candidates=[new Date(cur)]; }
-    } else if(freq==='MONTHLY'){
+          const dn=DAY_MAP[d.replace(/^[+-]?\d*/,'').toUpperCase()];if(dn===undefined)return;
+          const c=new Date(ws);c.setDate(ws.getDate()+dn);c.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
+          if(c>=dtstart)cands.push(c);
+        });cands.sort((a,b)=>a-b);
+      }else cands=[new Date(cur)];
+    }else if(freq==='MONTHLY'){
       if(byDay){
-        const year=cur.getFullYear(),month=cur.getMonth();
+        const yr=cur.getFullYear(),mo=cur.getMonth();
         byDay.forEach(d=>{
-          const m=d.match(/^([+-]?\d*)([A-Z]{2})$/i);
-          if(!m) return;
-          const nth=m[1]?parseInt(m[1]):1,dayNum=DAY_MAP[m[2].toUpperCase()];
-          if(dayNum===undefined) return;
-          let cand;
-          if(nth>0){const first=new Date(year,month,1),diff=(dayNum-first.getDay()+7)%7;cand=new Date(year,month,1+diff+(nth-1)*7);}
-          else{const last=new Date(year,month+1,0),diff=(last.getDay()-dayNum+7)%7;cand=new Date(year,month+1,0-diff+(nth+1)*7);}
-          cand.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
-          if(cand.getMonth()===month&&cand>=dtstart) candidates.push(cand);
+          const m=d.match(/^([+-]?\d*)([A-Z]{2})$/i);if(!m)return;
+          const nth=m[1]?parseInt(m[1]):1,dn=DAY_MAP[m[2].toUpperCase()];if(dn===undefined)return;
+          let c;
+          if(nth>0){const f=new Date(yr,mo,1),df=(dn-f.getDay()+7)%7;c=new Date(yr,mo,1+df+(nth-1)*7);}
+          else{const l=new Date(yr,mo+1,0),dl=(l.getDay()-dn+7)%7;c=new Date(yr,mo+1,0-dl+(nth+1)*7);}
+          c.setHours(dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds(),0);
+          if(c.getMonth()===mo&&c>=dtstart)cands.push(c);
         });
-      } else if(byMonthDay){
-        byMonthDay.forEach(dom=>{
-          const cand=new Date(cur.getFullYear(),cur.getMonth(),dom,dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds());
-          if(cand>=dtstart) candidates.push(cand);
-        });
-      } else { candidates=[new Date(cur)]; }
-    } else if(freq==='YEARLY'){
-      candidates=[new Date(cur)];
-    } else break;
-
-    candidates.forEach(cand=>{
-      if(exSet.has(dateKey(cand))) return;
-      if(cand>=windowStart&&cand<=windowEnd){
-        const end=duration?new Date(cand.getTime()+duration):null;
-        occurrences.push({date:cand,end,allDay});
-      }
+      }else if(byMonthDay){
+        byMonthDay.forEach(dom=>{const c=new Date(cur.getFullYear(),cur.getMonth(),dom,dtstart.getHours(),dtstart.getMinutes(),dtstart.getSeconds());if(c>=dtstart)cands.push(c);});
+      }else cands=[new Date(cur)];
+    }else if(freq==='YEARLY'){cands=[new Date(cur)];}else break;
+    cands.forEach(c=>{
+      if(exSet.has(dateKey(c)))return;
+      if(c>=winStart&&c<=winEnd){const e=dur?new Date(c.getTime()+dur):null;occs.push({date:c,end:e,allDay});}
     });
     n++;
-    if(freq==='DAILY') cur=addDays(cur,interval);
-    else if(freq==='WEEKLY') cur=addDays(cur,interval*7);
-    else if(freq==='MONTHLY') cur=addMonths(cur,interval);
-    else if(freq==='YEARLY') cur=addYears(cur,interval);
+    if(freq==='DAILY')cur=addDays(cur,interval);
+    else if(freq==='WEEKLY')cur=addDays(cur,interval*7);
+    else if(freq==='MONTHLY')cur=addMonths(cur,interval);
+    else if(freq==='YEARLY')cur=addYears(cur,interval);
     else break;
   }
-  return occurrences;
+  return occs;
 }
 
-function parseICS(text,windowStart,windowEnd){
+function parseICS(text,winStart,winEnd){
   const unfolded=text.replace(/\r?\n[ \t]/g,'');
   const results=[];
   const blocks=unfolded.split('BEGIN:VEVENT');
@@ -576,98 +737,154 @@ function parseICS(text,windowStart,windowEnd){
     const b=blocks[i];
     const getRaw=key=>{const m=b.match(new RegExp('^'+key+'([^:]*):([^\\r\\n]+)','im'));return m?{params:m[1],value:m[2].trim()}:null;};
     const getVal=key=>{const r=getRaw(key);return r?r.value:null;};
-    const summaryRaw=getRaw('SUMMARY');
-    const summary=(summaryRaw?summaryRaw.value:'Untitled').replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').replace(/\\\\/g,'\\');
-    const dtStartRaw=getRaw('DTSTART');
-    if(!dtStartRaw) continue;
-    const dtEndRaw=getRaw('DTEND');
-    const rruleVal=getVal('RRULE');
-    const startParsed=parseDateTime(dtStartRaw.value,dtStartRaw.params);
-    if(!startParsed) continue;
-    const endParsed=dtEndRaw?parseDateTime(dtEndRaw.value,dtEndRaw.params):null;
+    const sumRaw=getRaw('SUMMARY');
+    const summary=(sumRaw?sumRaw.value:'Untitled').replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').replace(/\\\\/g,'\\');
+    const dsRaw=getRaw('DTSTART');if(!dsRaw)continue;
+    const deRaw=getRaw('DTEND');
+    const rrule=getVal('RRULE');
+    const sp=parseDT(dsRaw.value,dsRaw.params);if(!sp)continue;
+    const ep=deRaw?parseDT(deRaw.value,deRaw.params):null;
     const exdates=[];
-    const exRe=/^EXDATE([^:]*):([^\r\n]+)/gim;
-    let exm;
-    while((exm=exRe.exec(b))!==null){
-      exm[2].split(',').forEach(v=>{const p=parseDateTime(v.trim(),exm[1]);if(p)exdates.push(p.date);});
-    }
-    if(rruleVal){
-      expandRRule(startParsed.date,endParsed?endParsed.date:null,rruleVal,exdates,windowStart,windowEnd,startParsed.allDay)
-        .forEach(occ=>results.push({summary,start:occ.date,end:occ.end,allDay:occ.allDay,recurring:true}));
-    } else {
-      // ── FIX: only include if start is within window (no past events) ──
-      if(startParsed.date>=windowStart&&startParsed.date<=windowEnd){
-        results.push({summary,start:startParsed.date,end:endParsed?endParsed.date:null,allDay:startParsed.allDay,recurring:false});
-      }
+    const exRe=/^EXDATE([^:]*):([^\r\n]+)/gim;let exm;
+    while((exm=exRe.exec(b))!==null){exm[2].split(',').forEach(v=>{const p=parseDT(v.trim(),exm[1]);if(p)exdates.push(p.date);});}
+    if(rrule){
+      expandRRule(sp.date,ep?ep.date:null,rrule,exdates,winStart,winEnd,sp.allDay)
+        .forEach(o=>results.push({summary,start:o.date,end:o.end,allDay:o.allDay,recurring:true}));
+    }else{
+      if(sp.date>=winStart&&sp.date<=winEnd)
+        results.push({summary,start:sp.date,end:ep?ep.date:null,allDay:sp.allDay,recurring:false});
     }
   }
   results.sort((a,b)=>a.start-b.start);
   return results;
 }
 
-// ── AGENDA RENDER ────────────────────────────────────────────
-const BAR_COLORS=['','c1','c2','c3'];
+// ── TIME-OF-DAY HELPER ────────────────────────────────────────
+// morning: 0:00–9:59, afternoon: 10:00–17:29, evening: 17:30–23:59
+function getTOD(date,allDay){
+  if(allDay)return'allday';
+  const h=date.getHours(),m=date.getMinutes();
+  const mins=h*60+m;
+  if(mins<600)return'morning';       // <10:00
+  if(mins<1050)return'afternoon';    // <17:30
+  return'evening';
+}
+
+// ── FORMAT TIME ───────────────────────────────────────────────
 function fmt12(dt){let h=dt.getHours(),m=dt.getMinutes(),ap=h>=12?'pm':'am';h=h%12||12;return h+':'+(m?String(m).padStart(2,'0'):'00')+'\u202f'+ap;}
 
-function renderAgenda(events){
-  const list=document.getElementById('agenda-list');
-  const badge=document.getElementById('event-count-badge');
-  badge.textContent=events.length+' events';
-  if(!events.length){list.innerHTML='<div class="agenda-empty">No upcoming events in the next 60 days.</div>';return;}
+// ── RENDER EVENTS ─────────────────────────────────────────────
+function renderEvents(events){
+  const area=document.getElementById('events-area');
+  const todayBadge=document.getElementById('today-badge');
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayMs=today.getTime();
+
+  // Count today's events
+  const todayCount=events.filter(e=>{
+    const d=new Date(e.start);d.setHours(0,0,0,0);return d.getTime()===todayMs;
+  }).length;
+  todayBadge.textContent='Today: '+todayCount+' event'+(todayCount!==1?'s':'');
+
+  if(!events.length){area.innerHTML='<div class="ev-empty">No upcoming events in the next 60 days.</div>';return;}
+
+  // Build event date set for week strip dots
+  const evDateSet=new Set();
+  events.forEach(e=>{const d=e.start;evDateSet.add(d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate());});
+  buildWeekStrip(evDateSet);
+
+  // Group by day
   const groups={},order=[];
-  events.forEach((ev,idx)=>{
+  events.forEach(ev=>{
     const d=ev.start;
     const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
     if(!groups[key]){groups[key]={date:new Date(d.getFullYear(),d.getMonth(),d.getDate()),events:[]};order.push(key);}
-    groups[key].events.push({...ev,ci:idx%4});
+    groups[key].events.push(ev);
   });
-  list.innerHTML='';
-  const todayMs=(()=>{const t=new Date();t.setHours(0,0,0,0);return t.getTime();})();
+
+  area.innerHTML='';
   order.forEach(key=>{
     const{date,events:dayEvs}=groups[key];
-    const isToday=date.getTime()===todayMs,isTomorrow=date.getTime()===todayMs+86400000;
-    const block=document.createElement('div');block.className='agenda-day-block';
-    const hdr=document.createElement('div');hdr.className='agenda-day-header';
-    const pill=document.createElement('div');pill.className='agenda-day-pill'+(isToday?' today-pill':'');
-    const pillNum=document.createElement('div');pillNum.className='agenda-pill-num';pillNum.textContent=date.getDate();
-    const pillDay=document.createElement('div');pillDay.className='agenda-pill-day';pillDay.textContent=DAYS_SHORT[date.getDay()];
-    pill.appendChild(pillNum);pill.appendChild(pillDay);
-    const meta=document.createElement('div');meta.className='agenda-day-meta';
-    const nameLine=document.createElement('div');nameLine.className='agenda-day-name';nameLine.textContent=DAYS_FULL[date.getDay()];
-    if(isToday){const t=document.createElement('span');t.className='tag tag-today';t.textContent='Today';nameLine.appendChild(t);}
-    else if(isTomorrow){const t=document.createElement('span');t.className='tag tag-tomorrow';t.textContent='Tomorrow';nameLine.appendChild(t);}
-    const monLine=document.createElement('div');monLine.className='agenda-month-label';monLine.textContent=MONTHS_SHORT[date.getMonth()]+' '+date.getFullYear();
-    meta.appendChild(nameLine);meta.appendChild(monLine);
-    const divider=document.createElement('div');divider.className='agenda-divider';
-    hdr.appendChild(pill);hdr.appendChild(meta);hdr.appendChild(divider);
-    block.appendChild(hdr);
-    dayEvs.forEach(ev=>{
-      const item=document.createElement('div');item.className='agenda-event';
-      const bar=document.createElement('div');bar.className='agenda-accent-bar '+(BAR_COLORS[ev.ci]||'');
-      const inner=document.createElement('div');inner.className='agenda-event-inner';
-      const title=document.createElement('div');title.className='agenda-event-title';title.textContent=ev.summary;
-      const timeRow=document.createElement('div');timeRow.className='agenda-event-time';
-      const dot=document.createElement('span');dot.className='event-time-dot '+(BAR_COLORS[ev.ci]||'');
-      const timeText=document.createTextNode(ev.allDay?'All day':fmt12(ev.start)+(ev.end?' – '+fmt12(ev.end):''));
-      timeRow.appendChild(dot);timeRow.appendChild(timeText);
-      if(ev.recurring){const rb=document.createElement('span');rb.className='recurring-badge';rb.textContent='↻ repeating';timeRow.appendChild(rb);}
-      inner.appendChild(title);inner.appendChild(timeRow);
-      item.appendChild(bar);item.appendChild(inner);
-      block.appendChild(item);
+    const isToday=date.getTime()===todayMs;
+    const isTomorrow=date.getTime()===todayMs+86400000;
+
+    // Date group header
+    const ghdr=document.createElement('div');ghdr.className='date-group-header';
+    const pill=document.createElement('div');pill.className='dgh-pill'+(isToday?' today':'');
+    const pNum=document.createElement('div');pNum.className='dgh-num';pNum.textContent=date.getDate();
+    const pDay=document.createElement('div');pDay.className='dgh-day';pDay.textContent=D_SHORT[date.getDay()];
+    pill.appendChild(pNum);pill.appendChild(pDay);
+    const meta=document.createElement('div');meta.className='dgh-meta';
+    const nLine=document.createElement('div');nLine.className='dgh-name';nLine.textContent=D_FULL[date.getDay()];
+    if(isToday){const t=document.createElement('span');t.className='tag-today';t.textContent='Today';nLine.appendChild(t);}
+    else if(isTomorrow){const t=document.createElement('span');t.className='tag-tomorrow';t.textContent='Tomorrow';nLine.appendChild(t);}
+    const mLine=document.createElement('div');mLine.className='dgh-month';mLine.textContent=M_SHORT[date.getMonth()]+' '+date.getFullYear();
+    meta.appendChild(nLine);meta.appendChild(mLine);
+    const line=document.createElement('div');line.className='dgh-line';
+    ghdr.appendChild(pill);ghdr.appendChild(meta);ghdr.appendChild(line);
+    area.appendChild(ghdr);
+
+    // Group events by time of day
+    const byTOD={morning:[],afternoon:[],evening:[],allday:[]};
+    dayEvs.forEach(ev=>byTOD[getTOD(ev.start,ev.allDay)].push(ev));
+
+    const todSections=[
+      {key:'allday',  label:'All Day',   cls:'tod-allday'},
+      {key:'morning', label:'Morning',   cls:'tod-morning'},
+      {key:'afternoon',label:'Afternoon',cls:'tod-afternoon'},
+      {key:'evening', label:'Evening',   cls:'tod-evening'},
+    ];
+
+    todSections.forEach(({key:tod,label,cls})=>{
+      const evs=byTOD[tod];
+      if(!evs.length)return;
+
+      // TOD section header
+      const sec=document.createElement('div');sec.className='tod-section '+cls;
+      const lbl=document.createElement('div');lbl.className='tod-label';
+      const dot=document.createElement('span');dot.className='tod-dot';
+      const txt=document.createTextNode(label);
+      const ln=document.createElement('span');ln.className='tod-line';
+      lbl.appendChild(dot);lbl.appendChild(txt);lbl.appendChild(ln);
+      sec.appendChild(lbl);
+      area.appendChild(sec);
+
+      evs.forEach(ev=>{
+        const card=document.createElement('div');card.className='event-card';
+        const stripe=document.createElement('div');stripe.className='ev-stripe '+tod;
+        const timeCol=document.createElement('div');timeCol.className='ev-time-col';
+        if(ev.allDay){
+          const ta=document.createElement('div');ta.className='ev-time-allday';ta.textContent='All Day';
+          timeCol.appendChild(ta);
+        }else{
+          const ts=document.createElement('div');ts.className='ev-time-start';ts.textContent=fmt12(ev.start);
+          timeCol.appendChild(ts);
+          if(ev.end){const te=document.createElement('div');te.className='ev-time-end';te.textContent=fmt12(ev.end);timeCol.appendChild(te);}
+        }
+        const body=document.createElement('div');body.className='ev-body';
+        const title=document.createElement('div');title.className='ev-title';title.textContent=ev.summary;
+        const metaRow=document.createElement('div');metaRow.className='ev-meta';
+        const pill2=document.createElement('span');pill2.className='ev-cat-pill '+tod;
+        pill2.textContent=tod==='allday'?'All Day':tod.charAt(0).toUpperCase()+tod.slice(1);
+        metaRow.appendChild(pill2);
+        if(ev.recurring){const rb=document.createElement('span');rb.className='ev-recurring';rb.textContent='↻ repeating';metaRow.appendChild(rb);}
+        body.appendChild(title);body.appendChild(metaRow);
+        card.appendChild(stripe);card.appendChild(timeCol);card.appendChild(body);
+        area.appendChild(card);
+      });
     });
-    list.appendChild(block);
   });
 }
 
 // ── CALENDAR FETCH ───────────────────────────────────────────
 async function loadCalendar(){
-  const url=CONFIG.icalUrl;
+  const url=CFG.icalUrl;
   if(!url){
-    document.getElementById('agenda-list').innerHTML=`<div class="cal-setup"><p>No calendar connected yet.<br>Tap <strong>⚙</strong> and paste your Google Calendar iCal URL.</p><button class="cal-setup-btn" onclick="openSettings()">Open Settings ⚙</button></div>`;
-    document.getElementById('event-count-badge').textContent='Not set';
+    document.getElementById('events-area').innerHTML=`<div class="ev-setup"><p>No calendar connected yet.<br>Tap <strong>⚙</strong> and paste your Google Calendar iCal URL.</p><button class="ev-setup-btn" onclick="openSettings()">Open Settings ⚙</button></div>`;
+    document.getElementById('today-badge').textContent='Today: 0 events';
     return;
   }
-  document.getElementById('agenda-list').innerHTML='<div class="cal-loading">Fetching calendar…</div>';
+  document.getElementById('events-area').innerHTML='<div class="ev-loading">Fetching calendar…</div>';
   const fetchUrl=url.replace(/^webcal:\/\//i,'https://');
   const attempts=[
     ()=>fetch(fetchUrl,{cache:'no-cache'}),
@@ -678,112 +895,26 @@ async function loadCalendar(){
   for(const attempt of attempts){
     try{
       const res=await attempt();
-      if(!res.ok) throw new Error('HTTP '+res.status);
+      if(!res.ok)throw new Error('HTTP '+res.status);
       const text=await res.text();
-      if(!text.includes('BEGIN:VCALENDAR')) throw new Error('Not a valid iCal file');
+      if(!text.includes('BEGIN:VCALENDAR'))throw new Error('Not a valid iCal file');
       const today=new Date();today.setHours(0,0,0,0);
       const cutoff=new Date(today);cutoff.setDate(cutoff.getDate()+60);
-      renderAgenda(parseICS(text,today,cutoff));
+      renderEvents(parseICS(text,today,cutoff));
       return;
     }catch(e){lastErr=e.message;}
   }
-  document.getElementById('agenda-list').innerHTML=`<div class="cal-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Make sure you're using the Google Calendar iCal URL (ends in /basic.ics).</small></div>`;
-  document.getElementById('event-count-badge').textContent='Error';
+  document.getElementById('events-area').innerHTML=`<div class="ev-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Check your iCal URL in ⚙ settings.</small></div>`;
+  document.getElementById('today-badge').textContent='Error';
 }
 loadCalendar(); setInterval(loadCalendar,15*60*1000);
 
-// ── COUNTDOWN ────────────────────────────────────────────────
-let countdowns=[];
-try{countdowns=JSON.parse(localStorage.getItem('dash-countdowns')||'[]');}catch(e){}
-function saveCountdowns(){localStorage.setItem('dash-countdowns',JSON.stringify(countdowns));}
-
-function daysUntil(dateStr){
-  // Compare date-only, no time component
-  const today=new Date(); today.setHours(0,0,0,0);
-  const target=new Date(dateStr+'T00:00:00');
-  return Math.round((target-today)/(1000*60*60*24));
-}
-
-function renderCountdowns(){
-  const list=document.getElementById('cd-list');
-  const badge=document.getElementById('cd-count-badge');
-  // Sort: today first, then upcoming by days, then past most-recent first
-  const sorted=[...countdowns].sort((a,b)=>{
-    const da=daysUntil(a.date),db=daysUntil(b.date);
-    if(da>=0&&db>=0) return da-db;   // both upcoming: soonest first
-    if(da<0&&db<0) return db-da;     // both past: most recent first
-    return da<0?1:-1;                // upcoming before past
-  });
-  badge.textContent=countdowns.length+(countdowns.length===1?' event':' events');
-  if(!sorted.length){
-    list.innerHTML='<div class="cd-empty">No countdowns yet.<br>Add an event title and date above!</div>';
-    return;
-  }
-  list.innerHTML='';
-  sorted.forEach((cd,si)=>{
-    const days=daysUntil(cd.date);
-    const isPast=days<0, isToday=days===0;
-    const item=document.createElement('div');item.className='cd-item';
-
-    // Left block — big day number
-    const dBlock=document.createElement('div');dBlock.className='cd-days-block';
-    const dNum=document.createElement('div');
-    dNum.className='cd-days-num'+(isToday?' today-num':isPast?' past-num':'');
-    dNum.textContent=Math.abs(days);
-    const dLabel=document.createElement('div');dLabel.className='cd-days-label';
-    dLabel.textContent=isToday?'today':Math.abs(days)===1?'day':'days';
-    dBlock.appendChild(dNum);dBlock.appendChild(dLabel);
-
-    // Right info
-    const info=document.createElement('div');info.className='cd-info';
-    const title=document.createElement('div');title.className='cd-title';title.textContent=cd.title;
-    const dateLabel=document.createElement('div');dateLabel.className='cd-date-label';
-    // Format the date nicely
-    const tgt=new Date(cd.date+'T00:00:00');
-    dateLabel.textContent=DAYS_SHORT[tgt.getDay()]+', '+MONTHS_SHORT[tgt.getMonth()]+' '+tgt.getDate()+', '+tgt.getFullYear();
-    const status=document.createElement('div');
-    if(isToday){status.className='cd-status today';status.textContent='🎉 Today!';}
-    else if(isPast){status.className='cd-status past';status.textContent=Math.abs(days)+' days ago';}
-    else{status.className='cd-status upcoming';status.textContent='upcoming';}
-    info.appendChild(title);info.appendChild(dateLabel);info.appendChild(status);
-
-    // Delete button — find original index
-    const origIdx=countdowns.findIndex(c=>c.id===cd.id);
-    const del=document.createElement('button');del.className='cd-delete';del.innerHTML='×';del.setAttribute('aria-label','Delete');
-    del.onclick=()=>{countdowns.splice(origIdx,1);saveCountdowns();renderCountdowns();};
-
-    item.appendChild(dBlock);item.appendChild(info);item.appendChild(del);
-    list.appendChild(item);
-  });
-}
-
-function addCountdown(){
-  const titleEl=document.getElementById('cd-title-input');
-  const dateEl=document.getElementById('cd-date-input');
-  const title=titleEl.value.trim();
-  const date=dateEl.value;
-  if(!title||!date) return;
-  countdowns.push({title,date,id:Date.now()});
-  saveCountdowns();renderCountdowns();
-  titleEl.value='';dateEl.value='';titleEl.focus();
-}
-document.getElementById('cd-add-btn').onclick=addCountdown;
-document.getElementById('cd-title-input').onkeydown=e=>{if(e.key==='Enter') document.getElementById('cd-date-input').focus();};
-document.getElementById('cd-date-input').onkeydown=e=>{if(e.key==='Enter') addCountdown();};
-
-// Set date input default to today
-document.getElementById('cd-date-input').valueAsDate=new Date();
-renderCountdowns();
-
-// Refresh countdowns daily (so day counts stay accurate)
-setInterval(renderCountdowns, 60*60*1000);
-
 // ── SETTINGS ─────────────────────────────────────────────────
 function openSettings(){
-  document.getElementById('s-name').value=CONFIG.familyName||'';
-  document.getElementById('s-ical').value=CONFIG.icalUrl||'';
-  document.getElementById('s-city').value=CONFIG.weatherCity||'';
-  document.getElementById('s-refresh').value=CONFIG.refreshMins??30;
+  document.getElementById('s-name').value=CFG.familyName||'';
+  document.getElementById('s-ical').value=CFG.icalUrl||'';
+  document.getElementById('s-city').value=CFG.weatherCity||'';
+  document.getElementById('s-refresh').value=CFG.refreshMins??30;
   document.getElementById('settings-overlay').classList.add('open');
 }
 function closeSettings(){document.getElementById('settings-overlay').classList.remove('open');}
@@ -792,19 +923,19 @@ document.getElementById('settings-close').onclick=closeSettings;
 document.getElementById('settings-overlay').onclick=e=>{if(e.target===e.currentTarget)closeSettings();};
 document.getElementById('settings-save').onclick=async()=>{
   const newCity=document.getElementById('s-city').value.trim()||'Charlotte, NC';
-  const cityChanged=newCity!==CONFIG.weatherCity;
-  CONFIG.familyName=document.getElementById('s-name').value.trim()||'Shall Family Dashboard';
-  CONFIG.icalUrl=document.getElementById('s-ical').value.trim();
-  CONFIG.weatherCity=newCity;
-  CONFIG.refreshMins=parseInt(document.getElementById('s-refresh').value)||30;
-  if(cityChanged){CONFIG.weatherLat=null;CONFIG.weatherLon=null;await geocodeCity(newCity);}
-  saveConfig(CONFIG);
-  document.getElementById('family-name').textContent=CONFIG.familyName;
-  closeSettings();loadCalendar();loadWeather();startRefreshTimer();
+  const cityChanged=newCity!==CFG.weatherCity;
+  CFG.familyName=document.getElementById('s-name').value.trim()||'Shall Family Dashboard';
+  CFG.icalUrl=document.getElementById('s-ical').value.trim();
+  CFG.weatherCity=newCity;
+  CFG.refreshMins=parseInt(document.getElementById('s-refresh').value)||30;
+  if(cityChanged){CFG.weatherLat=null;CFG.weatherLon=null;await geocodeCity(newCity);}
+  saveCfg(CFG);
+  document.getElementById('family-name').textContent=CFG.familyName;
+  closeSettings();loadCalendar();loadWeather();startRefresh();
 };
 
-document.getElementById('family-name').textContent=CONFIG.familyName;
-startRefreshTimer();
+document.getElementById('family-name').textContent=CFG.familyName;
+startRefresh();
 </script>
 </body>
 </html>
