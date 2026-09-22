@@ -335,12 +335,6 @@ body::after {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--tile-2); border-radius: 2px; }
 
-/* Landscape fallback: if this ever runs on a wide screen, use a two-column layout so it still works */
-@media (min-aspect-ratio: 6/5) {
-  body { flex-direction: row; flex-wrap: wrap; align-content: flex-start; }
-  .header-tile, .footer-quote { width: 100%; }
-  .widgets-col { flex-direction: row; width: 100%; }
-}
 </style>
 </head>
 <body>
