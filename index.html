@@ -2,700 +2,402 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shall Family Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family Dashboard</title>
 <!--
   /* Link: theshallfamily0-eng.github.io/family-dashboard
-   * script.google.com/macros/s/AKfycbwKQDTiSgGrJKIbNt6pKVEW27B1iraPe6IXUuUxc-SKenOGIkkhVmaFddKFJbSVMTuR/exec
+   * https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnR2KkGE_FCFQ3bJ4ZoX19ec7UgaInDW2ZlRenT-Azyn6XBbhUBRolRbRplweyfIBCKwPnuJGmf6peSMaH2uTWA_84l-FoqqLAUhMy7j8Yh3XKro0ufoRkelUcz_uLAmm5s4lU3Xnv3J5_bAchgB2FZU0fztqyszrrZAr7GyxuY17B6vfIdxe0SxGF-tYn9weOA07UvVczoOoQHdo3q6LfZM2Ls-vyuyxsqNvPQGvYqB68sAWPTx_oj4ylmBprmX5hPGhDs_IpJlCsQnxWo9bO1AHaHxBw&lib=MqSzhK0CC7I1rhERrb7MQnSu4Jx7DPIpe
    * */
 -->
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #060b18;
-  --navy-1: #080e1f;
-  --navy-2: #0c1428;
-  --navy-3: #101a32;
-  --navy-4: #16213e;
-  --glass: rgba(16, 26, 50, 0.7);
-  --glass2: rgba(22, 33, 62, 0.5);
-  --border: rgba(99, 179, 237, 0.08);
-  --border2: rgba(99, 179, 237, 0.15);
-  --border3: rgba(99, 179, 237, 0.25);
-  --text: #e8f0fe;
-  --text2: #a0b4d0;
-  --text3: #5a7a9a;
-  --blue: #3b82f6;
-  --blue-bright: #60a5fa;
-  --cyan: #06b6d4;
-  --cyan-bright: #22d3ee;
-  --electric: #00d4ff;
-  --electric-glow: rgba(0, 212, 255, 0.2);
-  --electric-glow2: rgba(0, 212, 255, 0.08);
-  --morning: #f59e0b;
-  --morning-glow: rgba(245, 158, 11, 0.15);
-  --afternoon: #3b82f6;
-  --afternoon-glow: rgba(59, 130, 246, 0.15);
-  --evening: #8b5cf6;
-  --evening-glow: rgba(139, 92, 246, 0.15);
-  --radius: 20px;
-  --radius-sm: 12px;
-  --radius-xs: 8px;
-  --day-h: 220; --day-s: 95%; --day-l: 62%;
-  --accent: hsl(var(--day-h), var(--day-s), var(--day-l));
-  --accent-soft: hsl(var(--day-h), var(--day-s), 75%);
-  --accent-glow: hsla(var(--day-h), var(--day-s), var(--day-l), 0.18);
-  --accent-glow2: hsla(var(--day-h), var(--day-s), var(--day-l), 0.07);
-  --accent2: hsl(calc(var(--day-h) + 40), 85%, 68%);
-  --accent2-glow: hsla(calc(var(--day-h) + 40), 85%, 68%, 0.12);
+  --bg: #171224;
+  --bg-2: #1d1830;
+  --tile: #241e38;
+  --tile-2: #2a2340;
+  --line: rgba(245,241,235,0.08);
+  --line-2: rgba(245,241,235,0.14);
+  --text: #f5f1eb;
+  --text-dim: #b6abc9;
+  --text-faint: #766b8c;
+
+  --amber: #f0a94e;      /* morning / clock */
+  --amber-soft: rgba(240,169,78,0.16);
+  --teal: #4bc2b8;       /* afternoon / weather */
+  --teal-soft: rgba(75,194,184,0.16);
+  --violet: #9b81e8;     /* evening / schedule */
+  --violet-soft: rgba(155,129,232,0.16);
+  --coral: #ea6a56;      /* all-day / agenda accent */
+  --coral-soft: rgba(234,106,86,0.16);
+
+  --radius: 22px;
+  --radius-sm: 14px;
+
+  --day-accent: var(--amber);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-html, body {
-  width: 100%; height: 100%; overflow: hidden;
+html, body { height: 100%; width: 100%; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+body {
+  overflow: hidden;
   background: var(--bg);
-  font-family: 'Exo 2', sans-serif;
   color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vh, 14px);
+  padding: clamp(12px, 2.4vw, 22px);
+  padding-top: calc(clamp(12px, 2.4vw, 22px) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(clamp(12px, 2.4vw, 22px) + env(safe-area-inset-bottom, 0px));
+  position: relative;
 }
 
-/* Abstract gradient background */
 body::before {
   content: '';
   position: fixed; inset: 0;
   background:
-    radial-gradient(ellipse 70% 60% at 15% 5%, rgba(0,80,160,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(0,180,220,0.10) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 35% at 70% 15%, rgba(59,130,246,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 30% 25% at 30% 80%, rgba(139,92,246,0.06) 0%, transparent 50%);
+    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(240,169,78,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 95% 100%, rgba(75,194,184,0.05) 0%, transparent 55%);
   pointer-events: none; z-index: 0;
 }
-
-body {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas: "header" "main" "footer";
-  gap: 0;
-  padding: 14px 14px 0 14px;
-  height: 100vh;
-  position: relative; z-index: 1;
+body::after {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--day-accent);
+  opacity: 0.85; z-index: 5;
 }
 
-/* ── HEADER ── */
-.header {
-  grid-area: header;
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--glass);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--border2);
+/* ── shared tile shell ── */
+.tile {
+  position: relative; z-index: 1;
+  background: var(--tile);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 12px 22px;
-  margin-bottom: 12px;
-  position: relative; overflow: hidden;
-}
-.header::before {
-  content: '';
-  position: absolute; top: 0; left: 8%; right: 8%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--electric), var(--cyan-bright), transparent);
-  opacity: 0.7;
-}
-.header::after {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 40% 100% at 0% 50%, var(--electric-glow2) 0%, transparent 70%),
-    radial-gradient(ellipse 30% 100% at 100% 50%, rgba(139,92,246,0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.clock-block { position: relative; z-index: 1; }
-.clock-time {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 34px; font-weight: 600; letter-spacing: 2px; line-height: 1;
-  background: linear-gradient(135deg, #ffffff 0%, var(--electric) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.clock-date {
-  font-size: 10px; color: var(--text3); margin-top: 4px;
-  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
-}
-
-.header-center { position: relative; z-index: 1; text-align: center; }
-.header-center h1 {
-  font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  background: linear-gradient(135deg, #e8f0fe 20%, var(--electric) 60%, var(--cyan-bright) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.header-center p { font-size: 10px; color: var(--text3); margin-top: 2px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
-
-.header-right {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; gap: 16px;
-}
-.weather-block { text-align: right; }
-.weather-now-row { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
-.weather-big-icon { font-size: 26px; line-height: 1; }
-.hdr-temp {
-  font-size: 28px; font-weight: 500; line-height: 1; font-family: 'Orbitron', sans-serif;
-  letter-spacing: 1px;
-  background: linear-gradient(135deg, #fff 0%, var(--cyan-bright) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.hdr-desc { font-size: 10px; color: var(--text2); margin-top: 2px; }
-.hdr-loc { font-size: 9px; color: var(--text3); margin-top: 1px; letter-spacing: 0.04em; }
-.forecast-strip { display: flex; gap: 6px; }
-.fc-card {
-  text-align: center; background: rgba(0,212,255,0.04);
-  border: 1px solid var(--border); border-radius: var(--radius-xs);
-  padding: 5px 7px; min-width: 36px;
-}
-.fc-lbl { font-size: 8px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-.fc-ico { font-size: 12px; line-height: 1.6; }
-.fc-hi { font-size: 11px; color: var(--text); font-weight: 600; }
-.fc-lo { font-size: 9px; color: var(--text3); margin-top: 1px; }
-
-/* ── VIEW TOGGLE ── */
-.view-toggle {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(0,212,255,0.05);
-  border: 1px solid var(--border2);
-  border-radius: 30px;
-  padding: 3px;
-  flex-shrink: 0;
-}
-.vt-btn {
-  font-family: 'Exo 2', sans-serif;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 24px; border: none; cursor: pointer;
-  color: var(--text3); background: transparent;
-  transition: all 0.25s ease;
-}
-.vt-btn.active {
-  background: linear-gradient(135deg, var(--electric), var(--blue));
-  color: white;
-  box-shadow: 0 0 12px rgba(0,212,255,0.3);
-}
-
-/* ── DAY VIEW LAYOUT ── */
-.day-view {
-  display: none;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 0;
   overflow: hidden;
-  flex: 1;
-  min-height: 0;
 }
-.day-view.active { display: grid; }
-
-/* Left: timeline */
-.dv-timeline {
-  overflow-y: auto; overflow-x: hidden;
-  padding: 14px 16px 16px;
-  scrollbar-width: thin; scrollbar-color: var(--navy-4) transparent;
-  border-right: 1px solid var(--border);
-  min-height: 0;
-}
-
-/* Hour row */
-.dv-hour-row {
-  display: flex; align-items: flex-start; gap: 12px;
-  min-height: 58px; position: relative;
-}
-.dv-hour-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px; color: var(--text3); font-weight: 400;
-  letter-spacing: 0.05em; min-width: 38px; text-align: right;
-  padding-top: 2px; flex-shrink: 0;
-  user-select: none;
-}
-.dv-hour-line {
-  position: absolute; left: 50px; right: 0; top: 10px;
-  height: 1px; background: var(--border);
-}
-.dv-hour-events { flex: 1; display: flex; flex-direction: column; gap: 4px; padding-top: 0; position: relative; z-index: 1; }
-
-/* Now indicator */
-.dv-now-row {
-  display: flex; align-items: center; gap: 8px;
-  position: relative; z-index: 5; margin: -4px 0;
-}
-.dv-now-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--electric);
-  box-shadow: 0 0 8px var(--electric), 0 0 16px rgba(0,212,255,0.4);
-  flex-shrink: 0; margin-left: 44px;
-}
-.dv-now-line {
-  flex: 1; height: 1px;
-  background: linear-gradient(90deg, var(--electric), transparent);
-  opacity: 0.7;
-}
-
-/* Timeline event tiles */
-.dv-ev-tile {
-  border-radius: var(--radius-xs);
-  padding: 7px 10px;
-  display: flex; align-items: center; gap: 8px;
-  min-height: 44px;
-  border: 1px solid transparent;
-  position: relative; overflow: hidden;
-  cursor: default;
-  transition: border-color 0.2s;
-}
-.dv-ev-tile::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 60%);
-  pointer-events: none;
-}
-.dv-ev-tile.morning  { background: rgba(245,158,11,0.08);  border-color: rgba(245,158,11,0.2); }
-.dv-ev-tile.afternoon{ background: rgba(59,130,246,0.08);  border-color: rgba(59,130,246,0.2); }
-.dv-ev-tile.evening  { background: rgba(139,92,246,0.08);  border-color: rgba(139,92,246,0.2); }
-.dv-ev-tile.allday   { background: rgba(6,182,212,0.08);   border-color: rgba(6,182,212,0.2); }
-.dv-ev-stripe { width: 3px; border-radius: 2px; align-self: stretch; flex-shrink: 0; }
-.dv-ev-stripe.morning   { background: var(--morning); }
-.dv-ev-stripe.afternoon { background: var(--afternoon); }
-.dv-ev-stripe.evening   { background: var(--evening); }
-.dv-ev-stripe.allday    { background: var(--cyan); }
-.dv-ev-info { flex: 1; min-width: 0; }
-.dv-ev-title { font-size: 12px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dv-ev-time  { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 2px; }
-
-/* All-day banner at top of timeline */
-.dv-allday-banner {
-  background: rgba(6,182,212,0.07);
-  border: 1px solid rgba(6,182,212,0.2);
-  border-radius: var(--radius-xs);
-  padding: 7px 12px;
-  margin-bottom: 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.dv-allday-label { font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--cyan-bright); flex-shrink: 0; }
-.dv-allday-events { flex: 1; display: flex; flex-wrap: wrap; gap: 5px; }
-.dv-allday-pill {
-  font-size: 10px; font-weight: 500; color: var(--text2);
-  background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2);
-  padding: 2px 9px; border-radius: 20px;
-}
-
-/* Right: current events sidebar */
-.dv-now-panel {
-  display: flex; flex-direction: column;
-  padding: 14px 14px 14px 14px;
+.tile-header {
+  display: flex; align-items: center; justify-content: space-between;
   gap: 10px;
-  overflow-y: auto;
-  scrollbar-width: thin; scrollbar-color: var(--navy-4) transparent;
-  min-height: 0;
-}
-.dv-now-header {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--text3); display: flex; align-items: center; gap: 7px; flex-shrink: 0;
-}
-.dv-now-pulse {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--electric);
-  box-shadow: 0 0 8px var(--electric);
-  animation: pulse 2s infinite;
+  padding: clamp(10px,1.6vh,14px) clamp(16px,3vw,22px) clamp(6px,1vh,10px);
   flex-shrink: 0;
 }
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
+.tile-title {
+  display: flex; align-items: center; gap: 9px;
+  font-size: clamp(13px,1.9vw,16px); font-weight: 600; color: var(--text);
 }
+.tile-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.tile-sub { font-size: clamp(10px,1.5vw,12px); color: var(--text-faint); font-weight: 500; }
 
-.dv-now-card {
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  border: 1px solid var(--border2);
-  background: var(--glass2);
-  position: relative; overflow: hidden;
+/* ── HEADER TILE (clock + weather together) ── */
+.header-tile {
   flex-shrink: 0;
+  padding: clamp(14px,2.2vh,20px) clamp(18px,3.6vw,26px);
+  display: flex; flex-direction: column; gap: clamp(8px,1.2vh,12px);
 }
-.dv-now-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--electric), transparent);
-  opacity: 0.5;
-}
-.dv-now-card-title {
-  font-size: 15px; font-weight: 700; color: var(--text);
-  line-height: 1.3; margin-bottom: 8px;
-}
-.dv-now-card-time {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; color: var(--electric); margin-bottom: 6px; letter-spacing: 0.04em;
-}
-.dv-now-card-tod {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 2px 9px; border-radius: 20px; display: inline-block;
-}
-.dv-now-card-tod.morning   { background: var(--morning-glow);  color: var(--morning);  border: 1px solid rgba(245,158,11,0.25); }
-.dv-now-card-tod.afternoon { background: var(--afternoon-glow);color: var(--blue-bright);border: 1px solid rgba(59,130,246,0.25); }
-.dv-now-card-tod.evening   { background: var(--evening-glow);  color: #a78bfa;          border: 1px solid rgba(139,92,246,0.25); }
-
-.dv-progress-wrap { margin-top: 10px; }
-.dv-progress-label { font-size: 9px; color: var(--text3); margin-bottom: 4px; letter-spacing: 0.04em; }
-.dv-progress-bar {
-  height: 4px; border-radius: 4px;
-  background: var(--border2); overflow: hidden;
-}
-.dv-progress-fill {
-  height: 100%; border-radius: 4px;
-  background: linear-gradient(90deg, var(--electric), var(--blue));
-  box-shadow: 0 0 6px rgba(0,212,255,0.5);
-  transition: width 0.5s ease;
-}
-
-.dv-no-current {
-  text-align: center; color: var(--text3);
-  font-size: 12px; line-height: 1.8; padding: 20px 10px;
-}
-.dv-no-current .dv-no-icon { font-size: 26px; margin-bottom: 8px; }
-
-/* upcoming in sidebar */
-.dv-next-header {
-  font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--text3); padding-top: 4px; flex-shrink: 0;
-}
-.dv-next-card {
-  border-radius: var(--radius-sm); padding: 11px 13px;
-  background: rgba(0,212,255,0.04); border: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.dv-next-title { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.dv-next-time  { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--text3); }
-.dv-next-in    { font-size: 10px; color: var(--electric); margin-top: 3px; font-weight: 600; }
-
-/* ── MAIN AREA ── */
-.main {
-  grid-area: main;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-  grid-template-areas: "week-strip" "events";
-  gap: 0;
-  background: var(--glass);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius);
-  overflow: hidden;
-  position: relative;
-}
-.main::before {
-  content: '';
-  position: absolute; top: 0; left: 5%; right: 5%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--electric), var(--accent2), transparent);
-  opacity: 0.5;
-}
-
-/* ── WEEK STRIP (~10% of calendar widget) ── */
-.week-strip {
-  grid-area: week-strip;
+.header-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 22px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  position: relative;
+  gap: 16px; flex-wrap: wrap;
 }
-.week-strip-left { display: flex; align-items: center; gap: 10px; }
-.week-strip-title { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); }
-.today-events-badge {
-  font-size: 10px; padding: 3px 10px; border-radius: 20px;
-  background: var(--electric-glow); color: var(--electric);
-  border: 1px solid rgba(0,212,255,0.25); font-weight: 600;
-  letter-spacing: 0.04em;
+.clock-block { display: flex; flex-direction: column; align-items: flex-start; text-align: left; min-width: 0; }
+.clock-fam {
+  font-size: clamp(11px,1.7vw,14px); font-weight: 600; color: var(--amber);
+  letter-spacing: 0.02em; margin-bottom: 4px;
 }
-.week-days { display: flex; gap: 6px; align-items: center; }
-.week-day {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 2px; cursor: default;
+.clock-time {
+  font-family: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  font-size: clamp(42px, 9.5vw, 84px); font-weight: 700; line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
-.wd-label { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); }
-.wd-num {
-  width: 30px; height: 30px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 500; color: var(--text3);
-  position: relative;
-}
-.wd-num.is-today {
-  color: white; font-weight: 700;
-  background: radial-gradient(circle, var(--electric) 0%, var(--blue) 100%);
-  box-shadow: 0 0 14px var(--electric-glow), 0 0 28px rgba(0,212,255,0.12);
-}
-.wd-num.has-event::after {
-  content: '';
-  position: absolute; bottom: 1px;
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--electric); opacity: 0.7;
-}
-.wd-num.is-today.has-event::after { background: white; }
+.clock-time .ap { font-size: 0.34em; color: var(--text-dim); font-weight: 600; margin-left: 6px; }
+.clock-date { font-size: clamp(13px,2vw,17px); color: var(--text-dim); font-weight: 500; margin-top: 6px; }
 
-/* ── EVENT LIST ── */
-.events-area {
-  grid-area: events;
-  overflow-y: auto; overflow-x: hidden;
-  padding: 0 16px 16px;
-  scrollbar-width: thin; scrollbar-color: var(--navy-4) transparent;
-  min-height: 0;
+.wx-now { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.wx-icon { font-size: clamp(30px,5.4vw,44px); line-height: 1; flex-shrink: 0; }
+.wx-temp-block { min-width: 0; }
+.wx-temp {
+  font-family: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  font-size: clamp(30px,5.6vw,46px); font-weight: 700; color: var(--text); line-height: 1;
 }
+.wx-desc { font-size: clamp(12px,1.9vw,15px); color: var(--text-dim); margin-top: 3px; }
+.wx-loc { font-size: clamp(10px,1.5vw,12px); color: var(--text-faint); margin-top: 1px; }
+.wx-forecast {
+  display: flex; gap: clamp(6px,1.2vw,10px);
+  overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
+}
+.wx-forecast::-webkit-scrollbar { display: none; }
+.fc-card {
+  text-align: center; flex-shrink: 0;
+  background: var(--tile-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px; min-width: 52px;
+}
+.fc-lbl { font-size: clamp(9px,1.4vw,11px); color: var(--text-faint); font-weight: 600; }
+.fc-ico { font-size: clamp(14px,2.2vw,18px); margin: 3px 0; }
+.fc-hi { font-size: clamp(12px,1.8vw,15px); color: var(--text); font-weight: 700; }
+.fc-lo { font-size: clamp(10px,1.5vw,12px); color: var(--text-faint); margin-top: 1px; }
 
-/* Time-of-day section headers */
-.tod-section { margin-top: 16px; margin-bottom: 8px; }
-.tod-label {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-}
-.tod-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-.tod-line { flex: 1; height: 1px; }
-.tod-morning .tod-dot { background: var(--morning); box-shadow: 0 0 6px var(--morning); }
-.tod-morning .tod-label { color: var(--morning); }
-.tod-morning .tod-line { background: linear-gradient(90deg, rgba(245,158,11,0.3), transparent); }
-.tod-afternoon .tod-dot { background: var(--afternoon); box-shadow: 0 0 6px var(--afternoon); }
-.tod-afternoon .tod-label { color: var(--blue-bright); }
-.tod-afternoon .tod-line { background: linear-gradient(90deg, rgba(59,130,246,0.3), transparent); }
-.tod-evening .tod-dot { background: var(--evening); box-shadow: 0 0 6px var(--evening); }
-.tod-evening .tod-label { color: #a78bfa; }
-.tod-evening .tod-line { background: linear-gradient(90deg, rgba(139,92,246,0.3), transparent); }
-.tod-allday .tod-dot { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
-.tod-allday .tod-label { color: var(--cyan-bright); }
-.tod-allday .tod-line { background: linear-gradient(90deg, rgba(6,182,212,0.3), transparent); }
-
-/* Event cards — larger, spacious */
-.event-card {
-  display: flex; align-items: stretch; gap: 0;
-  border-radius: var(--radius-sm); overflow: hidden;
-  background: var(--glass2);
-  border: 1px solid var(--border);
-  margin-bottom: 8px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  position: relative;
-  min-height: 64px;
-}
-.event-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.015) 0%, transparent 60%);
-  pointer-events: none;
-}
-.event-card:hover { border-color: var(--border3); }
-
-/* Left colored stripe */
-.ev-stripe { width: 4px; flex-shrink: 0; }
-.ev-stripe.morning { background: linear-gradient(180deg, var(--morning), rgba(245,158,11,0.4)); }
-.ev-stripe.afternoon { background: linear-gradient(180deg, var(--afternoon), rgba(59,130,246,0.4)); }
-.ev-stripe.evening { background: linear-gradient(180deg, var(--evening), rgba(139,92,246,0.4)); }
-.ev-stripe.allday { background: linear-gradient(180deg, var(--cyan), rgba(6,182,212,0.4)); }
-
-/* Time column */
-.ev-time-col {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 12px 14px; min-width: 66px; flex-shrink: 0;
-  border-right: 1px solid var(--border);
-}
-.ev-time-start { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.03em; }
-.ev-time-end { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 2px; }
-.ev-time-allday { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); }
-
-/* Event body */
-.ev-body { flex: 1; padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-.ev-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ev-meta { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
-.ev-cat-pill {
-  font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 2px 8px; border-radius: 20px;
-}
-.ev-cat-pill.morning { background: var(--morning-glow); color: var(--morning); border: 1px solid rgba(245,158,11,0.25); }
-.ev-cat-pill.afternoon { background: var(--afternoon-glow); color: var(--blue-bright); border: 1px solid rgba(59,130,246,0.25); }
-.ev-cat-pill.evening { background: var(--evening-glow); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
-.ev-cat-pill.allday { background: rgba(6,182,212,0.1); color: var(--cyan-bright); border: 1px solid rgba(6,182,212,0.25); }
-.ev-recurring { font-size: 9px; color: var(--text3); letter-spacing: 0.04em; }
-
-/* Date group header (for multi-day view) */
-.date-group-header {
-  display: flex; align-items: center; gap: 12px;
-  margin-top: 20px; margin-bottom: 10px; padding: 0 2px;
-}
-.dgh-pill {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  width: 42px; height: 46px; border-radius: 10px;
-  background: var(--navy-3); border: 1px solid var(--border2); flex-shrink: 0;
-}
-.dgh-pill.today {
-  background: radial-gradient(135deg, rgba(0,212,255,0.25) 0%, rgba(59,130,246,0.15) 100%);
-  border-color: rgba(0,212,255,0.35);
-  box-shadow: 0 0 16px rgba(0,212,255,0.15);
-}
-.dgh-num { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 600; line-height: 1; color: var(--text2); letter-spacing: 1px; }
-.dgh-day { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-top: 1px; }
-.dgh-pill.today .dgh-num { color: var(--electric); }
-.dgh-pill.today .dgh-day { color: var(--cyan-bright); }
-.dgh-meta { flex: 1; }
-.dgh-name { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
-.dgh-month { font-size: 10px; color: var(--text3); margin-top: 2px; }
-.dgh-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
-.tag-today { display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 20px; background: var(--electric-glow); color: var(--electric); border: 1px solid rgba(0,212,255,0.3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-.tag-tomorrow { display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 20px; background: var(--accent2-glow); color: var(--accent2); border: 1px solid rgba(139,92,246,0.25); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-
-/* Empty / loading / error */
-.ev-empty, .ev-loading { padding: 40px 20px; text-align: center; color: var(--text3); font-size: 13px; line-height: 1.7; }
-.ev-error { padding: 20px; text-align: center; color: #f87171; font-size: 12px; line-height: 1.7; }
-.ev-setup { padding: 30px 20px; text-align: center; }
-.ev-setup p { color: var(--text3); font-size: 13px; line-height: 1.8; margin-bottom: 14px; }
-.ev-setup-btn {
-  padding: 10px 22px; border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--electric), var(--blue));
-  color: white; font-size: 13px; font-weight: 600; border: none; cursor: pointer;
-  font-family: 'Exo 2', sans-serif;
-  box-shadow: 0 4px 20px rgba(0,212,255,0.25);
+/* ── WIDGET COLUMN (agenda + schedule) ── */
+.widgets-col {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+  gap: clamp(8px, 1.4vh, 14px);
 }
 
-/* ── FOOTER / QUOTE BAR ── */
-.footer {
-  grid-area: footer;
-  display: flex; align-items: center; gap: 16px;
-  padding: 10px 22px;
-  margin-top: 10px;
-  background: var(--glass);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius) var(--radius) 0 0;
-  position: relative; overflow: hidden;
+/* Agenda tile */
+.agenda-tile { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.agenda-tile .tile-dot { background: var(--coral); box-shadow: 0 0 6px var(--coral); }
+.agenda-badge {
+  font-size: clamp(10px,1.5vw,12px); font-weight: 600; color: var(--coral);
+  background: var(--coral-soft); border: 1px solid rgba(234,106,86,0.3);
+  padding: 3px 10px; border-radius: 20px; flex-shrink: 0;
+}
+.agenda-scroll {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 0 clamp(14px,2.6vw,20px) clamp(12px,2vh,16px);
+  scrollbar-width: thin; scrollbar-color: var(--tile-2) transparent;
+}
+
+.day-group { margin-top: clamp(10px,1.6vh,14px); }
+.day-group:first-child { margin-top: 0; }
+.day-group-hdr {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.dgh-day { font-size: clamp(13px,2vw,16px); font-weight: 700; color: var(--text); }
+.dgh-date { font-size: clamp(11px,1.7vw,13px); color: var(--text-faint); }
+.dgh-tag {
+  font-size: clamp(9px,1.4vw,11px); font-weight: 700; padding: 2px 8px; border-radius: 20px;
+  background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(240,169,78,0.3);
+  margin-left: auto;
+}
+
+.ev-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 4px;
+  border-radius: 10px;
+}
+.ev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ev-dot.morning { background: var(--amber); }
+.ev-dot.afternoon { background: var(--teal); }
+.ev-dot.evening { background: var(--violet); }
+.ev-dot.allday { background: var(--coral); }
+.ev-time {
+  font-family: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  font-size: clamp(11px,1.8vw,14px); color: var(--text-dim); font-weight: 600;
+  min-width: 64px; flex-shrink: 0; font-variant-numeric: tabular-nums;
+}
+.ev-title {
+  font-size: clamp(14px,2.1vw,18px); font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
+}
+.ev-rec { font-size: clamp(9px,1.4vw,11px); color: var(--text-faint); flex-shrink: 0; }
+
+/* Schedule (today timeline) tile */
+.schedule-tile { flex: 1.15; min-height: 0; display: flex; flex-direction: column; }
+.schedule-tile .tile-dot { background: var(--violet); box-shadow: 0 0 6px var(--violet); }
+.now-chip {
+  margin: 0 clamp(14px,2.6vw,20px) 8px;
+  display: none;
+  align-items: center; gap: 9px;
+  background: var(--violet-soft); border: 1px solid rgba(155,129,232,0.35);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
   flex-shrink: 0;
 }
-.footer::before {
-  content: '';
-  position: absolute; top: 0; left: 6%; right: 6%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.35), transparent);
+.now-chip.show { display: flex; }
+.now-chip .pulse {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--violet);
+  box-shadow: 0 0 8px var(--violet); flex-shrink: 0;
+  animation: pulse 2s infinite;
 }
-.quote-icon { font-size: 22px; opacity: 0.5; flex-shrink: 0; color: var(--electric); }
-.quote-body { flex: 1; min-width: 0; }
-.quote-text {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px; font-weight: 400; color: var(--text2);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  font-style: italic; line-height: 1.4; letter-spacing: 0.02em;
-}
-.quote-author { font-size: 10px; color: var(--text3); margin-top: 2px; font-weight: 600; letter-spacing: 0.04em; }
-.quote-divider { width: 1px; height: 30px; background: var(--border2); flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.5;transform:scale(.8);} }
+.now-chip-text { font-size: clamp(12px,1.9vw,15px); font-weight: 600; color: var(--text); flex: 1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.now-chip-rem { font-size: clamp(10px,1.6vw,13px); color: var(--violet); font-weight: 700; flex-shrink: 0; }
 
-/* ── SETTINGS BUTTON ── */
+.schedule-scroll {
+  flex: 1; min-height: 0; overflow-y: auto;
+  padding: 0 clamp(14px,2.6vw,20px) clamp(12px,2vh,16px);
+  scrollbar-width: thin; scrollbar-color: var(--tile-2) transparent;
+}
+.sc-allday-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+}
+.sc-allday-pill {
+  font-size: clamp(11px,1.7vw,13px); font-weight: 600; color: var(--coral);
+  background: var(--coral-soft); border: 1px solid rgba(234,106,86,0.3);
+  padding: 3px 10px; border-radius: 20px;
+}
+.sc-hour-row { display: flex; align-items: flex-start; gap: 10px; min-height: 40px; position: relative; }
+.sc-hour-label {
+  font-family: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  font-size: clamp(10px,1.6vw,13px); color: var(--text-faint); font-weight: 600;
+  min-width: 42px; text-align: right; padding-top: 3px; flex-shrink: 0; font-variant-numeric: tabular-nums;
+}
+.sc-hour-line { position: absolute; left: 52px; right: 0; top: 12px; height: 1px; background: var(--line); }
+.sc-hour-events { flex: 1; display: flex; flex-direction: column; gap: 5px; padding: 0 0 6px; position: relative; z-index: 1; }
+.sc-now-row { display: flex; align-items: center; gap: 8px; margin: -2px 0; }
+.sc-now-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px var(--amber); margin-left: 34px; flex-shrink: 0; }
+.sc-now-line { flex: 1; height: 2px; background: linear-gradient(90deg, var(--amber), transparent); }
+.sc-ev-tile {
+  border-radius: 10px; padding: 7px 11px; display: flex; align-items: center; gap: 9px;
+  min-height: 40px; border: 1px solid transparent;
+}
+.sc-ev-tile.morning   { background: var(--amber-soft);  border-color: rgba(240,169,78,0.28); }
+.sc-ev-tile.afternoon { background: var(--teal-soft);   border-color: rgba(75,194,184,0.28); }
+.sc-ev-tile.evening   { background: var(--violet-soft); border-color: rgba(155,129,232,0.28); }
+.sc-ev-stripe { width: 3px; align-self: stretch; border-radius: 2px; flex-shrink: 0; }
+.sc-ev-stripe.morning { background: var(--amber); }
+.sc-ev-stripe.afternoon { background: var(--teal); }
+.sc-ev-stripe.evening { background: var(--violet); }
+.sc-ev-title { font-size: clamp(13px,2vw,16px); font-weight: 600; color: var(--text); }
+.sc-ev-time { font-size: clamp(10px,1.6vw,12px); color: var(--text-faint); margin-top: 1px; font-variant-numeric: tabular-nums; }
+
+/* Empty / loading / error / sync states, shared */
+.state-msg { text-align: center; color: var(--text-faint); font-size: clamp(12px,1.9vw,15px); line-height: 1.7; padding: 26px 14px; }
+.state-msg .em { font-size: clamp(22px,3.6vw,30px); display:block; margin-bottom: 8px; }
+.state-msg strong { color: var(--text-dim); }
+.state-setup-btn {
+  margin-top: 10px; padding: 9px 20px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--teal), var(--amber));
+  color: #171224; font-size: 13px; font-weight: 700; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.sync-flag {
+  font-size: clamp(9px,1.4vw,11px); font-weight: 600; color: #e08a3c;
+  background: rgba(224,138,60,0.14); border: 1px solid rgba(224,138,60,0.3);
+  padding: 2px 9px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px;
+}
+.sync-flag::before { content: '●'; font-size: 8px; }
+.retry-btn {
+  margin-left: 8px; font-size: clamp(9px,1.4vw,11px); font-weight: 700; color: var(--teal);
+  background: none; border: 1px solid rgba(75,194,184,0.35); border-radius: 20px;
+  padding: 2px 9px; cursor: pointer; font-family: 'Inter', sans-serif;
+}
+
+/* ── FOOTER QUOTE ── */
+.footer-quote {
+  flex-shrink: 0;
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 7px clamp(16px,3vw,22px);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2); border: 1px solid var(--line);
+}
+.fq-icon { font-size: 13px; color: var(--text-faint); flex-shrink: 0; }
+.fq-text { font-size: clamp(11px,1.6vw,13px); color: var(--text-dim); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.fq-author { font-size: clamp(10px,1.5vw,12px); color: var(--text-faint); font-weight: 600; flex-shrink: 0; }
+
+/* ── SETTINGS ── */
 .settings-btn {
-  position: fixed; bottom: 16px; right: 16px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--glass); border: 1px solid var(--border2);
-  color: var(--text3); font-size: 16px; cursor: pointer;
+  position: fixed; bottom: calc(14px + env(safe-area-inset-bottom,0px)); right: 14px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--tile); border: 1px solid var(--line-2);
+  color: var(--text-faint); font-size: 16px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  z-index: 100; backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  transition: color 0.2s, border-color 0.2s;
+  z-index: 100; box-shadow: 0 4px 18px rgba(0,0,0,0.4);
 }
-.settings-btn:hover { color: var(--electric); border-color: var(--border3); }
-
-/* ── SETTINGS OVERLAY ── */
 .settings-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.8); z-index: 200;
-  display: none; align-items: center; justify-content: center;
-  backdrop-filter: blur(6px);
+  position: fixed; inset: 0; background: rgba(10,7,16,0.82); z-index: 200;
+  display: none; align-items: center; justify-content: center; padding: 20px;
 }
 .settings-overlay.open { display: flex; }
 .settings-box {
-  background: linear-gradient(160deg, #0c1428 0%, #080e1f 100%);
-  border: 1px solid var(--border2); border-radius: var(--radius);
-  padding: 26px 28px; width: 460px; max-width: 92vw;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
-  position: relative; overflow: hidden;
+  background: var(--bg-2); border: 1px solid var(--line-2); border-radius: var(--radius);
+  padding: 24px 26px; width: 440px; max-width: 100%;
+  max-height: 90vh; overflow-y: auto;
 }
-.settings-box::before {
-  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--electric), var(--cyan-bright), transparent);
-  opacity: 0.6;
-}
-.settings-box h2 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.settings-sub { font-size: 11px; color: var(--text3); margin-bottom: 20px; line-height: 1.5; }
+.settings-box h2 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.settings-sub { font-size: 11px; color: var(--text-faint); margin-bottom: 18px; line-height: 1.5; }
 .settings-field { margin-bottom: 13px; }
-.settings-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text3); font-weight: 700; margin-bottom: 6px; display: block; }
-.settings-hint { font-size: 10px; color: var(--text3); opacity: 0.7; margin-top: 4px; line-height: 1.5; }
+.settings-label { font-size: 11px; color: var(--text-dim); font-weight: 600; margin-bottom: 6px; display: block; }
+.settings-hint { font-size: 10px; color: var(--text-faint); margin-top: 4px; line-height: 1.5; }
 .settings-input {
-  width: 100%; background: var(--navy-3); border: 1px solid var(--border2);
+  width: 100%; background: var(--tile); border: 1px solid var(--line-2);
   border-radius: var(--radius-sm); color: var(--text);
-  font-family: 'Exo 2', sans-serif; font-size: 13px; padding: 9px 12px; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: 'Inter', sans-serif; font-size: 13px; padding: 9px 12px; outline: none;
 }
-.settings-input:focus { border-color: var(--electric); box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
-.settings-row { display: flex; gap: 10px; margin-top: 20px; }
-.s-save, .s-close { flex: 1; padding: 10px; border-radius: var(--radius-sm); border: none; font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; }
-.s-save { background: linear-gradient(135deg, var(--electric), var(--blue)); color: white; box-shadow: 0 4px 16px rgba(0,212,255,0.25); }
-.s-close { background: var(--navy-3); color: var(--text3); border: 1px solid var(--border2); }
+.settings-input:focus { border-color: var(--teal); }
+.settings-row { display: flex; gap: 10px; margin-top: 18px; }
+.s-save, .s-close { flex: 1; padding: 10px; border-radius: var(--radius-sm); border: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.s-save { background: linear-gradient(135deg, var(--teal), var(--amber)); color: #171224; }
+.s-close { background: var(--tile); color: var(--text-dim); border: 1px solid var(--line-2); }
 
-::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--navy-4); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--tile-2); border-radius: 2px; }
+
+/* Landscape fallback: if this ever runs on a wide screen, use a two-column layout so it still works */
+@media (min-aspect-ratio: 6/5) {
+  body { flex-direction: row; flex-wrap: wrap; align-content: flex-start; }
+  .header-tile, .footer-quote { width: 100%; }
+  .widgets-col { flex-direction: row; width: 100%; }
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="clock-block">
-    <div class="clock-time" id="clock">--:-- --</div>
-    <div class="clock-date" id="date-label">Loading…</div>
-  </div>
-  <div class="header-center">
-    <h1 id="family-name">Shall Family Dashboard</h1>
-    <p>Home Hub for the Fam</p>
-  </div>
-  <div class="header-right">
-    <div class="forecast-strip" id="forecast-strip"></div>
-    <div class="quote-divider"></div>
-    <div class="weather-block">
-      <div class="weather-now-row">
-        <div class="weather-big-icon" id="hdr-icon">⏳</div>
-        <div class="hdr-temp" id="hdr-temp">--°</div>
+<!-- CLOCK + WEATHER (shared header) -->
+<section class="tile header-tile">
+  <div class="header-row">
+    <div class="clock-block">
+      <div class="clock-fam" id="family-name">Family Dashboard</div>
+      <div class="clock-time" id="clock">--:--<span class="ap">--</span></div>
+      <div class="clock-date" id="date-label">Loading…</div>
+    </div>
+    <div class="wx-now">
+      <div class="wx-icon" id="wx-icon">⏳</div>
+      <div class="wx-temp-block">
+        <div class="wx-temp" id="wx-temp">--°</div>
+        <div class="wx-desc" id="wx-desc">Loading…</div>
+        <div class="wx-loc" id="wx-loc">—</div>
       </div>
-      <div class="hdr-desc" id="hdr-desc">Loading…</div>
-      <div class="hdr-loc" id="hdr-loc">Charlotte, NC</div>
     </div>
   </div>
-</header>
+  <div class="wx-forecast" id="wx-forecast"></div>
+</section>
 
-<!-- MAIN CALENDAR PANEL -->
-<main class="main">
-  <!-- Week strip -->
-  <div class="week-strip">
-    <div class="week-strip-left">
-      <span class="week-strip-title">📅 Upcoming</span>
-      <span class="today-events-badge" id="today-badge">Today: 0 events</span>
+<!-- SCHEDULE (today) + AGENDA -->
+<div class="widgets-col">
+  <section class="tile schedule-tile">
+    <div class="tile-header">
+      <div class="tile-title"><span class="tile-dot"></span>Today</div>
+      <span class="tile-sub" id="schedule-sub"></span>
     </div>
-    <div class="view-toggle">
-      <button class="vt-btn active" id="vt-agenda" onclick="setView('agenda')">Agenda</button>
-      <button class="vt-btn" id="vt-day" onclick="setView('day')">Day</button>
+    <div class="now-chip" id="now-chip">
+      <span class="pulse"></span>
+      <span class="now-chip-text" id="now-chip-text"></span>
+      <span class="now-chip-rem" id="now-chip-rem"></span>
     </div>
-    <div class="week-days" id="week-days"></div>
-  </div>
-  <!-- Agenda view (default) -->
-  <div class="events-area" id="events-area" style="display:block;">
-    <div class="ev-loading">Fetching your calendar…</div>
-  </div>
+    <div class="schedule-scroll" id="schedule-scroll">
+      <div class="state-msg">Loading today's schedule…</div>
+    </div>
+  </section>
 
-  <!-- Day view -->
-  <div class="day-view" id="day-view" style="display:none;">
-    <div class="dv-timeline" id="dv-timeline"></div>
-    <div class="dv-now-panel" id="dv-now-panel">
-      <div class="dv-now-header"><span class="dv-now-pulse"></span>Happening Now</div>
-      <div class="dv-no-current"><div class="dv-no-icon">🌙</div>Nothing right now</div>
+  <section class="tile agenda-tile">
+    <div class="tile-header">
+      <div class="tile-title"><span class="tile-dot"></span>Agenda</div>
+      <span class="agenda-badge" id="agenda-badge">Today: 0</span>
     </div>
-  </div>
-</main>
+    <div class="agenda-scroll" id="agenda-scroll">
+      <div class="state-msg">Loading your calendar…</div>
+    </div>
+  </section>
+</div>
 
-<!-- FOOTER QUOTE BAR -->
-<footer class="footer">
-  <div class="quote-icon">❝</div>
-  <div class="quote-body">
-    <div class="quote-text" id="quote-text">Loading today's quote…</div>
-    <div class="quote-author" id="quote-author"></div>
-  </div>
+<!-- FOOTER QUOTE -->
+<footer class="footer-quote">
+  <div class="fq-icon">❝</div>
+  <div class="fq-text" id="quote-text">Loading today's quote…</div>
+  <div class="fq-author" id="quote-author"></div>
 </footer>
 
 <!-- SETTINGS -->
@@ -703,7 +405,7 @@ body {
 <div class="settings-overlay" id="settings-overlay">
   <div class="settings-box">
     <h2>⚙ Dashboard Settings</h2>
-    <p class="settings-sub">Changes are saved and applied immediately.</p>
+    <p class="settings-sub">Changes are saved on this tablet and applied immediately.</p>
     <div class="settings-field">
       <label class="settings-label" for="s-name">Family Name</label>
       <input class="settings-input" id="s-name" placeholder="e.g. The Smith Family">
@@ -723,35 +425,24 @@ body {
     </div>
     <div class="settings-row">
       <button class="s-close" id="settings-close">Cancel</button>
-      <button class="s-save" id="settings-save">Save & Apply</button>
+      <button class="s-save" id="settings-save">Save &amp; Apply</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── DAY THEME ────────────────────────────────────────────────
-const DAY_THEMES=[
-  {h:0,  s:'90%',l:'62%'}, // Sun
-  {h:25, s:'95%',l:'58%'}, // Mon
-  {h:48, s:'95%',l:'55%'}, // Tue
-  {h:145,s:'70%',l:'52%'}, // Wed
-  {h:185,s:'80%',l:'52%'}, // Thu
-  {h:220,s:'95%',l:'62%'}, // Fri
-  {h:270,s:'80%',l:'65%'}, // Sat
-];
-(function(){
-  const t=DAY_THEMES[new Date().getDay()];
-  const r=document.documentElement.style;
-  r.setProperty('--day-h',t.h); r.setProperty('--day-s',t.s); r.setProperty('--day-l',t.l);
-})();
+// ── DAY ACCENT (subtle top bar color per weekday) ─────────────
+const DAY_ACCENTS = ['#ea6a56','#f0a94e','#e0c24e','#4bc2b8','#52a8e0','#9b81e8','#e0709e'];
+document.documentElement.style.setProperty('--day-accent', DAY_ACCENTS[new Date().getDay()]);
 
-// ── CONFIG ───────────────────────────────────────────────────
-const DEF={familyName:'Shall Family Dashboard',icalUrl:'',weatherCity:'Charlotte, NC',weatherLat:35.2271,weatherLon:-80.8431,refreshMins:30};
+// ── CONFIG (same storage key as before — settings carry over) ─
+const DEF={familyName:'Family Dashboard',icalUrl:'',weatherCity:'Charlotte, NC',weatherLat:35.2271,weatherLon:-80.8431,refreshMins:30};
 function loadCfg(){try{const s=localStorage.getItem('dash-cfg5');return s?Object.assign({},DEF,JSON.parse(s)):DEF;}catch(e){return DEF;}}
 function saveCfg(c){localStorage.setItem('dash-cfg5',JSON.stringify(c));}
 let CFG=loadCfg();
+document.getElementById('family-name').textContent=CFG.familyName;
 
-// ── AUTO REFRESH ─────────────────────────────────────────────
+// ── AUTO REFRESH (page reload) ─────────────────────────────────
 let rTimer=null;
 function startRefresh(){if(rTimer)clearTimeout(rTimer);const m=parseInt(CFG.refreshMins)||0;if(m>0)rTimer=setTimeout(()=>location.reload(),m*60*1000);}
 
@@ -765,49 +456,25 @@ function updateClock(){
   const n=new Date();
   let h=n.getHours(),m=String(n.getMinutes()).padStart(2,'0'),ap=h>=12?'PM':'AM';
   h=h%12||12;
-  document.getElementById('clock').textContent=h+':'+m+' '+ap;
+  document.getElementById('clock').innerHTML=h+':'+m+'<span class="ap">'+ap+'</span>';
   document.getElementById('date-label').textContent=D_FULL[n.getDay()]+' · '+M_FULL[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
 }
 updateClock(); setInterval(updateClock,1000);
-
-// ── WEEK STRIP ───────────────────────────────────────────────
-function buildWeekStrip(eventDates){
-  // eventDates: Set of "YYYY-M-D" strings
-  const strip=document.getElementById('week-days');
-  strip.innerHTML='';
-  const today=new Date(); today.setHours(0,0,0,0);
-  // Show Sun–Sat of current week
-  const sunday=new Date(today); sunday.setDate(today.getDate()-today.getDay());
-  for(let i=0;i<7;i++){
-    const d=new Date(sunday); d.setDate(sunday.getDate()+i);
-    const isToday=d.getTime()===today.getTime();
-    const key=d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
-    const hasEv=eventDates&&eventDates.has(key);
-    const wd=document.createElement('div'); wd.className='week-day';
-    const lbl=document.createElement('div'); lbl.className='wd-label'; lbl.textContent=D_SHORT[d.getDay()];
-    const num=document.createElement('div');
-    num.className='wd-num'+(isToday?' is-today':'')+(hasEv?' has-event':'');
-    num.textContent=d.getDate();
-    wd.appendChild(lbl); wd.appendChild(num);
-    strip.appendChild(wd);
-  }
-}
-buildWeekStrip(null);
 
 // ── WEATHER ──────────────────────────────────────────────────
 const WX_ICONS={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌧',63:'🌧',65:'🌧',71:'🌨',73:'🌨',75:'🌨',80:'🌦',81:'🌦',82:'🌦',95:'⛈',96:'⛈',99:'⛈'};
 const WX_DESC={0:'Clear',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Drizzle',53:'Drizzle',55:'Drizzle',61:'Rain',63:'Rain',65:'Heavy rain',71:'Snow',73:'Snow',75:'Heavy snow',80:'Showers',81:'Showers',82:'Heavy showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
 async function loadWeather(){
   const lat=CFG.weatherLat||35.2271,lon=CFG.weatherLon||-80.8431;
-  document.getElementById('hdr-loc').textContent=CFG.weatherCity||'Charlotte, NC';
+  document.getElementById('wx-loc').textContent=CFG.weatherCity||'Charlotte, NC';
   try{
     const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=auto&forecast_days=5`);
     if(!r.ok) throw new Error('HTTP '+r.status);
     const d=await r.json();
-    document.getElementById('hdr-temp').textContent=Math.round(d.current.temperature_2m)+'°';
-    document.getElementById('hdr-desc').textContent=WX_DESC[d.current.weathercode]||'';
-    document.getElementById('hdr-icon').textContent=WX_ICONS[d.current.weathercode]||'🌡';
-    const strip=document.getElementById('forecast-strip'); strip.innerHTML='';
+    document.getElementById('wx-temp').textContent=Math.round(d.current.temperature_2m)+'°';
+    document.getElementById('wx-desc').textContent=WX_DESC[d.current.weathercode]||'';
+    document.getElementById('wx-icon').textContent=WX_ICONS[d.current.weathercode]||'🌡';
+    const strip=document.getElementById('wx-forecast'); strip.innerHTML='';
     for(let i=1;i<5;i++){
       const day=new Date(); day.setDate(day.getDate()+i);
       const c=document.createElement('div'); c.className='fc-card';
@@ -815,8 +482,8 @@ async function loadWeather(){
       strip.appendChild(c);
     }
   }catch(e){
-    document.getElementById('hdr-desc').textContent='Unavailable';
-    document.getElementById('hdr-temp').textContent='--°';
+    document.getElementById('wx-desc').textContent='Unavailable';
+    document.getElementById('wx-temp').textContent='--°';
   }
 }
 loadWeather(); setInterval(loadWeather,30*60*1000);
@@ -831,7 +498,6 @@ async function geocodeCity(city){
 
 // ── QUOTE ────────────────────────────────────────────────────
 async function loadQuote(){
-  // Use today's date as a seed to pick a consistent daily quote
   const today=new Date();
   const seed=today.getFullYear()*10000+today.getMonth()*100+today.getDate();
   const cached=localStorage.getItem('dash-quote-'+seed);
@@ -849,7 +515,6 @@ async function loadQuote(){
       return;
     }
   }catch(e){}
-  // Fallback curated quotes
   const fallbacks=[
     {text:"The best way to predict the future is to create it.",author:"Abraham Lincoln"},
     {text:"In the middle of every difficulty lies opportunity.",author:"Albert Einstein"},
@@ -868,7 +533,7 @@ function setQuote(text,author){
 }
 loadQuote();
 
-// ── ICS PARSER + RRULE ───────────────────────────────────────
+// ── ICS PARSER + RRULE (unchanged logic — this part was already solid) ─
 const DAY_MAP={SU:0,MO:1,TU:2,WE:3,TH:4,FR:5,SA:6};
 function parseDT(val,params){
   if(!val)return null;
@@ -984,7 +649,6 @@ function parseICS(text,winStart,winEnd){
 }
 
 // ── TIME-OF-DAY HELPER ────────────────────────────────────────
-// morning: 0:00–9:59, afternoon: 10:00–17:29, evening: 17:30–23:59
 function getTOD(date,allDay){
   if(allDay)return'allday';
   const h=date.getHours(),m=date.getMinutes();
@@ -993,33 +657,25 @@ function getTOD(date,allDay){
   if(mins<1050)return'afternoon';    // <17:30
   return'evening';
 }
-
-// ── FORMAT TIME ───────────────────────────────────────────────
 function fmt12(dt){let h=dt.getHours(),m=dt.getMinutes(),ap=h>=12?'pm':'am';h=h%12||12;return h+':'+(m?String(m).padStart(2,'0'):'00')+'\u202f'+ap;}
+function minsFromMidnight(d){ return d.getHours()*60+d.getMinutes(); }
+function fmtMinsLeft(mins){ if(mins<60) return mins+'m left'; return Math.floor(mins/60)+'h '+(mins%60?mins%60+'m':'')+' left'; }
 
-// ── RENDER EVENTS ─────────────────────────────────────────────
-function renderEvents(events){
-  cachedEvents = events; // cache for day view
-  const area=document.getElementById('events-area');
-  const todayBadge=document.getElementById('today-badge');
+// ── RENDER: AGENDA (grouped by day) ────────────────────────────
+function renderAgenda(events){
+  const scroll=document.getElementById('agenda-scroll');
+  const badge=document.getElementById('agenda-badge');
   const today=new Date();today.setHours(0,0,0,0);
   const todayMs=today.getTime();
 
-  // Count today's events
-  const todayCount=events.filter(e=>{
-    const d=new Date(e.start);d.setHours(0,0,0,0);return d.getTime()===todayMs;
-  }).length;
-  todayBadge.textContent='Today: '+todayCount+' event'+(todayCount!==1?'s':'');
+  const todayCount=events.filter(e=>{const d=new Date(e.start);d.setHours(0,0,0,0);return d.getTime()===todayMs;}).length;
+  badge.textContent='Today: '+todayCount;
 
-  if(!events.length){area.innerHTML='<div class="ev-empty">No upcoming events in the next 60 days.</div>';return;}
+  if(!events.length){
+    scroll.innerHTML='<div class="state-msg"><span class="em">🗓️</span>No upcoming events in the next 60 days.</div>';
+    return;
+  }
 
-  // Build event date set for week strip dots
-  const evDateSet=new Set();
-  events.forEach(e=>{const d=e.start;evDateSet.add(d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate());});
-  buildWeekStrip(evDateSet);
-  if(currentView==='day') renderDayView(events);
-
-  // Group by day
   const groups={},order=[];
   events.forEach(ev=>{
     const d=ev.start;
@@ -1028,110 +684,212 @@ function renderEvents(events){
     groups[key].events.push(ev);
   });
 
-  area.innerHTML='';
-  order.forEach(key=>{
+  scroll.innerHTML='';
+  order.slice(0,14).forEach(key=>{
     const{date,events:dayEvs}=groups[key];
     const isToday=date.getTime()===todayMs;
     const isTomorrow=date.getTime()===todayMs+86400000;
 
-    // Date group header
-    const ghdr=document.createElement('div');ghdr.className='date-group-header';
-    const pill=document.createElement('div');pill.className='dgh-pill'+(isToday?' today':'');
-    const pNum=document.createElement('div');pNum.className='dgh-num';pNum.textContent=date.getDate();
-    const pDay=document.createElement('div');pDay.className='dgh-day';pDay.textContent=D_SHORT[date.getDay()];
-    pill.appendChild(pNum);pill.appendChild(pDay);
-    const meta=document.createElement('div');meta.className='dgh-meta';
-    const nLine=document.createElement('div');nLine.className='dgh-name';nLine.textContent=D_FULL[date.getDay()];
-    if(isToday){const t=document.createElement('span');t.className='tag-today';t.textContent='Today';nLine.appendChild(t);}
-    else if(isTomorrow){const t=document.createElement('span');t.className='tag-tomorrow';t.textContent='Tomorrow';nLine.appendChild(t);}
-    const mLine=document.createElement('div');mLine.className='dgh-month';mLine.textContent=M_SHORT[date.getMonth()]+' '+date.getFullYear();
-    meta.appendChild(nLine);meta.appendChild(mLine);
-    const line=document.createElement('div');line.className='dgh-line';
-    ghdr.appendChild(pill);ghdr.appendChild(meta);ghdr.appendChild(line);
-    area.appendChild(ghdr);
+    const grp=document.createElement('div'); grp.className='day-group';
+    const hdr=document.createElement('div'); hdr.className='day-group-hdr';
+    const dName=document.createElement('div'); dName.className='dgh-day'; dName.textContent=D_FULL[date.getDay()];
+    const dDate=document.createElement('div'); dDate.className='dgh-date'; dDate.textContent=M_SHORT[date.getMonth()]+' '+date.getDate();
+    hdr.appendChild(dName); hdr.appendChild(dDate);
+    if(isToday||isTomorrow){const tag=document.createElement('div');tag.className='dgh-tag';tag.textContent=isToday?'Today':'Tomorrow';hdr.appendChild(tag);}
+    grp.appendChild(hdr);
 
-    // Group events by time of day
-    const byTOD={morning:[],afternoon:[],evening:[],allday:[]};
-    dayEvs.forEach(ev=>byTOD[getTOD(ev.start,ev.allDay)].push(ev));
-
-    const todSections=[
-      {key:'allday',  label:'All Day',   cls:'tod-allday'},
-      {key:'morning', label:'Morning',   cls:'tod-morning'},
-      {key:'afternoon',label:'Afternoon',cls:'tod-afternoon'},
-      {key:'evening', label:'Evening',   cls:'tod-evening'},
-    ];
-
-    todSections.forEach(({key:tod,label,cls})=>{
-      const evs=byTOD[tod];
-      if(!evs.length)return;
-
-      // TOD section header
-      const sec=document.createElement('div');sec.className='tod-section '+cls;
-      const lbl=document.createElement('div');lbl.className='tod-label';
-      const dot=document.createElement('span');dot.className='tod-dot';
-      const txt=document.createTextNode(label);
-      const ln=document.createElement('span');ln.className='tod-line';
-      lbl.appendChild(dot);lbl.appendChild(txt);lbl.appendChild(ln);
-      sec.appendChild(lbl);
-      area.appendChild(sec);
-
-      evs.forEach(ev=>{
-        const card=document.createElement('div');card.className='event-card';
-        const stripe=document.createElement('div');stripe.className='ev-stripe '+tod;
-        const timeCol=document.createElement('div');timeCol.className='ev-time-col';
-        if(ev.allDay){
-          const ta=document.createElement('div');ta.className='ev-time-allday';ta.textContent='All Day';
-          timeCol.appendChild(ta);
-        }else{
-          const ts=document.createElement('div');ts.className='ev-time-start';ts.textContent=fmt12(ev.start);
-          timeCol.appendChild(ts);
-          if(ev.end){const te=document.createElement('div');te.className='ev-time-end';te.textContent=fmt12(ev.end);timeCol.appendChild(te);}
-        }
-        const body=document.createElement('div');body.className='ev-body';
-        const title=document.createElement('div');title.className='ev-title';title.textContent=ev.summary;
-        const metaRow=document.createElement('div');metaRow.className='ev-meta';
-        const pill2=document.createElement('span');pill2.className='ev-cat-pill '+tod;
-        pill2.textContent=tod==='allday'?'All Day':tod.charAt(0).toUpperCase()+tod.slice(1);
-        metaRow.appendChild(pill2);
-        if(ev.recurring){const rb=document.createElement('span');rb.className='ev-recurring';rb.textContent='↻ repeating';metaRow.appendChild(rb);}
-        body.appendChild(title);body.appendChild(metaRow);
-        card.appendChild(stripe);card.appendChild(timeCol);card.appendChild(body);
-        area.appendChild(card);
-      });
+    dayEvs.forEach(ev=>{
+      const tod=getTOD(ev.start,ev.allDay);
+      const row=document.createElement('div'); row.className='ev-row';
+      const dot=document.createElement('span'); dot.className='ev-dot '+tod;
+      const time=document.createElement('span'); time.className='ev-time'; time.textContent=ev.allDay?'All day':fmt12(ev.start);
+      const title=document.createElement('span'); title.className='ev-title'; title.textContent=ev.summary;
+      row.appendChild(dot); row.appendChild(time); row.appendChild(title);
+      if(ev.recurring){const rec=document.createElement('span');rec.className='ev-rec';rec.textContent='↻';row.appendChild(rec);}
+      grp.appendChild(row);
     });
+    scroll.appendChild(grp);
   });
 }
 
-// ── CALENDAR FETCH ───────────────────────────────────────────
+// ── RENDER: TODAY SCHEDULE (timeline) ──────────────────────────
+function renderSchedule(events){
+  const scroll=document.getElementById('schedule-scroll');
+  const sub=document.getElementById('schedule-sub');
+  const nowChip=document.getElementById('now-chip');
+  const now=new Date();
+  const todayStart=new Date(now); todayStart.setHours(0,0,0,0);
+  const nowMins=minsFromMidnight(now);
+
+  const todayEvs=events.filter(e=>{const s=new Date(e.start);s.setHours(0,0,0,0);return s.getTime()===todayStart.getTime();});
+  const allDay=todayEvs.filter(e=>e.allDay);
+  const timed=todayEvs.filter(e=>!e.allDay).sort((a,b)=>a.start-b.start);
+  sub.textContent=D_FULL[now.getDay()]+', '+M_SHORT[now.getMonth()]+' '+now.getDate();
+
+  // "Happening now" chip
+  const current=timed.filter(e=>{
+    const startM=minsFromMidnight(e.start);
+    const endM=e.end?minsFromMidnight(e.end):startM+60;
+    return nowMins>=startM && nowMins<endM;
+  });
+  if(current.length){
+    nowChip.classList.add('show');
+    const e=current[0];
+    document.getElementById('now-chip-text').textContent='Now: '+e.summary+(current.length>1?' +'+(current.length-1)+' more':'');
+    if(e.end){
+      const endM=minsFromMidnight(e.end);
+      document.getElementById('now-chip-rem').textContent=fmtMinsLeft(endM-nowMins);
+    }else{
+      document.getElementById('now-chip-rem').textContent='';
+    }
+  }else{
+    nowChip.classList.remove('show');
+  }
+
+  scroll.innerHTML='';
+
+  if(!allDay.length && !timed.length){
+    scroll.innerHTML='<div class="state-msg"><span class="em">✨</span>Nothing on today\'s schedule.</div>';
+    return;
+  }
+
+  if(allDay.length){
+    const row=document.createElement('div'); row.className='sc-allday-row';
+    allDay.forEach(e=>{const p=document.createElement('div');p.className='sc-allday-pill';p.textContent=e.summary;row.appendChild(p);});
+    scroll.appendChild(row);
+  }
+
+  const startHour = timed.length ? Math.max(0, Math.min(now.getHours()-1, timed[0].start.getHours())-1) : Math.max(0,now.getHours()-1);
+  const endHour   = timed.length ? Math.min(23, Math.max(now.getHours()+1, timed[timed.length-1].start.getHours())+1) : Math.min(23,now.getHours()+2);
+
+  let nowInserted=false;
+  for(let h=startHour; h<=endHour; h++){
+    const hMins=h*60;
+    if(!nowInserted && nowMins<hMins+60 && nowMins>=hMins){
+      const nowRow=document.createElement('div'); nowRow.className='sc-now-row'; nowRow.id='sc-now-indicator';
+      const dot=document.createElement('div'); dot.className='sc-now-dot';
+      const line=document.createElement('div'); line.className='sc-now-line';
+      nowRow.appendChild(dot); nowRow.appendChild(line);
+      scroll.appendChild(nowRow);
+      nowInserted=true;
+    }
+    const row=document.createElement('div'); row.className='sc-hour-row';
+    const lbl=document.createElement('div'); lbl.className='sc-hour-label';
+    const ampm=h>=12?'pm':'am'; const hd=h%12||12;
+    lbl.textContent=hd+ampm;
+    const hLine=document.createElement('div'); hLine.className='sc-hour-line';
+    const evCol=document.createElement('div'); evCol.className='sc-hour-events';
+    timed.filter(e=>e.start.getHours()===h).forEach(e=>{
+      const tod=getTOD(e.start,false);
+      const tile=document.createElement('div'); tile.className='sc-ev-tile '+tod;
+      const stripe=document.createElement('div'); stripe.className='sc-ev-stripe '+tod;
+      const info=document.createElement('div');
+      const title=document.createElement('div'); title.className='sc-ev-title'; title.textContent=e.summary;
+      const time=document.createElement('div'); time.className='sc-ev-time'; time.textContent=fmt12(e.start)+(e.end?' – '+fmt12(e.end):'');
+      info.appendChild(title); info.appendChild(time);
+      tile.appendChild(stripe); tile.appendChild(info);
+      evCol.appendChild(tile);
+    });
+    row.appendChild(lbl); row.appendChild(hLine); row.appendChild(evCol);
+    scroll.appendChild(row);
+  }
+
+  setTimeout(()=>{
+    const ni=document.getElementById('sc-now-indicator');
+    if(ni) ni.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 80);
+
+  clearTimeout(window._scRefresh);
+  window._scRefresh=setTimeout(()=>renderSchedule(cachedEvents), 60000);
+}
+
+let cachedEvents=[];
+function renderAll(events){
+  cachedEvents=events;
+  renderAgenda(events);
+  renderSchedule(events);
+}
+
+// ── CALENDAR FETCH — hardened for reliability ──────────────────
+// Fixes vs. the old version:
+//  1) Every network attempt has a hard timeout, so one slow/hung proxy
+//     can't stall the whole refresh.
+//  2) The last successfully-parsed calendar is cached locally. If every
+//     live attempt fails, we fall back to that cache (flagged as
+//     "offline") instead of showing a bare error and doing nothing.
+//  3) A visible Retry action lets you force another attempt immediately
+//     instead of waiting for the next auto-refresh cycle.
+const ICS_CACHE_KEY='dash-ics-cache-v1';
+function fetchWithTimeout(url, opts, ms){
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(), ms);
+  return fetch(url, Object.assign({}, opts, {signal: ctrl.signal})).finally(()=>clearTimeout(t));
+}
+function saveIcsCache(text){
+  try{ localStorage.setItem(ICS_CACHE_KEY, JSON.stringify({ts:Date.now(), text})); }catch(e){}
+}
+function loadIcsCache(){
+  try{ const s=localStorage.getItem(ICS_CACHE_KEY); return s?JSON.parse(s):null; }catch(e){ return null; }
+}
+function agoLabel(ts){
+  const mins=Math.round((Date.now()-ts)/60000);
+  if(mins<1) return 'just now';
+  if(mins<60) return mins+'m ago';
+  const hrs=Math.round(mins/60);
+  if(hrs<24) return hrs+'h ago';
+  return Math.round(hrs/24)+'d ago';
+}
+
 async function loadCalendar(){
   const url=CFG.icalUrl;
   if(!url){
-    document.getElementById('events-area').innerHTML=`<div class="ev-setup"><p>No calendar connected yet.<br>Tap <strong>⚙</strong> and paste your Google Calendar iCal URL.</p><button class="ev-setup-btn" onclick="openSettings()">Open Settings ⚙</button></div>`;
-    document.getElementById('today-badge').textContent='Today: 0 events';
+    const msg=`<div class="state-msg"><span class="em">🗓️</span>No calendar connected yet.<br>Tap <strong>⚙</strong> and paste your Google Calendar iCal URL.<br><button class="state-setup-btn" onclick="openSettings()">Open Settings ⚙</button></div>`;
+    document.getElementById('agenda-scroll').innerHTML=msg;
+    document.getElementById('schedule-scroll').innerHTML='<div class="state-msg">No calendar connected yet.</div>';
+    document.getElementById('agenda-badge').textContent='Today: 0';
     return;
   }
-  document.getElementById('events-area').innerHTML='<div class="ev-loading">Fetching calendar…</div>';
+
   const fetchUrl=url.replace(/^webcal:\/\//i,'https://');
   const attempts=[
-    ()=>fetch(fetchUrl,{cache:'no-cache'}),
-    ()=>fetch('https://corsproxy.io/?'+encodeURIComponent(fetchUrl),{cache:'no-cache'}),
-    ()=>fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(fetchUrl),{cache:'no-cache'})
+    ()=>fetchWithTimeout(fetchUrl,{cache:'no-cache'}, 7000),
+    ()=>fetchWithTimeout('https://corsproxy.io/?'+encodeURIComponent(fetchUrl),{cache:'no-cache'}, 8000),
+    ()=>fetchWithTimeout('https://api.allorigins.win/raw?url='+encodeURIComponent(fetchUrl),{cache:'no-cache'}, 9000),
   ];
+
   let lastErr='';
   for(const attempt of attempts){
     try{
       const res=await attempt();
       if(!res.ok)throw new Error('HTTP '+res.status);
       const text=await res.text();
-      if(!text.includes('BEGIN:VCALENDAR'))throw new Error('Not a valid iCal file');
+      if(!text.includes('BEGIN:VCALENDAR'))throw new Error('Response was not a valid iCal file');
+      saveIcsCache(text);
       const today=new Date();today.setHours(0,0,0,0);
       const cutoff=new Date(today);cutoff.setDate(cutoff.getDate()+60);
-      renderEvents(parseICS(text,today,cutoff));
+      renderAll(parseICS(text,today,cutoff));
       return;
-    }catch(e){lastErr=e.message;}
+    }catch(e){
+      lastErr = e && e.name==='AbortError' ? 'Timed out' : (e.message || 'Unknown error');
+    }
   }
-  document.getElementById('events-area').innerHTML=`<div class="ev-error">Could not load calendar.<br><small>${lastErr}</small><br><small>Check your iCal URL in ⚙ settings.</small></div>`;
-  document.getElementById('today-badge').textContent='Error';
+
+  // All live attempts failed — fall back to last-known-good cache.
+  const cache=loadIcsCache();
+  if(cache && cache.text){
+    const today=new Date();today.setHours(0,0,0,0);
+    const cutoff=new Date(today);cutoff.setDate(cutoff.getDate()+60);
+    try{
+      renderAll(parseICS(cache.text,today,cutoff));
+      const flag=`<span class="sync-flag">Offline · synced ${agoLabel(cache.ts)}</span><button class="retry-btn" onclick="loadCalendar()">Retry</button>`;
+      document.getElementById('schedule-sub').innerHTML=flag;
+      return;
+    }catch(e){}
+  }
+
+  document.getElementById('agenda-scroll').innerHTML=`<div class="state-msg"><span class="em">⚠️</span>Could not load your calendar.<br><small>${lastErr}</small><br><button class="retry-btn" onclick="loadCalendar()">Retry now</button></div>`;
+  document.getElementById('schedule-scroll').innerHTML=`<div class="state-msg">Could not load today's schedule.</div>`;
+  document.getElementById('agenda-badge').textContent='Sync error';
 }
 loadCalendar(); setInterval(loadCalendar,15*60*1000);
 
@@ -1150,7 +908,7 @@ document.getElementById('settings-overlay').onclick=e=>{if(e.target===e.currentT
 document.getElementById('settings-save').onclick=async()=>{
   const newCity=document.getElementById('s-city').value.trim()||'Charlotte, NC';
   const cityChanged=newCity!==CFG.weatherCity;
-  CFG.familyName=document.getElementById('s-name').value.trim()||'Shall Family Dashboard';
+  CFG.familyName=document.getElementById('s-name').value.trim()||'Family Dashboard';
   CFG.icalUrl=document.getElementById('s-ical').value.trim();
   CFG.weatherCity=newCity;
   CFG.refreshMins=parseInt(document.getElementById('s-refresh').value)||30;
@@ -1160,185 +918,6 @@ document.getElementById('settings-save').onclick=async()=>{
   closeSettings();loadCalendar();loadWeather();startRefresh();
 };
 
-// ── VIEW TOGGLE ──────────────────────────────────────────────
-let currentView = 'agenda';
-let cachedEvents = [];
-
-function setView(v){
-  currentView = v;
-  document.getElementById('vt-agenda').classList.toggle('active', v==='agenda');
-  document.getElementById('vt-day').classList.toggle('active', v==='day');
-  document.getElementById('events-area').style.display = v==='agenda' ? 'block' : 'none';
-  document.getElementById('day-view').style.display    = v==='day'    ? 'grid'  : 'none';
-  if(v==='day') renderDayView(cachedEvents);
-}
-
-// ── DAY VIEW ─────────────────────────────────────────────────
-function minsFromMidnight(d){ return d.getHours()*60+d.getMinutes(); }
-
-function fmtMinsIn(mins){
-  if(mins<60) return mins+'m away';
-  return Math.floor(mins/60)+'h '+(mins%60?mins%60+'m ':' ')+'away';
-}
-
-function renderDayView(events){
-  const timeline = document.getElementById('dv-timeline');
-  const nowPanel = document.getElementById('dv-now-panel');
-  const now = new Date();
-  const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
-  const todayEnd   = new Date(now); todayEnd.setHours(23,59,59,999);
-  const nowMins = minsFromMidnight(now);
-
-  // Filter to today only
-  const todayEvs = events.filter(e=>{
-    const s=new Date(e.start); s.setHours(0,0,0,0);
-    return s.getTime()===todayStart.getTime();
-  });
-
-  // Separate all-day from timed
-  const allDay   = todayEvs.filter(e=>e.allDay);
-  const timed    = todayEvs.filter(e=>!e.allDay).sort((a,b)=>a.start-b.start);
-
-  // ── TIMELINE ────────────────────────────────────────────────
-  timeline.innerHTML='';
-
-  // All-day banner
-  if(allDay.length){
-    const banner=document.createElement('div'); banner.className='dv-allday-banner';
-    const lbl=document.createElement('div'); lbl.className='dv-allday-label'; lbl.textContent='All Day';
-    const evWrap=document.createElement('div'); evWrap.className='dv-allday-events';
-    allDay.forEach(e=>{
-      const p=document.createElement('div'); p.className='dv-allday-pill'; p.textContent=e.summary;
-      evWrap.appendChild(p);
-    });
-    banner.appendChild(lbl); banner.appendChild(evWrap);
-    timeline.appendChild(banner);
-  }
-
-  // Hour rows 0–23
-  // Determine first and last relevant hour
-  const startHour = timed.length ? Math.max(0, Math.min(now.getHours()-1, timed[0].start.getHours())-1) : 0;
-  const endHour   = timed.length ? Math.min(23, Math.max(now.getHours()+1, timed[timed.length-1].start.getHours())+1) : 23;
-
-  let nowInserted = false;
-  for(let h=startHour; h<=endHour; h++){
-    const hMins = h*60;
-
-    // Insert "now" line before this hour if we've passed the threshold
-    if(!nowInserted && nowMins < hMins+60 && nowMins >= hMins){
-      const nowRow=document.createElement('div'); nowRow.className='dv-now-row'; nowRow.id='dv-now-indicator';
-      const dot=document.createElement('div'); dot.className='dv-now-dot';
-      const line=document.createElement('div'); line.className='dv-now-line';
-      nowRow.appendChild(dot); nowRow.appendChild(line);
-      timeline.appendChild(nowRow);
-      nowInserted=true;
-    }
-
-    const row=document.createElement('div'); row.className='dv-hour-row';
-    const lbl=document.createElement('div'); lbl.className='dv-hour-label';
-    // Format hour label
-    const ampm=h>=12?'pm':'am'; const hd=h%12||12;
-    lbl.textContent=hd+':00\u202f'+(h%60===0?ampm:'');
-    const hLine=document.createElement('div'); hLine.className='dv-hour-line';
-    const evCol=document.createElement('div'); evCol.className='dv-hour-events';
-
-    // Events that start in this hour
-    timed.filter(e=>e.start.getHours()===h).forEach(e=>{
-      const tod=getTOD(e.start,false);
-      const tile=document.createElement('div'); tile.className='dv-ev-tile '+tod;
-      const stripe=document.createElement('div'); stripe.className='dv-ev-stripe '+tod;
-      const info=document.createElement('div'); info.className='dv-ev-info';
-      const title=document.createElement('div'); title.className='dv-ev-title'; title.textContent=e.summary;
-      const time=document.createElement('div'); time.className='dv-ev-time';
-      time.textContent=fmt12(e.start)+(e.end?' – '+fmt12(e.end):'');
-      info.appendChild(title); info.appendChild(time);
-      tile.appendChild(stripe); tile.appendChild(info);
-      evCol.appendChild(tile);
-    });
-
-    row.appendChild(lbl); row.appendChild(hLine); row.appendChild(evCol);
-    timeline.appendChild(row);
-  }
-
-  // Scroll now-line into view
-  setTimeout(()=>{
-    const ni=document.getElementById('dv-now-indicator');
-    if(ni) ni.scrollIntoView({behavior:'smooth', block:'center'});
-  }, 100);
-
-  // ── NOW PANEL ───────────────────────────────────────────────
-  nowPanel.innerHTML='';
-
-  // Header
-  const hdr=document.createElement('div'); hdr.className='dv-now-header';
-  const pulse=document.createElement('span'); pulse.className='dv-now-pulse';
-  hdr.appendChild(pulse); hdr.appendChild(document.createTextNode('Happening Now'));
-  nowPanel.appendChild(hdr);
-
-  // Find current events (started but not ended, or started within last 30 min if no end)
-  const current=timed.filter(e=>{
-    const startM=minsFromMidnight(e.start);
-    const endM=e.end?minsFromMidnight(e.end):startM+60;
-    return nowMins>=startM && nowMins<endM;
-  });
-
-  if(current.length){
-    current.forEach(e=>{
-      const tod=getTOD(e.start,false);
-      const card=document.createElement('div'); card.className='dv-now-card';
-      const title=document.createElement('div'); title.className='dv-now-card-title'; title.textContent=e.summary;
-      const time=document.createElement('div'); time.className='dv-now-card-time';
-      time.textContent=fmt12(e.start)+(e.end?' → '+fmt12(e.end):'');
-      const todPill=document.createElement('div'); todPill.className='dv-now-card-tod '+tod;
-      todPill.textContent=tod.charAt(0).toUpperCase()+tod.slice(1);
-
-      // Progress bar if event has end time
-      card.appendChild(title); card.appendChild(time); card.appendChild(todPill);
-      if(e.end){
-        const startM=minsFromMidnight(e.start);
-        const endM=minsFromMidnight(e.end);
-        const pct=Math.min(100,Math.max(0,Math.round((nowMins-startM)/(endM-startM)*100)));
-        const remaining=endM-nowMins;
-        const wrap=document.createElement('div'); wrap.className='dv-progress-wrap';
-        const plbl=document.createElement('div'); plbl.className='dv-progress-label';
-        plbl.textContent=pct+'% complete · '+remaining+'m remaining';
-        const bar=document.createElement('div'); bar.className='dv-progress-bar';
-        const fill=document.createElement('div'); fill.className='dv-progress-fill'; fill.style.width=pct+'%';
-        bar.appendChild(fill); wrap.appendChild(plbl); wrap.appendChild(bar);
-        card.appendChild(wrap);
-      }
-      nowPanel.appendChild(card);
-    });
-  } else {
-    const empty=document.createElement('div'); empty.className='dv-no-current';
-    const icon=document.createElement('div'); icon.className='dv-no-icon'; icon.textContent='✨';
-    const msg=document.createTextNode('Nothing right now');
-    empty.appendChild(icon); empty.appendChild(msg);
-    nowPanel.appendChild(empty);
-  }
-
-  // Upcoming events today (not yet started, not all-day)
-  const upcoming=timed.filter(e=>minsFromMidnight(e.start)>nowMins);
-  if(upcoming.length){
-    const nHdr=document.createElement('div'); nHdr.className='dv-next-header'; nHdr.textContent='Up Next';
-    nowPanel.appendChild(nHdr);
-    upcoming.slice(0,4).forEach(e=>{
-      const card=document.createElement('div'); card.className='dv-next-card';
-      const title=document.createElement('div'); title.className='dv-next-title'; title.textContent=e.summary;
-      const time=document.createElement('div'); time.className='dv-next-time'; time.textContent=fmt12(e.start)+(e.end?' – '+fmt12(e.end):'');
-      const minsUntil=minsFromMidnight(e.start)-nowMins;
-      const nextIn=document.createElement('div'); nextIn.className='dv-next-in'; nextIn.textContent='In '+fmtMinsIn(minsUntil);
-      card.appendChild(title); card.appendChild(time); card.appendChild(nextIn);
-      nowPanel.appendChild(card);
-    });
-  }
-
-  // Refresh now-panel every minute
-  clearTimeout(window._dvRefresh);
-  window._dvRefresh=setTimeout(()=>{ if(currentView==='day') renderDayView(cachedEvents); }, 60000);
-}
-
-document.getElementById('family-name').textContent=CFG.familyName;
 startRefresh();
 </script>
 </body>
